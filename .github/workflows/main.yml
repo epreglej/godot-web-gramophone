@@ -6,25 +6,35 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+  # job id, can be anything
+  export_game:
+    # Always use ubuntu-latest for this action
     runs-on: ubuntu-latest
-
+    # Add permission for release creation. Can be made narrower according to your needs
+    permissions:
+      contents: write
+    # Job name, can be anything
+    name: Export Game
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Always include the checkout step so that 
+      # your project is available for Godot to export
+    - name: checkout
+      uses: actions/checkout@v5
+  
+    - name: export game
+      id: export
+      # Use latest version (see releases for all versions)
+      uses: firebelley/godot-export@v7.0.0
+      with:
+        # Defining all the required inputs
+        godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/4.0/Godot_v4.0-stable_linux.x86_64.zip
+        godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/4.0/Godot_v4.0-stable_export_templates.tpz
+        relative_project_path: ./
+        cache: true
+        archive_output: true
 
-    - name: Setup Godot
-      run: |
-        GODOT_VERSION=4.5.1
-        wget https://downloads.tuxfamily.org/godotengine/$GODOT_VERSION/Godot_v${GODOT_VERSION}-stable_linux.x86_64.tar.xz
-        tar -xf Godot_v${GODOT_VERSION}-stable_linux.x86_64.tar.xz
-        chmod +x Godot_v${GODOT_VERSION}-stable_linux.x86_64
-        mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 godot
-
-    - name: Export Godot project
-      run: |
-        ./godot --headless --export "HTML5" exports/web/index.html
-
+      # This release action has worked well for me. However, you can most likely use any release action of your choosing.
+      # https://github.com/ncipollo/release-action
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
