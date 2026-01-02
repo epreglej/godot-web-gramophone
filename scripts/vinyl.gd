@@ -10,20 +10,16 @@ enum VinylSide { A, B }
 @export var _song_b: Song
 
 var side: VinylSide = VinylSide.A
+
 var song: Song:
 	get:
-		if side == VinylSide.A:
-			return _song_a
-		else:
-			return _song_b
+		return _song_a if side == VinylSide.A else _song_b
 
 
 func update_side_before_snapping() -> void:
-	# Use world-space up direction
-	var vinyl_up: Vector3 = global_transform.basis.y
-	var dot := vinyl_up.dot(Vector3.UP)
-	
-	side = VinylSide.A if dot > 0.0 else VinylSide.B
+	# Local up transformed into world space
+	var face_normal: Vector3 = global_transform.basis * Vector3.UP
+	side = VinylSide.A if face_normal.dot(Vector3.UP) > 0.0 else VinylSide.B
 
 
 func pick_up(by: Node3D) -> void:
@@ -42,4 +38,4 @@ func _apply_snap_orientation() -> void:
 	snap_pivot.basis = Basis.IDENTITY
 	
 	if side == VinylSide.B:
-		snap_pivot.basis = Basis(Vector3.FORWARD, PI)
+		snap_pivot.rotate_object_local(Vector3.FORWARD, PI)
