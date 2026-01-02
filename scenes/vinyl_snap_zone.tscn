@@ -10,7 +10,7 @@ radius = 0.1
 [sub_resource type="CylinderMesh" id="CylinderMesh_glwgc"]
 top_radius = 0.1
 bottom_radius = 0.1
-height = 0.01
+height = 0.001
 
 [node name="VinylSnapZone" instance=ExtResource("1_kbewc")]
 script = ExtResource("2_25ijt")
@@ -21,4 +21,5 @@ snap_require = "Vinyls"
 shape = SubResource("SphereShape3D_25ijt")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
 mesh = SubResource("CylinderMesh_glwgc")

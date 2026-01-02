@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene load_steps=23 format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_bf3um"]
 [ext_resource type="Script" uid="uid://j86yc3k7w37g" path="res://scripts/active_input_method_controller.gd" id="2_qt76e"]
@@ -41,9 +41,6 @@ metadata/_custom_type_script = "uid://dhppxvui1etbk"
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bf3um"]
 
-[sub_resource type="PlaneMesh" id="PlaneMesh_3dlgs"]
-size = Vector2(5, 5)
-
 [node name="Root" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -75,7 +72,7 @@ tracker = &"left_hand"
 [node name="LeftHand" parent="XROrigin3D/LeftJoystickController" instance=ExtResource("4_tw3kd")]
 
 [node name="FunctionPickup" parent="XROrigin3D/LeftJoystickController" instance=ExtResource("4_bf3um")]
-grab_distance = 0.05
+grab_distance = 0.15
 ranged_enable = false
 ranged_distance = 0.0
 ranged_angle = 0.0
@@ -86,7 +83,7 @@ tracker = &"right_hand"
 [node name="RightHand" parent="XROrigin3D/RightJoystickController" instance=ExtResource("6_gd4vy")]
 
 [node name="FunctionPickup" parent="XROrigin3D/RightJoystickController" instance=ExtResource("4_bf3um")]
-grab_distance = 0.05
+grab_distance = 0.15
 ranged_enable = false
 ranged_distance = 0.0
 ranged_angle = 0.0
@@ -96,7 +93,7 @@ tracker = &"/user/hand_pose_controller/left"
 
 [node name="FunctionPickup" parent="XROrigin3D/LeftHandController" instance=ExtResource("4_bf3um")]
 transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
-grab_distance = 0.05
+grab_distance = 0.15
 ranged_enable = false
 ranged_distance = 0.0
 ranged_angle = 0.0
@@ -106,7 +103,7 @@ hand_offset_mode = 2
 tracker = &"/user/hand_pose_controller/right"
 
 [node name="FunctionPickup" parent="XROrigin3D/RightHandController" instance=ExtResource("4_bf3um")]
-grab_distance = 0.05
+grab_distance = 0.15
 ranged_enable = false
 ranged_distance = 0.0
 ranged_angle = 0.0
@@ -142,11 +139,6 @@ hand_tracker_name = "/user/hand_tracker/right"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Floor"]
 shape = SubResource("WorldBoundaryShape3D_bf3um")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Floor"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
-mesh = SubResource("PlaneMesh_3dlgs")
-skeleton = NodePath("../..")
-
 [node name="Room" parent="Environment" instance=ExtResource("8_bf3um")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 
@@ -159,7 +151,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8248501, -1.2290809)
 text = "Text"
 
 [node name="VinylSnapZone" parent="Environment" node_paths=PackedStringArray("label") instance=ExtResource("16_sq7yr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.45, -0.45)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4702028, -0.45)
 label = NodePath("../Label3D")
 
 [editable path="XROrigin3D/LeftHandOrigin/LeftHandHumanoid"]
