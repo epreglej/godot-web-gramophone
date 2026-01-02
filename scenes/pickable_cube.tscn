@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dwienhj3didby"]
+[gd_scene load_steps=7 format=3 uid="uid://dwienhj3didby"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_k71av"]
+[ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="2_p506p"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="2_twjgc"]
 [ext_resource type="PackedScene" uid="uid://c25yxb0vt53vc" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_left.tscn" id="3_p506p"]
 
@@ -11,6 +12,15 @@ size = Vector3(0.1, 0.1, 0.1)
 size = Vector3(0.1, 0.1, 0.1)
 
 [node name="PickableCube" instance=ExtResource("1_k71av")]
+script = ExtResource("2_p506p")
+_song_a = null
+_title_a = "Unknown Track"
+_artist_a = "Unknown Artist"
+_song_b = null
+_title_b = "Unknown Track B"
+_artist_b = "Unknown Artist B"
+ranged_grab_method = 0
+second_hand_grab = 1
 
 [node name="CollisionShape3D" parent="." index="0"]
 shape = SubResource("BoxShape3D_l0wi5")
@@ -18,10 +28,8 @@ shape = SubResource("BoxShape3D_l0wi5")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." index="1"]
 mesh = SubResource("BoxMesh_twjgc")
 
-[node name="GrabPointHandRight" parent="." index="2" instance=ExtResource("2_twjgc")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, 0, -0.04)
-visible = true
-
-[node name="GrabPointHandLeft" parent="." index="3" instance=ExtResource("3_p506p")]
+[node name="GrabPointHandLeft" parent="." index="2" instance=ExtResource("3_p506p")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.025, 0, -0.04)
-visible = true
+
+[node name="GrabPointHandRight" parent="." index="3" instance=ExtResource("2_twjgc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.025, 0, -0.04)

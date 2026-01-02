@@ -117,6 +117,7 @@ tracker = &"/user/hand_tracker/left"
 [node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/LeftHandOrigin/LeftHandHumanoid/LeftHandHumanoid/Skeleton3D" index="1"]
 
 [node name="HandPoseController" parent="XROrigin3D/LeftHandOrigin" instance=ExtResource("11_r3r3k")]
+controller_pose_type = 2
 controller_action_map = SubResource("Resource_3dlgs")
 
 [node name="RightHandOrigin" type="XRNode3D" parent="XROrigin3D"]
@@ -129,6 +130,7 @@ tracker = &"/user/hand_tracker/right"
 [node name="HandPoseController" parent="XROrigin3D/RightHandOrigin" instance=ExtResource("11_r3r3k")]
 controller_tracker_name = "/user/hand_pose_controller/right"
 controller_action_map = SubResource("Resource_3dlgs")
+hand_tracker_name = "/user/hand_tracker/right"
 
 [node name="Environment" type="StaticBody3D" parent="."]
 
