@@ -1,19 +1,16 @@
-[gd_scene load_steps=25 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene load_steps=20 format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_bf3um"]
-[ext_resource type="Script" uid="uid://j86yc3k7w37g" path="res://scripts/active_input_method_controller.gd" id="2_qt76e"]
 [ext_resource type="Texture2D" uid="uid://bdktybj8dp4ui" path="res://skyboxes/sky.hdr" id="2_tw3kd"]
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="3_tw3kd"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="4_bf3um"]
 [ext_resource type="PackedScene" uid="uid://njx823gyk04n" path="res://addons/godot-xr-tools/hands/scenes/highpoly/left_hand.tscn" id="4_tw3kd"]
 [ext_resource type="PackedScene" uid="uid://cjcehqrfoxav3" path="res://addons/hand_pose_detector/hands/LeftHandHumanoid.gltf" id="5_tw3kd"]
-[ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="6_eji0w"]
-[ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="7_qwhpj"]
 [ext_resource type="PackedScene" uid="uid://dgg6gxhvb1ocb" path="res://models/room/glb/room.glb" id="8_bf3um"]
-[ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="8_huihk"]
 [ext_resource type="Resource" uid="uid://n6qmsq57l1g4" path="res://addons/hand_pose_detector/poses/index_pinch.tres" id="8_qt76e"]
 [ext_resource type="PackedScene" uid="uid://bh8isvqs258cp" path="res://addons/hand_pose_detector/hand_pose_controller.tscn" id="11_r3r3k"]
 [ext_resource type="Script" uid="uid://bwsl8u7uybb5c" path="res://addons/hand_pose_detector/hand_pose_action.gd" id="12_blcw0"]
+[ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/pickable_cube.tscn" id="12_qw60f"]
 [ext_resource type="Script" uid="uid://dhppxvui1etbk" path="res://addons/hand_pose_detector/hand_pose_action_map.gd" id="13_50g4q"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gd4vy"]
@@ -43,13 +40,6 @@ metadata/_custom_type_script = "uid://dhppxvui1etbk"
 [sub_resource type="PlaneMesh" id="PlaneMesh_3dlgs"]
 size = Vector2(5, 5)
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_j5wjh"]
-radius = 0.1
-
-[sub_resource type="SphereMesh" id="SphereMesh_eow3j"]
-radius = 0.1
-height = 0.2
-
 [node name="Root" type="Node3D"]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
@@ -59,7 +49,6 @@ directional_shadow_mode = 0
 [node name="StartXR" parent="." instance=ExtResource("1_bf3um")]
 
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
-script = ExtResource("2_qt76e")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -68,6 +57,7 @@ environment = SubResource("Environment_eji0w")
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" instance=ExtResource("3_tw3kd")]
 
 [node name="LeftJoystickController" type="XRController3D" parent="XROrigin3D"]
+process_mode = 4
 tracker = &"left_hand"
 show_when_tracked = true
 
@@ -93,9 +83,9 @@ ranged_angle = 0.0
 tracker = &"/user/hand_tracker/left"
 show_when_tracked = true
 
-[node name="LeftHandHumanoid2" parent="XROrigin3D/LeftHandOrigin" instance=ExtResource("5_tw3kd")]
+[node name="LeftHandHumanoid" parent="XROrigin3D/LeftHandOrigin" instance=ExtResource("5_tw3kd")]
 
-[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/LeftHandOrigin/LeftHandHumanoid2/LeftHandHumanoid/Skeleton3D" index="1"]
+[node name="XRHandModifier3D" type="XRHandModifier3D" parent="XROrigin3D/LeftHandOrigin/LeftHandHumanoid/LeftHandHumanoid/Skeleton3D" index="1"]
 
 [node name="HandPoseController" parent="XROrigin3D/LeftHandOrigin" instance=ExtResource("11_r3r3k")]
 controller_action_map = SubResource("Resource_3dlgs")
@@ -112,23 +102,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = SubResource("PlaneMesh_3dlgs")
 
-[node name="SphereHinge" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.070770115, 0.65428555, -0.7674693)
+[node name="PickableCube" parent="Environment" instance=ExtResource("12_qw60f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64769137, -0.44877458)
 
-[node name="InteractableHinge" parent="SphereHinge" instance=ExtResource("6_eji0w")]
-
-[node name="HandleOrigin" type="Node3D" parent="SphereHinge/InteractableHinge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11513984)
-
-[node name="InteractableHandle" parent="SphereHinge/InteractableHinge/HandleOrigin" instance=ExtResource("7_qwhpj")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SphereHinge/InteractableHinge/HandleOrigin/InteractableHandle"]
-shape = SubResource("SphereShape3D_j5wjh")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SphereHinge/InteractableHinge/HandleOrigin/InteractableHandle"]
-mesh = SubResource("SphereMesh_eow3j")
-
-[node name="GrabPointHandRight" parent="SphereHinge/InteractableHinge/HandleOrigin/InteractableHandle" instance=ExtResource("8_huihk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.090117276, 0)
-
-[editable path="XROrigin3D/LeftHandOrigin/LeftHandHumanoid2"]
+[editable path="XROrigin3D/LeftHandOrigin/LeftHandHumanoid"]
