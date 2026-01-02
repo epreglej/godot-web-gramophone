@@ -11,6 +11,8 @@ radius = 0.1
 
 [node name="VinylColePorter" groups=["Vinyls"] instance=ExtResource("1_k71av")]
 script = ExtResource("2_p506p")
+_song_a = null
+_song_b = null
 ranged_grab_method = 0
 second_hand_grab = 1
 

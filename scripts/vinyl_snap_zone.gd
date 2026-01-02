@@ -18,6 +18,4 @@ func pick_up_object(target: Node3D) -> void:
 
 	# Debug (optional)
 	if label:
-		label.text = (
-			"Side A" if vinyl.side == Vinyl.VinylSide.A else "Side B"
-		)
+		label.text = vinyl.song.title
