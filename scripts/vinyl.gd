@@ -12,37 +12,37 @@ enum VinylSide { A, B }
 var side: VinylSide = VinylSide.A
 var song: Song:
 	get:
-		if side == VinylSide.A:
-			return _song_a
-		else:
-			return _song_b
+		return _song_a if side == VinylSide.A else _song_b
 
-# Called to detect which side is facing up
-func update_side_from_current_rotation() -> void:
+
+# Updates which side is facing up based on world orientation
+func update_side_before_snapping() -> void:
 	if not is_instance_valid(snap_pivot):
 		return
-	# Use world-space up to determine which side is up
-	var face_normal = global_transform.basis.y
-	side = VinylSide.A if face_normal.dot(Vector3.UP) > 0.0 else VinylSide.B
+	
+	# Use pivot's world up for determining side
+	var vinyl_up: Vector3 = snap_pivot.global_transform.basis.y
+	var dot := vinyl_up.dot(Vector3.UP)
+	side = VinylSide.A if dot > 0.0 else VinylSide.B
 
-# Only snap zone should force rotation
+
+func pick_up(by: Node3D) -> void:
+	if by is VinylSnapZone:
+		update_side_before_snapping()           # Read side before snapping
+		super.pick_up(by)
+		call_deferred("_apply_snap_orientation") # Apply snap orientation after positioning
+	else:
+		super.pick_up(by)
+
+
+# Applies the rotation for side B; side A keeps identity
 func _apply_snap_orientation() -> void:
 	if not is_instance_valid(snap_pivot):
 		return
 	
-	# Reset local rotation
+	# Reset pivot to default
 	snap_pivot.basis = Basis.IDENTITY
 	
+	# Rotate around X axis for side B (flip over physically)
 	if side == VinylSide.B:
-		# Flip over X axis (or Z if you prefer)
-		snap_pivot.basis = Basis(Vector3.FORWARD, PI)
-
-# Called when picked up
-func pick_up(by: Node3D) -> void:
-	if by is VinylSnapZone:
-		# Side already updated in snap zone
-		super.pick_up(by)
-	else:
-		# Hand pickup: remember current side but don't flip visually
-		update_side_from_current_rotation()
-		super.pick_up(by)
+		snap_pivot.rotate(Vector3(1, 0, 0), PI)

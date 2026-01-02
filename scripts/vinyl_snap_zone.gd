@@ -6,22 +6,16 @@ class_name VinylSnapZone
 
 var vinyl: Vinyl = null
 
+
 func pick_up_object(target: Node3D) -> void:
 	if not target is Vinyl:
 		return
-
+	
 	vinyl = target as Vinyl
 
-	# Update side before applying snap rotation
-	vinyl.update_side_from_current_rotation()
-
-	# Let XRTools handle position/rotation
+	# Let XRTools handle position snapping
 	super.pick_up_object(target)
 
-	# Apply flip if side B
-	if vinyl.side == Vinyl.VinylSide.B:
-		vinyl._apply_snap_orientation()
-
-	# Update UI label
-	if label:
+	# Optional debug label showing current song title
+	if label and is_instance_valid(vinyl):
 		label.text = vinyl.song.title
