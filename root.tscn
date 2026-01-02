@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene load_steps=30 format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_bf3um"]
+[ext_resource type="Texture2D" uid="uid://bdktybj8dp4ui" path="res://skyboxes/sky.hdr" id="2_tw3kd"]
 [ext_resource type="PackedScene" uid="uid://btknduttnmoxf" path="res://addons/godot-xr-tools/misc/vr_common_shader_cache.tscn" id="3_tw3kd"]
 [ext_resource type="PackedScene" uid="uid://b4ysuy43poobf" path="res://addons/godot-xr-tools/functions/function_pickup.tscn" id="4_bf3um"]
 [ext_resource type="PackedScene" uid="uid://bdwmserhqai5h" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_physics_hand_low.tscn" id="4_gd4vy"]
@@ -9,6 +10,16 @@
 [ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="7_qwhpj"]
 [ext_resource type="PackedScene" uid="uid://dgg6gxhvb1ocb" path="res://models/room/glb/room.glb" id="8_bf3um"]
 [ext_resource type="PackedScene" uid="uid://ctw7nbntd5pcj" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_hand_right.tscn" id="8_huihk"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_gd4vy"]
+panorama = ExtResource("2_tw3kd")
+
+[sub_resource type="Sky" id="Sky_qw60f"]
+sky_material = SubResource("PanoramaSkyMaterial_gd4vy")
+
+[sub_resource type="Environment" id="Environment_eji0w"]
+background_mode = 2
+sky = SubResource("Sky_qw60f")
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bf3um"]
 animation = &"Grip"
@@ -72,17 +83,17 @@ nodes/Trigger/node = SubResource("AnimationNodeBlend2_blcw0")
 nodes/Trigger/position = Vector2(-360, 40)
 node_connections = [&"output", 0, &"Grip", &"Grip", 0, &"Trigger", &"Grip", 1, &"ClosedHand2", &"Trigger", 0, &"OpenHand", &"Trigger", 1, &"ClosedHand1"]
 
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bf3um"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_3dlgs"]
+size = Vector2(5, 5)
+
 [sub_resource type="SphereShape3D" id="SphereShape3D_j5wjh"]
 radius = 0.1
 
 [sub_resource type="SphereMesh" id="SphereMesh_eow3j"]
 radius = 0.1
 height = 0.2
-
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bf3um"]
-
-[sub_resource type="PlaneMesh" id="PlaneMesh_3dlgs"]
-size = Vector2(5, 5)
 
 [node name="Root" type="Node3D"]
 
@@ -95,6 +106,8 @@ directional_shadow_mode = 0
 [node name="XROrigin3D" type="XROrigin3D" parent="."]
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+environment = SubResource("Environment_eji0w")
 
 [node name="VRCommonShaderCache" parent="XROrigin3D/XRCamera3D" instance=ExtResource("3_tw3kd")]
 
@@ -304,32 +317,36 @@ ranged_enable = false
 ranged_distance = 0.0
 ranged_angle = 0.0
 
-[node name="InteractableHinge" parent="." instance=ExtResource("6_eji0w")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.52936864, -0.5388533)
-
-[node name="HandleOrigin" type="Node3D" parent="InteractableHinge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11513984)
-
-[node name="InteractableHandle" parent="InteractableHinge/HandleOrigin" instance=ExtResource("7_qwhpj")]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableHinge/HandleOrigin/InteractableHandle"]
-shape = SubResource("SphereShape3D_j5wjh")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="InteractableHinge/HandleOrigin/InteractableHandle"]
-mesh = SubResource("SphereMesh_eow3j")
-
-[node name="GrabPointHandRight" parent="InteractableHinge/HandleOrigin/InteractableHandle" instance=ExtResource("8_huihk")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.090117276, 0)
-
 [node name="Environment" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment"]
 shape = SubResource("WorldBoundaryShape3D_bf3um")
 
 [node name="Room" parent="Environment" instance=ExtResource("8_bf3um")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 mesh = SubResource("PlaneMesh_3dlgs")
+
+[node name="Sphere" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65428555, -0.7674693)
+
+[node name="InteractableHinge" parent="Sphere" instance=ExtResource("6_eji0w")]
+
+[node name="HandleOrigin" type="Node3D" parent="Sphere/InteractableHinge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.11513984)
+
+[node name="InteractableHandle" parent="Sphere/InteractableHinge/HandleOrigin" instance=ExtResource("7_qwhpj")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Sphere/InteractableHinge/HandleOrigin/InteractableHandle"]
+shape = SubResource("SphereShape3D_j5wjh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Sphere/InteractableHinge/HandleOrigin/InteractableHandle"]
+mesh = SubResource("SphereMesh_eow3j")
+
+[node name="GrabPointHandRight" parent="Sphere/InteractableHinge/HandleOrigin/InteractableHandle" instance=ExtResource("8_huihk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.090117276, 0)
 
 [editable path="XROrigin3D/XRLeftController3D/LeftPhysicsHand"]
 [editable path="XROrigin3D/XRLeftController3D/LeftPhysicsHand/Hand_Nails_low_L"]
