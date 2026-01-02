@@ -2,29 +2,25 @@
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_k71av"]
 [ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="2_p506p"]
-[ext_resource type="AudioStream" uid="uid://bs86s6r7btl5p" path="res://audio/NocheYDia_ColePorter.ogg" id="3_ijoni"]
-[ext_resource type="AudioStream" uid="uid://4lnl6fge6qhp" path="res://audio/EmpezadLaBeguine_ColePorter.ogg" id="4_n8xky"]
+[ext_resource type="Resource" uid="uid://dlphk0c3ps4qx" path="res://data/cole_porter_empezad_la_beguine.tres" id="3_5q42x"]
+[ext_resource type="Resource" uid="uid://be17ke2vdkdu8" path="res://data/cole_porter_noche_y_dia.tres" id="3_5us2q"]
 [ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="7_mucuw"]
 [ext_resource type="PackedScene" uid="uid://dmbv5u2dwmkye" path="res://models/vinyls/vinyl_cole_porter/glb/vinyl_cole_porter.glb" id="7_n8xky"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_l0wi5"]
-size = Vector3(0.2, 0.04, 0.2)
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5q42x"]
+height = 0.02
+radius = 0.1
 
 [node name="VinylColePorter" groups=["Vinyls"] instance=ExtResource("1_k71av")]
 script = ExtResource("2_p506p")
-_song_a = ExtResource("3_ijoni")
-_title_a = "Noche Y Dia"
-_artist_a = "Cole Porter"
-_song_b = ExtResource("4_n8xky")
-_title_b = "Empezad La Beguine"
-_artist_b = "Cole Porter"
+_song_a = ExtResource("3_5q42x")
+_song_b = ExtResource("3_5us2q")
 ranged_grab_method = 0
 second_hand_grab = 1
 
 [node name="CollisionShape3D" parent="." index="0"]
-shape = SubResource("BoxShape3D_l0wi5")
+shape = SubResource("CylinderShape3D_5q42x")
 
 [node name="GrabPointSnap" parent="." index="1" instance=ExtResource("7_mucuw")]
-require_group = "Vinyls"
 
 [node name="Model" parent="." index="2" instance=ExtResource("7_n8xky")]

@@ -2,9 +2,12 @@
 extends XRToolsSnapZone
 class_name VinylSnapZone
 
+
 @export var label: Label3D
 
+
 var vinyl: Vinyl = null
+
 
 func pick_up_object(target: Node3D) -> void:
 	if not target is Vinyl:
@@ -20,4 +23,4 @@ func pick_up_object(target: Node3D) -> void:
 		vinyl.rotate(Vector3(1,0,0), PI)
 	
 	if label:
-		label.text = str(vinyl.side)
+		label.text = vinyl.song.title
