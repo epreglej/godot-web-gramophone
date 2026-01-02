@@ -49,11 +49,12 @@ directional_shadow_mode = 0
 
 [node name="StartXR" parent="." instance=ExtResource("1_bf3um")]
 
-[node name="XROrigin3D" type="XROrigin3D" parent="." node_paths=PackedStringArray("left_joystick_controller", "left_hand_controller", "left_hand_origin")]
+[node name="XROrigin3D" type="XROrigin3D" parent="." node_paths=PackedStringArray("left_joystick_controller", "left_hand_controller", "left_hand_origin", "label")]
 script = ExtResource("2_qt76e")
 left_joystick_controller = NodePath("LeftJoystickController")
 left_hand_controller = NodePath("LeftHandController")
 left_hand_origin = NodePath("LeftHandOrigin")
+label = NodePath("../Environment/Label3D")
 
 [node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -108,5 +109,8 @@ mesh = SubResource("PlaneMesh_3dlgs")
 
 [node name="PickableCube" parent="Environment" instance=ExtResource("12_qw60f")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64769137, -0.44877458)
+
+[node name="Label3D" type="Label3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8248501, -1.2290809)
 
 [editable path="XROrigin3D/LeftHandOrigin/LeftHandHumanoid"]
