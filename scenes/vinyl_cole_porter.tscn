@@ -12,6 +12,7 @@ height = 0.02
 radius = 0.1
 
 [node name="VinylColePorter" groups=["Vinyls"] instance=ExtResource("1_k71av")]
+freeze = true
 script = ExtResource("2_p506p")
 _song_a = ExtResource("3_5q42x")
 _song_b = ExtResource("3_5us2q")
