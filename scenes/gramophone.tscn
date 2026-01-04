@@ -1,0 +1,68 @@
+[gd_scene load_steps=7 format=3 uid="uid://cg6lbg7tcacmj"]
+
+[ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
+[ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="2_vwlu8"]
+[ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="3_lo2t4"]
+[ext_resource type="PackedScene" uid="uid://dnll2qmsm8jm7" path="res://scenes/vinyl_snap_zone.tscn" id="4_lo2t4"]
+[ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="5_dcy10"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_dcy10"]
+size = Vector3(0.3, 0.32, 0.1)
+
+[node name="Gramophone" type="Node3D"]
+
+[node name="Lid" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0.01)
+
+[node name="InteractableHinge" parent="Lid" instance=ExtResource("2_vwlu8")]
+
+[node name="Model" parent="Lid/InteractableHinge" instance=ExtResource("1_dylsv")]
+
+[node name="Base" parent="Lid/InteractableHinge/Model" index="0"]
+visible = false
+
+[node name="Brake" parent="Lid/InteractableHinge/Model" index="2"]
+visible = false
+
+[node name="Crank" parent="Lid/InteractableHinge/Model" index="3"]
+visible = false
+
+[node name="Filter" parent="Lid/InteractableHinge/Model" index="4"]
+visible = false
+
+[node name="HandleOrigin" type="Node3D" parent="Lid/InteractableHinge"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, -0.05)
+
+[node name="InteractableHandle" parent="Lid/InteractableHinge/HandleOrigin" instance=ExtResource("3_lo2t4")]
+snap_distance = 0.1
+ranged_grab_method = 0
+second_hand_grab = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/InteractableHinge/HandleOrigin/InteractableHandle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
+shape = SubResource("BoxShape3D_dcy10")
+
+[node name="Base" type="Node3D" parent="."]
+
+[node name="Model" parent="Base" instance=ExtResource("1_dylsv")]
+
+[node name="Lid" parent="Base/Model" index="1"]
+visible = false
+
+[node name="Brake" parent="Base/Model" index="2"]
+visible = false
+
+[node name="Crank" parent="Base/Model" index="3"]
+visible = false
+
+[node name="Filter" parent="Base/Model" index="4"]
+visible = false
+
+[node name="VinylSnapZone" parent="Base" instance=ExtResource("4_lo2t4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0.165)
+
+[node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
+
+[editable path="Lid/InteractableHinge/Model"]
+[editable path="Base/Model"]
