@@ -35,7 +35,6 @@ func pick_up(by: Node3D) -> void:
 		super.pick_up(by)
 
 
-# Applies the rotation for side B; side A keeps identity
 func _apply_snap_orientation() -> void:
 	if not is_instance_valid(snap_pivot):
 		return
@@ -43,6 +42,6 @@ func _apply_snap_orientation() -> void:
 	# Reset pivot to default
 	snap_pivot.basis = Basis.IDENTITY
 	
-	# Rotate around X axis for side B (flip over physically)
+	# Rotate around Z axis for B-side
 	if side == VinylSide.B:
 		snap_pivot.rotate(Vector3(0, 0, 1), PI)
