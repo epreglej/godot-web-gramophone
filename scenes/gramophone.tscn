@@ -1,12 +1,35 @@
-[gd_scene load_steps=14 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=21 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
-[ext_resource type="Script" uid="uid://cqcyu4xtlmrmd" path="res://scripts/lid.gd" id="1_kj84m"]
+[ext_resource type="Script" uid="uid://cqcyu4xtlmrmd" path="res://scripts/gramophone/lid.gd" id="1_kj84m"]
+[ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
+[ext_resource type="PackedScene" uid="uid://ygp2w4a1evh" path="res://scenes/filter_snap_zone.tscn" id="2_tqyvr"]
 [ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="2_vwlu8"]
 [ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="3_lo2t4"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="4_arv0u"]
 [ext_resource type="PackedScene" uid="uid://dnll2qmsm8jm7" path="res://scenes/vinyl_snap_zone.tscn" id="4_lo2t4"]
 [ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="5_dcy10"]
+[ext_resource type="PackedScene" uid="uid://dcf6yl2uhhulf" path="res://scenes/crank_snap_zone.tscn" id="9_2d80k"]
+[ext_resource type="PackedScene" uid="uid://dlno1p8v2ybw" path="res://scenes/filter.tscn" id="9_tykl6"]
+[ext_resource type="PackedScene" uid="uid://ddfxisqbepnop" path="res://scenes/crank_pickable.tscn" id="11_grppd"]
+[ext_resource type="Script" uid="uid://cdgwjkv1rl4un" path="res://scripts/gramophone/crank_system.gd" id="13_dcquk"]
+[ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
+
+[sub_resource type="Animation" id="Animation_arv0u"]
+resource_name = "Closing"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractableHinge:hinge_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [-40.0, 0.0]
+}
 
 [sub_resource type="Animation" id="Animation_dcy10"]
 resource_name = "Opening"
@@ -39,22 +62,6 @@ tracks/0/keys = {
 "values": [0.0]
 }
 
-[sub_resource type="Animation" id="Animation_arv0u"]
-resource_name = "Closing"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("InteractableHinge:hinge_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-40.0, 0.0]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_kj84m"]
 _data = {
 &"Closing": SubResource("Animation_arv0u"),
@@ -74,7 +81,14 @@ shader_parameter/glow_max = 1.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_dcy10"]
 size = Vector3(0.3, 0.32, 0.1)
 
-[node name="Gramophone" type="Node3D"]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_system")]
+script = ExtResource("1_ouked")
+audio_player = NodePath("AudioStreamPlayer3D")
+lid = NodePath("Lid")
+filter_system = NodePath("FilterSystem")
+crank_system = NodePath("CrankSystem")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
 [node name="Lid" type="Node3D" parent="." node_paths=PackedStringArray("outline", "animation_player", "interactable_hinge", "interactable_handle")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, -0.005)
@@ -153,11 +167,41 @@ visible = false
 [node name="Filter" parent="Base/Model" index="4"]
 visible = false
 
+[node name="MountedFilterSnapZone" parent="Base" instance=ExtResource("2_tqyvr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.165)
+
+[node name="StashedFilterSnapZone" parent="Base" instance=ExtResource("2_tqyvr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
+
 [node name="VinylSnapZone" parent="Base" instance=ExtResource("4_lo2t4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0.165)
 
+[node name="MountedCrankSnapZone" parent="Base" instance=ExtResource("9_2d80k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15565708, 0.068458036, 0.13786781)
+
+[node name="StashedCrankSnapZone" parent="Base" instance=ExtResource("9_2d80k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.02)
+
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
+
+[node name="Filter" parent="." instance=ExtResource("9_tykl6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
+
+[node name="CrankPickable" parent="." instance=ExtResource("11_grppd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.02)
+
+[node name="CrankSystem" type="Node3D" parent="." node_paths=PackedStringArray("gramophone_crank_pickable", "inserted_crank_snap_zone", "stashed_crank_snap_zone")]
+script = ExtResource("13_dcquk")
+gramophone_crank_pickable = NodePath("../CrankPickable")
+inserted_crank_snap_zone = NodePath("../Base/MountedCrankSnapZone")
+stashed_crank_snap_zone = NodePath("../Base/StashedCrankSnapZone")
+
+[node name="FilterSystem" type="Node3D" parent="." node_paths=PackedStringArray("filter", "mounted_filter_snap_zone", "stashed_filter_snap_zone")]
+script = ExtResource("14_kkau2")
+filter = NodePath("../Filter")
+mounted_filter_snap_zone = NodePath("../Base/MountedFilterSnapZone")
+stashed_filter_snap_zone = NodePath("../Base/StashedFilterSnapZone")
 
 [editable path="Lid/InteractableHinge/Model"]
 [editable path="Lid/InteractableHinge/Outline"]

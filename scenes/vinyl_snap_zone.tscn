@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3 uid="uid://dnll2qmsm8jm7"]
+[gd_scene load_steps=4 format=3 uid="uid://dnll2qmsm8jm7"]
 
 [ext_resource type="PackedScene" uid="uid://ce7vysyvondf8" path="res://addons/godot-xr-tools/objects/snap_zone.tscn" id="1_kbewc"]
 [ext_resource type="Script" uid="uid://cl7mrjyjc3gd4" path="res://scripts/vinyl_snap_zone.gd" id="2_25ijt"]
@@ -7,11 +7,6 @@
 resource_local_to_scene = true
 radius = 0.1
 
-[sub_resource type="CylinderMesh" id="CylinderMesh_glwgc"]
-top_radius = 0.1
-bottom_radius = 0.1
-height = 0.001
-
 [node name="VinylSnapZone" instance=ExtResource("1_kbewc")]
 script = ExtResource("2_25ijt")
 grab_distance = 0.1
@@ -19,7 +14,3 @@ snap_require = "Vinyls"
 
 [node name="CollisionShape3D" parent="." index="0"]
 shape = SubResource("SphereShape3D_25ijt")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.01, 0)
-mesh = SubResource("CylinderMesh_glwgc")
