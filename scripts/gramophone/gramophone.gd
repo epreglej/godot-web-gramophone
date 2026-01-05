@@ -37,10 +37,10 @@ func _ready():
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
-	#crank_system.crank_picked_up.connect(_on_crank_picked_up)
-	#crank_system.crank_inserted.connect(_on_crank_inserted)
-	#crank_system.crank_cranked.connect(_on_crank_cranked)
-	#crank_system.crank_stashed.connect(_on_crank_stashed)
+	crank_system.crank_picked_up.connect(_on_crank_picked_up)
+	crank_system.crank_inserted.connect(_on_crank_inserted)
+	crank_system.crank_cranked.connect(_on_crank_cranked)
+	crank_system.crank_stashed.connect(_on_crank_stashed)
 	
 	filter_system.picked_up.connect(_on_filter_picked_up)
 	filter_system.mounted.connect(_on_filter_mounted)
