@@ -220,7 +220,6 @@ func _on_crank_stashed(_what: Variant):
 		#return
 	
 	#_is_cranked = false
-	instructions_label.pixel_size = 3
 	
 	state = State.LID_OPEN
 	_refresh_permissions()

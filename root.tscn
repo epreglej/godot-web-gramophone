@@ -150,9 +150,10 @@ text = "Text"
 [node name="Buildings" parent="Environment" instance=ExtResource("17_r3r3k")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -15, -10)
 
-[node name="Gramophone" parent="Environment" node_paths=PackedStringArray("instructions_label") instance=ExtResource("18_blcw0")]
+[node name="Gramophone" parent="Environment" node_paths=PackedStringArray("instructions_label", "state_label") instance=ExtResource("18_blcw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4711153, -0.7414176)
 instructions_label = NodePath("../Label3D")
+state_label = NodePath("../StateLabel")
 
 [node name="StateLabel" type="Label3D" parent="Environment"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -1.25)
