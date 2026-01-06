@@ -134,8 +134,8 @@ func _refresh_permissions():
 			state_label.text = "CRANK_CRANKED"
 			instructions_label.text = "Pick up the filter \n - OR - \n Pick up the crank to stash it"
 			
-			#filter_system.set_active(true)
-			#filter_system.show_pickup_hint(Color(1, 0.7, 0))
+			filter_system.set_active(true)
+			filter_system.show_pickup_hint(Color(1, 0.7, 0))
 			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
@@ -194,8 +194,8 @@ func _on_lid_closed():
 
 
 func _on_crank_picked_up():
-	#if state != State.LID_OPEN and state != State.CRANK_CRANKED:
-		#return
+	if state != State.LID_OPEN and state != State.CRANK_CRANKED:
+		return
 	
 	state = State.CRANK_PICKED_UP
 	_refresh_permissions()
@@ -228,8 +228,8 @@ func _on_crank_stashed(_what: Variant):
 # FILTER
 
 func _on_filter_picked_up():
-	if state != State.CRANK_CRANKED and state != State.FILTER_MOUNTED:
-		return
+	#if state != State.CRANK_CRANKED and state != State.FILTER_MOUNTED:
+		#return
 	
 	state = State.FILTER_PICKED_UP
 	_refresh_permissions()
