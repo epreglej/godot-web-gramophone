@@ -21,6 +21,5 @@ snap_require = "Filters"
 shape = SubResource("SphereShape3D_usra1")
 
 [node name="Highlight" type="MeshInstance3D" parent="." index="2"]
-visible = false
 mesh = SubResource("QuadMesh_wg0x4")
 surface_material_override/0 = ExtResource("2_usra1")

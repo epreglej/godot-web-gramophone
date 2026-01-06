@@ -39,8 +39,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.116, 0.027, 0.03)
 shape = SubResource("BoxShape3D_jdape")
 
 [node name="GrabPointSnap" parent="." index="1" instance=ExtResource("4_qsvbl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.006792307, 0.006987963, -0.00033973157)
-require_group = "GramophoneCrank"
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0.007, 0)
 
 [node name="Model" parent="." index="2" instance=ExtResource("5_im7t2")]
 
