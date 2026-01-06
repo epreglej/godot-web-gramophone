@@ -3,6 +3,7 @@ class_name Gramophone
 
 @export var audio_player: AudioStreamPlayer3D
 @export var instructions_label: Label3D
+@export var state_label: Label3D
 
 @export var lid: Lid
 @export var filter_system: FilterSystem
@@ -38,6 +39,12 @@ var _is_cranked: bool = true
 
 
 func _ready():
+	crank_pickable.set_interactable(true)
+	stashed_crank_snap_zone.set_active(true)
+	stashed_crank_snap_zone.pick_up_object(crank_pickable)
+	stashed_crank_snap_zone.set_active(false)
+	crank_pickable.set_interactable(false)
+	
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
@@ -59,12 +66,6 @@ func _ready():
 	
 	#brake.disengaged.connect(_on_brake_disengaged)
 	#brake.engaged.connect(_on_brake_engaged)
-	
-	crank_pickable.set_interactable(true)
-	stashed_crank_snap_zone.set_active(true)
-	stashed_crank_snap_zone.pick_up_object(crank_pickable)
-	stashed_crank_snap_zone.set_active(false)
-	crank_pickable.set_interactable(false)
 	
 	# await _warmup_all_vinyls()
 	_refresh_permissions()
@@ -94,12 +95,14 @@ func _refresh_permissions():
 	
 	match state:
 		State.LID_CLOSED:
+			state_label.text = "LID_CLOSED"
 			instructions_label.text = "Open the lid"
 			
 			lid.set_active(true)
 			lid.set_outline_shader_params(Color(1,1,0,0.3), 1)
 		
 		State.LID_OPEN:
+			state_label.text = "LID_OPEN"
 			instructions_label.text = "Pick up the crank \n - OR - \n Close the lid"
 			
 			crank_pickable.set_interactable(true)
@@ -112,6 +115,7 @@ func _refresh_permissions():
 			lid.set_outline_shader_params(Color(1,0.4,0,0.3), 1)
 		
 		State.CRANK_PICKED_UP:
+			state_label.text = "CRANK_PICKED_UP"
 			instructions_label.text = "Insert the crank \n - OR - \n Stash the crank"
 			
 			crank_pickable.set_interactable(true)
@@ -119,6 +123,7 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_active(true)
 		
 		State.CRANK_INSERTED:
+			state_label.text = "CRANK_INSERTED"
 			if _is_cranked:
 				_on_crank_cranked()
 			else:
@@ -126,6 +131,7 @@ func _refresh_permissions():
 				#crank_system.expect_cranking()
 
 		State.CRANK_CRANKED:
+			state_label.text = "CRANK_CRANKED"
 			instructions_label.text = "Pick up the filter \n - OR - \n Pick up the crank to stash it"
 			
 			#filter_system.set_active(true)
