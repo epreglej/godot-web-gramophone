@@ -46,11 +46,6 @@ func _ready():
 	mounted_crank_snap_zone.has_picked_up.connect(_on_crank_inserted)
 	stashed_crank_snap_zone.has_picked_up.connect(_on_crank_stashed)
 	
-	#crank_system.crank_picked_up.connect(_on_crank_picked_up)
-	#crank_system.crank_inserted.connect(_on_crank_inserted)
-	#crank_system.crank_cranked.connect(_on_crank_cranked)
-	#crank_system.crank_stashed.connect(_on_crank_stashed)
-	
 	filter_system.picked_up.connect(_on_filter_picked_up)
 	filter_system.mounted.connect(_on_filter_mounted)
 	filter_system.stashed.connect(_on_filter_stashed)
@@ -73,6 +68,9 @@ func _ready():
 	
 	# await _warmup_all_vinyls()
 	_refresh_permissions()
+	
+	#_on_lid_opened()
+	#_on_crank_picked_up()
 
 
 func _physics_process(_delta: float) -> void:
@@ -83,7 +81,7 @@ func _physics_process(_delta: float) -> void:
 
 func _refresh_permissions():
 	lid.set_active(false)
-	#crank_system.expect_none()
+	
 	crank_pickable.set_interactable(false)
 	mounted_crank_snap_zone.set_active(false)
 	stashed_crank_snap_zone.set_active(false)
@@ -92,7 +90,7 @@ func _refresh_permissions():
 	vinyl_system.reset()
 	lid.tonearm.reset()
 	#brake.reset()
-
+	
 	match state:
 		State.LID_CLOSED:
 			instructions_label.text = "Open the lid"
@@ -109,14 +107,11 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_active(true)
 			stashed_crank_snap_zone.set_highlight_visible(false)
 			
-			#crank_system.expect_pick_up()
-			
 			lid.set_active(true)
 			lid.set_outline_shader_params(Color(1,0.4,0,0.3), 1)
 		
 		State.CRANK_PICKED_UP:
 			instructions_label.text = "Insert the crank \n - OR - \n Stash the crank"
-			#crank_system.expect_insert_or_stash()
 			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
@@ -131,8 +126,15 @@ func _refresh_permissions():
 
 		State.CRANK_CRANKED:
 			instructions_label.text = "Pick up the filter \n - OR - \n Pick up the crank to stash it"
-			filter_system.set_active(true)
-			filter_system.show_pickup_hint(Color(1, 0.7, 0))
+			
+			#filter_system.set_active(true)
+			#filter_system.show_pickup_hint(Color(1, 0.7, 0))
+			
+			crank_pickable.set_interactable(true)
+			mounted_crank_snap_zone.set_active(true)
+			mounted_crank_snap_zone.set_highlight_visible(false)
+			stashed_crank_snap_zone.set_active(true)
+			stashed_crank_snap_zone.set_highlight_visible(false)
 
 		State.FILTER_PICKED_UP:
 			instructions_label.text = "Mount the filter \n - OR - \n Stash the filter"
@@ -184,8 +186,6 @@ func _on_lid_closed():
 	_refresh_permissions()
 
 
-# CRANK
-
 func _on_crank_picked_up():
 	if state != State.LID_OPEN and state != State.CRANK_CRANKED:
 		return
@@ -212,7 +212,8 @@ func _on_crank_stashed():
 	if state != State.CRANK_PICKED_UP:
 		return
 	
-	_is_cranked = false
+	#_is_cranked = false
+	instructions_label.pixel_size = 20
 	
 	state = State.LID_OPEN
 	_refresh_permissions()
