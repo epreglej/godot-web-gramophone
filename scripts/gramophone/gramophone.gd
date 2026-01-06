@@ -189,7 +189,7 @@ func _on_lid_closed():
 # CRANK
 
 func _on_crank_picked_up():
-	if state != State.LID_OPEN or state != State.CRANK_CRANKED:
+	if state != State.LID_OPEN and state != State.CRANK_CRANKED:
 		return
 	
 	state = State.CRANK_PICKED_UP
