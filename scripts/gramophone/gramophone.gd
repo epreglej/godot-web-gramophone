@@ -6,7 +6,10 @@ class_name Gramophone
 
 @export var lid: Lid
 @export var filter_system: FilterSystem
-@export var crank_system: CrankSystem
+@export var crank_pickable: CrankPickable
+@export var mounted_crank_snap_zone: CrankSnapZone
+@export var stashed_crank_snap_zone: CrankSnapZone
+# @export var crank_system: CrankSystem
 @export var vinyl_system: GramophoneVinylSystem
 @export var brake: GramophoneBrake
 
@@ -36,10 +39,15 @@ func _ready():
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
-	crank_system.crank_picked_up.connect(_on_crank_picked_up)
-	crank_system.crank_inserted.connect(_on_crank_inserted)
-	crank_system.crank_cranked.connect(_on_crank_cranked)
-	crank_system.crank_stashed.connect(_on_crank_stashed)
+	mounted_crank_snap_zone.has_dropped.connect(_on_crank_picked_up)
+	stashed_crank_snap_zone.has_dropped.connect(_on_crank_picked_up)
+	mounted_crank_snap_zone.has_picked_up.connect(_on_crank_inserted)
+	stashed_crank_snap_zone.has_picked_up.connect(_on_crank_stashed)
+	
+	#crank_system.crank_picked_up.connect(_on_crank_picked_up)
+	#crank_system.crank_inserted.connect(_on_crank_inserted)
+	#crank_system.crank_cranked.connect(_on_crank_cranked)
+	#crank_system.crank_stashed.connect(_on_crank_stashed)
 	
 	filter_system.picked_up.connect(_on_filter_picked_up)
 	filter_system.mounted.connect(_on_filter_mounted)
@@ -67,7 +75,11 @@ func _physics_process(_delta: float) -> void:
 
 func _refresh_permissions():
 	lid.set_active(false)
-	crank_system.expect_none()
+	#crank_system.expect_none()
+	crank_pickable.set_interactable(false)
+	mounted_crank_snap_zone.set_active(false)
+	stashed_crank_snap_zone.set_active(false)
+	
 	filter_system.set_active(false)
 	vinyl_system.reset()
 	lid.tonearm.reset()
@@ -82,21 +94,35 @@ func _refresh_permissions():
 		
 		State.LID_OPEN:
 			instructions_label.text = "Pick up the crank \n - OR - \n Close the lid"
-			crank_system.expect_pick_up()
+			crank_pickable.set_interactable(true)
+			mounted_crank_snap_zone.set_active(true)
+			mounted_crank_snap_zone.set_highlight_visible(false)
+			stashed_crank_snap_zone.set_active(true)
+			stashed_crank_snap_zone.set_highlight_visible(false)
+			
+			#crank_system.expect_pick_up()
 			
 			lid.set_active(true)
 			lid.set_outline_shader_params(Color(1,0.4,0,0.3), 1)
 		
 		State.CRANK_PICKED_UP:
 			instructions_label.text = "Insert the crank \n - OR - \n Stash the crank"
-			crank_system.expect_insert_or_stash()
+			#crank_system.expect_insert_or_stash()
+			
+			crank_pickable.set_interactable(true)
+			mounted_crank_snap_zone.set_active(true)
+			stashed_crank_snap_zone.set_active(true)
 		
 		State.CRANK_INSERTED:
+			#TODO: OVO JE SAMO PRIVREMENA PRVA LINIJA ZA DEBUG
+			_on_crank_cranked() #OVO JE SAMO PRIVREMENA PRVA LINIJA ZA DEBUG
+			#TODO: OVO JE SAMO PRIVREMENA PRVA LINIJA ZA DEBUG
+			
 			if _is_cranked:
 				_on_crank_cranked()
 			else:
 				instructions_label.text = "Crank the crank"
-				crank_system.expect_cranking()
+				#crank_system.expect_cranking()
 
 		State.CRANK_CRANKED:
 			instructions_label.text = "Pick up the filter \n - OR - \n Pick up the crank to stash it"
@@ -178,7 +204,11 @@ func _on_crank_cranked():
 	_refresh_permissions()
 
 func _on_crank_stashed():
+	if state != State.CRANK_PICKED_UP:
+		return
+	
 	_is_cranked = false
+	
 	state = State.LID_OPEN
 	_refresh_permissions()
 

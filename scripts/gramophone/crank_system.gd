@@ -11,18 +11,18 @@ enum Expectation { NONE, PICK_UP, INSERT_OR_STASH, CRANK }
 var expectation: Expectation = Expectation.NONE
 
 
-@export var gramophone_crank_pickable: CrankPickable
+@export var crank_pickable: CrankPickable
 @export var inserted_crank_snap_zone: CrankSnapZone
 @export var stashed_crank_snap_zone: CrankSnapZone
 
 
 func _ready() -> void:
 	# Start with crank stashed
-	gramophone_crank_pickable.set_interactable(true)
+	crank_pickable.set_interactable(true)
 	stashed_crank_snap_zone.set_active(true)
-	stashed_crank_snap_zone.pick_up_object(gramophone_crank_pickable)
+	stashed_crank_snap_zone.pick_up_object(crank_pickable)
 	stashed_crank_snap_zone.set_active(false)
-	gramophone_crank_pickable.set_interactable(false)
+	crank_pickable.set_interactable(false)
 	
 	inserted_crank_snap_zone.has_picked_up.connect(_on_inserted_snap_zone_has_picked_up)
 	stashed_crank_snap_zone.has_picked_up.connect(_on_stashed_snap_zone_has_picked_up)
@@ -39,7 +39,7 @@ func _ready() -> void:
 func expect_none() -> void:
 	expectation = Expectation.NONE
 	
-	gramophone_crank_pickable.set_interactable(false)
+	crank_pickable.set_interactable(false)
 	inserted_crank_snap_zone.set_active(false)
 	stashed_crank_snap_zone.set_active(false)
 
@@ -47,23 +47,23 @@ func expect_none() -> void:
 func expect_pick_up() -> void:
 	expectation = Expectation.PICK_UP
 
-	gramophone_crank_pickable.set_interactable(true)
+	crank_pickable.set_interactable(true)
 
 	# Only enable the snap zone that currently holds the crank
 	if inserted_crank_snap_zone.picked_up_object:
 		inserted_crank_snap_zone.set_active(true)
 		inserted_crank_snap_zone.set_highlight_color(Color(1, 0.7, 0))
-		gramophone_crank_pickable.set_highlight_color(Color(1,0,0), 1.0)
+		crank_pickable.set_highlight_color(Color(1,0,0), 1.0)
 	elif stashed_crank_snap_zone.picked_up_object:
 		stashed_crank_snap_zone.set_active(true)
 		stashed_crank_snap_zone.set_highlight_color(Color(0, 1, 0))
-		gramophone_crank_pickable.set_highlight_color(Color(0,1,0), 2.0)
+		crank_pickable.set_highlight_color(Color(0,1,0), 2.0)
 
 
 func expect_insert_or_stash() -> void:
 	expectation = Expectation.INSERT_OR_STASH
 	
-	gramophone_crank_pickable.set_interactable(true)
+	crank_pickable.set_interactable(true)
 	
 	inserted_crank_snap_zone.set_highlight_color(Color(0, 1, 0))
 	inserted_crank_snap_zone.set_active(true)
@@ -85,7 +85,7 @@ func _set_active(value: bool) -> void:
 		Expectation.INSERT_OR_STASH:
 			inserted_crank_snap_zone.set_active(value)
 			stashed_crank_snap_zone.set_active(value)
-			gramophone_crank_pickable.set_interactable(value)
+			crank_pickable.set_interactable(value)
 			#gramophone_crank.set_crankable(false)
 			#gramophone_crank.highlight_grab.visible = true
 
@@ -96,7 +96,7 @@ func _set_active(value: bool) -> void:
 			#gramophone_crank.set_crankable(value)
 
 		Expectation.PICK_UP:
-			gramophone_crank_pickable.set_interactable(value)
+			crank_pickable.set_interactable(value)
 			inserted_crank_snap_zone.set_active(value)
 			stashed_crank_snap_zone.set_active(value)
 			#gramophone_crank.set_crankable(false)
@@ -104,7 +104,7 @@ func _set_active(value: bool) -> void:
 		Expectation.NONE:
 			inserted_crank_snap_zone.set_active(false)
 			stashed_crank_snap_zone.set_active(false)
-			gramophone_crank_pickable.set_interactable(false)
+			crank_pickable.set_interactable(false)
 			#gramophone_crank.set_crankable(false)
 			#gramophone_crank.highlight_grab.visible = false
 

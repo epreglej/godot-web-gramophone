@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=12 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
@@ -10,15 +10,16 @@
 [ext_resource type="PackedScene" uid="uid://dlno1p8v2ybw" path="res://scenes/filter.tscn" id="9_tykl6"]
 [ext_resource type="PackedScene" uid="uid://ddfxisqbepnop" path="res://scenes/crank_pickable.tscn" id="11_grppd"]
 [ext_resource type="Script" uid="uid://cgkuw1yo181wp" path="res://scripts/gramophone/vinyl_system.gd" id="12_2d80k"]
-[ext_resource type="Script" uid="uid://cdgwjkv1rl4un" path="res://scripts/gramophone/crank_system.gd" id="13_dcquk"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_system", "vinyl_system")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "vinyl_system")]
 script = ExtResource("1_ouked")
 audio_player = NodePath("AudioStreamPlayer3D")
 lid = NodePath("Lid")
 filter_system = NodePath("FilterSystem")
-crank_system = NodePath("CrankSystem")
+crank_pickable = NodePath("CrankPickable")
+mounted_crank_snap_zone = NodePath("Base/MountedCrankSnapZone")
+stashed_crank_snap_zone = NodePath("Base/StashedCrankSnapZone")
 vinyl_system = NodePath("VinylSystem")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
@@ -73,12 +74,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
 
 [node name="CrankPickable" parent="." instance=ExtResource("11_grppd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.02)
-
-[node name="CrankSystem" type="Node3D" parent="." node_paths=PackedStringArray("gramophone_crank_pickable", "inserted_crank_snap_zone", "stashed_crank_snap_zone")]
-script = ExtResource("13_dcquk")
-gramophone_crank_pickable = NodePath("../CrankPickable")
-inserted_crank_snap_zone = NodePath("../Base/MountedCrankSnapZone")
-stashed_crank_snap_zone = NodePath("../Base/StashedCrankSnapZone")
 
 [node name="FilterSystem" type="Node3D" parent="." node_paths=PackedStringArray("filter", "mounted_filter_snap_zone", "stashed_filter_snap_zone")]
 script = ExtResource("14_kkau2")
