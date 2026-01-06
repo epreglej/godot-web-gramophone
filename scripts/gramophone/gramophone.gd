@@ -63,6 +63,12 @@ func _ready():
 	#brake.disengaged.connect(_on_brake_disengaged)
 	#brake.engaged.connect(_on_brake_engaged)
 	
+	crank_pickable.set_interactable(true)
+	stashed_crank_snap_zone.set_active(true)
+	stashed_crank_snap_zone.pick_up_object(crank_pickable)
+	stashed_crank_snap_zone.set_active(false)
+	crank_pickable.set_interactable(false)
+	
 	# await _warmup_all_vinyls()
 	_refresh_permissions()
 
@@ -94,6 +100,7 @@ func _refresh_permissions():
 		
 		State.LID_OPEN:
 			instructions_label.text = "Pick up the crank \n - OR - \n Close the lid"
+			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
 			mounted_crank_snap_zone.set_highlight_visible(false)
