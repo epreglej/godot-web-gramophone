@@ -71,6 +71,7 @@ func _ready():
 	
 	#_on_lid_opened()
 	#_on_crank_picked_up()
+	#_on_crank_inserted()
 
 
 func _physics_process(_delta: float) -> void:
@@ -187,15 +188,15 @@ func _on_lid_closed():
 
 
 func _on_crank_picked_up():
-	if state != State.LID_OPEN and state != State.CRANK_CRANKED:
-		return
+	#if state != State.LID_OPEN and state != State.CRANK_CRANKED:
+		#return
 	
 	state = State.CRANK_PICKED_UP
 	_refresh_permissions()
 
-func _on_crank_inserted():
-	if state != State.CRANK_PICKED_UP:
-		return
+func _on_crank_inserted(_what: Variant):
+	#if state != State.CRANK_PICKED_UP:
+		#return
 	
 	state = State.CRANK_INSERTED
 	_refresh_permissions()
@@ -208,12 +209,12 @@ func _on_crank_cranked():
 	state = State.CRANK_CRANKED
 	_refresh_permissions()
 
-func _on_crank_stashed():
-	if state != State.CRANK_PICKED_UP:
-		return
+func _on_crank_stashed(_what: Variant):
+	#if state != State.CRANK_PICKED_UP:
+		#return
 	
 	#_is_cranked = false
-	instructions_label.pixel_size = 20
+	instructions_label.pixel_size = 3
 	
 	state = State.LID_OPEN
 	_refresh_permissions()
