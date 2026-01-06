@@ -12,13 +12,14 @@ radius = 0.11
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yqkek"]
 render_priority = 0
 shader = ExtResource("4_yqkek")
-shader_parameter/shell_thickness = 0.005
-shader_parameter/shell_color = Color(1, 1, 0, 0.3)
+shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_color = Color(1, 1, 0, 0.2)
 shader_parameter/glow_speed = 2.0
-shader_parameter/glow_min = 0.7
+shader_parameter/glow_min = 0.8
 shader_parameter/glow_max = 1.0
 
 [node name="Filter" node_paths=PackedStringArray("outline") groups=["Filters"] instance=ExtResource("1_i3jku")]
+freeze = true
 script = ExtResource("2_yqkek")
 outline = NodePath("Outline/Filter")
 ranged_grab_method = 0
@@ -41,6 +42,9 @@ visible = false
 [node name="Crank" parent="Model" index="3"]
 visible = false
 
+[node name="Tonearm" parent="Model" index="5"]
+visible = false
+
 [node name="Outline" parent="." index="2" instance=ExtResource("3_3sfm7")]
 
 [node name="Base" parent="Outline" index="0"]
@@ -57,6 +61,9 @@ visible = false
 
 [node name="Filter" parent="Outline" index="4"]
 surface_material_override/0 = SubResource("ShaderMaterial_yqkek")
+
+[node name="Tonearm" parent="Outline" index="5"]
+visible = false
 
 [editable path="Model"]
 [editable path="Outline"]

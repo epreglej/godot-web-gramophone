@@ -1,12 +1,9 @@
-[gd_scene load_steps=21 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=12 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
-[ext_resource type="Script" uid="uid://cqcyu4xtlmrmd" path="res://scripts/gramophone/lid.gd" id="1_kj84m"]
 [ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
+[ext_resource type="PackedScene" uid="uid://dkyp2218x3gtw" path="res://scenes/lid.tscn" id="2_grppd"]
 [ext_resource type="PackedScene" uid="uid://ygp2w4a1evh" path="res://scenes/filter_snap_zone.tscn" id="2_tqyvr"]
-[ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="2_vwlu8"]
-[ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="3_lo2t4"]
-[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="4_arv0u"]
 [ext_resource type="PackedScene" uid="uid://dnll2qmsm8jm7" path="res://scenes/vinyl_snap_zone.tscn" id="4_lo2t4"]
 [ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="5_dcy10"]
 [ext_resource type="PackedScene" uid="uid://dcf6yl2uhhulf" path="res://scenes/crank_snap_zone.tscn" id="9_2d80k"]
@@ -15,141 +12,18 @@
 [ext_resource type="Script" uid="uid://cdgwjkv1rl4un" path="res://scripts/gramophone/crank_system.gd" id="13_dcquk"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
-[sub_resource type="Animation" id="Animation_arv0u"]
-resource_name = "Closing"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("InteractableHinge:hinge_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-40.0, 0.0]
-}
-
-[sub_resource type="Animation" id="Animation_dcy10"]
-resource_name = "Opening"
-length = 0.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("InteractableHinge:hinge_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [-50.0, -90.0]
-}
-
-[sub_resource type="Animation" id="Animation_kj84m"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("InteractableHinge:hinge_position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_kj84m"]
-_data = {
-&"Closing": SubResource("Animation_arv0u"),
-&"Opening": SubResource("Animation_dcy10"),
-&"RESET": SubResource("Animation_kj84m")
-}
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_arv0u"]
-render_priority = 0
-shader = ExtResource("4_arv0u")
-shader_parameter/shell_thickness = 0.005
-shader_parameter/shell_color = Color(1, 1, 0, 0.3)
-shader_parameter/glow_speed = 2.0
-shader_parameter/glow_min = 0.7
-shader_parameter/glow_max = 1.0
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_dcy10"]
-size = Vector3(0.3, 0.32, 0.1)
-
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_system")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "filter_system", "crank_system")]
 script = ExtResource("1_ouked")
 audio_player = NodePath("AudioStreamPlayer3D")
-lid = NodePath("Lid")
 filter_system = NodePath("FilterSystem")
 crank_system = NodePath("CrankSystem")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
-[node name="Lid" type="Node3D" parent="." node_paths=PackedStringArray("outline", "animation_player", "interactable_hinge", "interactable_handle")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, -0.005)
-script = ExtResource("1_kj84m")
-outline = NodePath("InteractableHinge/Outline/Lid")
-animation_player = NodePath("AnimationPlayer")
-interactable_hinge = NodePath("InteractableHinge")
-interactable_handle = NodePath("InteractableHinge/HandleOrigin/InteractableHandle")
+[node name="Lid" parent="." instance=ExtResource("2_grppd")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, 0)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid"]
-libraries = {
-&"": SubResource("AnimationLibrary_kj84m")
-}
-
-[node name="InteractableHinge" parent="Lid" instance=ExtResource("2_vwlu8")]
-hinge_limit_min = -90.0
-hinge_limit_max = 0.0
-
-[node name="Model" parent="Lid/InteractableHinge" instance=ExtResource("1_dylsv")]
-
-[node name="Base" parent="Lid/InteractableHinge/Model" index="0"]
-visible = false
-
-[node name="Brake" parent="Lid/InteractableHinge/Model" index="2"]
-visible = false
-
-[node name="Crank" parent="Lid/InteractableHinge/Model" index="3"]
-visible = false
-
-[node name="Filter" parent="Lid/InteractableHinge/Model" index="4"]
-visible = false
-
-[node name="Outline" parent="Lid/InteractableHinge" instance=ExtResource("1_dylsv")]
-transform = Transform3D(1, 0, 0, 0, 1, 2.9802322e-08, 0, -2.9802322e-08, 1, 0, 0, 0)
-
-[node name="Base" parent="Lid/InteractableHinge/Outline" index="0"]
-visible = false
-
-[node name="Lid" parent="Lid/InteractableHinge/Outline" index="1"]
-surface_material_override/0 = SubResource("ShaderMaterial_arv0u")
-
-[node name="Brake" parent="Lid/InteractableHinge/Outline" index="2"]
-visible = false
-
-[node name="Crank" parent="Lid/InteractableHinge/Outline" index="3"]
-visible = false
-
-[node name="Filter" parent="Lid/InteractableHinge/Outline" index="4"]
-visible = false
-
-[node name="HandleOrigin" type="Node3D" parent="Lid/InteractableHinge"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.32, -0.05)
-
-[node name="InteractableHandle" parent="Lid/InteractableHinge/HandleOrigin" instance=ExtResource("3_lo2t4")]
-snap_distance = 0.1
-ranged_grab_method = 0
-second_hand_grab = 1
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/InteractableHinge/HandleOrigin/InteractableHandle"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
-shape = SubResource("BoxShape3D_dcy10")
+[node name="Tonearm" type="Node3D" parent="."]
 
 [node name="Base" type="Node3D" parent="."]
 
@@ -165,6 +39,9 @@ visible = false
 visible = false
 
 [node name="Filter" parent="Base/Model" index="4"]
+visible = false
+
+[node name="Tonearm" parent="Base/Model" index="5"]
 visible = false
 
 [node name="MountedFilterSnapZone" parent="Base" instance=ExtResource("2_tqyvr")]
@@ -203,6 +80,4 @@ filter = NodePath("../Filter")
 mounted_filter_snap_zone = NodePath("../Base/MountedFilterSnapZone")
 stashed_filter_snap_zone = NodePath("../Base/StashedFilterSnapZone")
 
-[editable path="Lid/InteractableHinge/Model"]
-[editable path="Lid/InteractableHinge/Outline"]
 [editable path="Base/Model"]

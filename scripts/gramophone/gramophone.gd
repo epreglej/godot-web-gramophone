@@ -157,14 +157,24 @@ func _on_lid_closed():
 # CRANK
 
 func _on_crank_picked_up():
+	if state != State.LID_OPEN or state != State.CRANK_CRANKED:
+		return
+	
 	state = State.CRANK_PICKED_UP
 	_refresh_permissions()
 
 func _on_crank_inserted():
+	if state != State.CRANK_PICKED_UP:
+		return
+	
 	state = State.CRANK_INSERTED
 	_refresh_permissions()
 
 func _on_crank_cranked():
+	# Maybe there shouldn't be a checker here because
+	# it should be possible to creank the crank when
+	# it finally unwinds
+	
 	state = State.CRANK_CRANKED
 	_refresh_permissions()
 

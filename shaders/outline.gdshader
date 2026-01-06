@@ -1,11 +1,11 @@
 shader_type spatial;
 render_mode unshaded, blend_mix;
 
-uniform float shell_thickness = 0.005;
-uniform vec4 shell_color : source_color = vec4(1.0, 1.0, 0.0, 0.3);
+uniform float shell_thickness = 0.002;
+uniform vec4 shell_color : source_color = vec4(1.0, 1.0, 0.0, 0.2);
 
 uniform float glow_speed = 2.0;
-uniform float glow_min = 0.7;
+uniform float glow_min = 0.8;
 uniform float glow_max = 1;
 
 void vertex() {
