@@ -6,10 +6,11 @@ class_name Gramophone
 
 @export var lid: Lid
 @export var filter_system: FilterSystem
+
 @export var crank_pickable: CrankPickable
 @export var mounted_crank_snap_zone: CrankSnapZone
 @export var stashed_crank_snap_zone: CrankSnapZone
-# @export var crank_system: CrankSystem
+
 @export var vinyl_system: GramophoneVinylSystem
 @export var brake: GramophoneBrake
 
@@ -32,7 +33,8 @@ enum State {
 }
 
 var state: State = State.LID_CLOSED
-var _is_cranked: bool = false
+# TODO: Reset it to false after adding the cranking to the crank
+var _is_cranked: bool = true
 
 
 func _ready():
@@ -121,10 +123,6 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_active(true)
 		
 		State.CRANK_INSERTED:
-			#TODO: OVO JE SAMO PRIVREMENA PRVA LINIJA ZA DEBUG
-			_on_crank_cranked() #OVO JE SAMO PRIVREMENA PRVA LINIJA ZA DEBUG
-			#TODO: OVO JE SAMO PRIVREMENA PRVA LINIJA ZA DEBUG
-			
 			if _is_cranked:
 				_on_crank_cranked()
 			else:

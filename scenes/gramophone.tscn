@@ -64,7 +64,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15565708, 0.068458036, 0.13786781)
 
 [node name="StashedCrankSnapZone" parent="Base" instance=ExtResource("9_2d80k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.02)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.12, 0.03)
 
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
