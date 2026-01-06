@@ -2,6 +2,13 @@
 extends XRToolsSnapZone
 class_name VinylSnapZone
 
+@export var highlight: MeshInstance3D
+
+
+func set_active(value: bool) -> void:
+	self.enabled = value
+	highlight.visible = value
+
 
 #func pick_up_object(target: Node3D) -> void:
 	#if not target is Vinyl:

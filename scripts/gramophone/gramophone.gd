@@ -8,7 +8,6 @@ class_name Gramophone
 @export var filter_system: FilterSystem
 @export var crank_system: CrankSystem
 @export var vinyl_system: GramophoneVinylSystem
-@export var tonearm: GramophoneTonearm
 @export var brake: GramophoneBrake
 
 
@@ -46,12 +45,12 @@ func _ready():
 	filter_system.mounted.connect(_on_filter_mounted)
 	filter_system.stashed.connect(_on_filter_stashed)
 	
-	#vinyl_system.vinyl_picked_up.connect(_on_vinyl_picked_up)
-	#vinyl_system.vinyl_mounted.connect(_on_vinyl_mounted)
-	#vinyl_system.vinyl_stashed.connect(_on_vinyl_stashed)
+	vinyl_system.vinyl_picked_up.connect(_on_vinyl_picked_up)
+	vinyl_system.vinyl_mounted.connect(_on_vinyl_mounted)
+	vinyl_system.vinyl_stashed.connect(_on_vinyl_stashed)
 	
-	#tonearm.mounted.connect(_on_tonearm_mounted)
-	#tonearm.stashed.connect(_on_tonearm_stashed)
+	lid.tonearm.mounted.connect(_on_tonearm_mounted)
+	lid.tonearm.stashed.connect(_on_tonearm_stashed)
 	
 	#brake.disengaged.connect(_on_brake_disengaged)
 	#brake.engaged.connect(_on_brake_engaged)
@@ -68,10 +67,10 @@ func _physics_process(_delta: float) -> void:
 
 func _refresh_permissions():
 	lid.set_active(false)
-	# crank_system.reset()
+	crank_system.expect_none()
 	filter_system.set_active(false)
-	#vinyl_system.reset()
-	#tonearm.reset()
+	vinyl_system.reset()
+	lid.tonearm.reset()
 	#brake.reset()
 
 	match state:
@@ -119,13 +118,13 @@ func _refresh_permissions():
 
 		State.VINYL_MOUNTED:
 			instructions_label.text = "Mount the tonearm \n - OR - \n Remove the vinyl"
-			tonearm.expect_mount()
+			lid.tonearm.expect_mount()
 			vinyl_system.expect_pick_up()
 		
 		State.TONEARM_MOUNTED:
 			instructions_label.text = "Disengage the brake to play \n - OR - \n Stash the tonearm"
 			brake.expect_disengage()
-			tonearm.expect_stash()
+			lid.tonearm.expect_stash()
 		
 		State.PLAYING:
 			instructions_label.text = "Engage the brake to stop playing"

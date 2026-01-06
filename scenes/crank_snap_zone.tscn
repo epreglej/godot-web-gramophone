@@ -27,7 +27,6 @@ max_db = 1.0
 max_distance = 100.0
 
 [node name="Highlight" type="MeshInstance3D" parent="."]
-visible = false
 mesh = SubResource("1")
 surface_material_override/0 = ExtResource("2_mrkr2")
 

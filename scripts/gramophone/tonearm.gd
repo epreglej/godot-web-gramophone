@@ -1,5 +1,5 @@
 extends Node3D
-class_name GramophoneTonearm
+class_name Tonearm
 
 signal mounted
 signal stashed

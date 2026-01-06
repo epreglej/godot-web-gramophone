@@ -8,7 +8,7 @@ signal closed
 @export var animation_player: AnimationPlayer
 @export var interactable_hinge: XRToolsInteractableHinge
 @export var interactable_handle: XRToolsInteractableHandle
-@export var tonearm_origin: Node3D
+@export var tonearm: Tonearm
 
 var _is_animation_playing: bool = false
 

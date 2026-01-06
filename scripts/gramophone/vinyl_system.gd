@@ -22,9 +22,9 @@ func _ready() -> void:
 	
 	for i in range(vinyls.size()):
 		vinyls[i].enabled = true
-		stashed_snap_zones[i].activated = true
+		stashed_snap_zones[i].set_active(true)
 		stashed_snap_zones[i].pick_up_object(vinyls[i])
-		stashed_snap_zones[i].activated = false
+		stashed_snap_zones[i].set_active(false)
 		vinyls[i].enabled = false
 
 	mounted_snap_zone.has_picked_up.connect(_on_mounted_snap_zone_has_picked_up)
@@ -68,9 +68,9 @@ func expect_mount_or_stash(value: bool = true) -> void:
 func _set_active(value: bool) -> void:
 	for vinyl in vinyls:
 		vinyl.enabled = value
-	mounted_snap_zone.activated = value
+	mounted_snap_zone.set_active(value)
 	for stashed_snap_zone in stashed_snap_zones:
-		stashed_snap_zone.activated = value
+		stashed_snap_zone.set_active(value)
 
 
 func _on_mounted_snap_zone_has_picked_up(_vinyl: Vinyl) -> void:
