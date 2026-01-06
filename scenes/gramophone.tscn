@@ -12,9 +12,10 @@
 [ext_resource type="Script" uid="uid://cdgwjkv1rl4un" path="res://scripts/gramophone/crank_system.gd" id="13_dcquk"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "filter_system", "crank_system")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_system")]
 script = ExtResource("1_ouked")
 audio_player = NodePath("AudioStreamPlayer3D")
+lid = NodePath("Lid")
 filter_system = NodePath("FilterSystem")
 crank_system = NodePath("CrankSystem")
 

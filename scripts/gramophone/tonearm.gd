@@ -7,12 +7,9 @@ signal stashed
 enum Expectation { NONE, MOUNT, STASH }
 var expectation := Expectation.NONE
 
-@export var highlight: MeshInstance3D
+@export var outline: MeshInstance3D
 @export var interactable_hinge: XRToolsInteractableHinge
 @export var interactable_handle: XRToolsInteractableHandle
-@export var lid: Lid
-
-var following := true
 
 
 func _ready():
@@ -22,29 +19,22 @@ func _ready():
 
 func reset():
 	expectation = Expectation.NONE
-	_set_active(false)
-	following = true
-
-
-func _physics_process(_delta):
-	if following:
-		global_transform = lid.tonearm_origin.global_transform
+	set_interactable(false)
 
 
 func expect_mount():
 	expectation = Expectation.MOUNT
-	following = false
-	_set_active(true)
+	set_interactable(true)
 
 
 func expect_stash():
 	expectation = Expectation.STASH
-	_set_active(true)
+	set_interactable(true)
 
 
-func _set_active(value: bool):
+func set_interactable(value: bool):
 	interactable_handle.enabled = value
-	highlight.visible = value
+	outline.visible = value
 
 
 func _on_hinge_moved(angle: float):
@@ -57,5 +47,4 @@ func _on_hinge_moved(angle: float):
 		Expectation.STASH:
 			if angle >= 0.0:
 				reset()
-				following = true
 				stashed.emit()

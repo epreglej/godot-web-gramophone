@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://dkyp2218x3gtw"]
+[gd_scene load_steps=15 format=3 uid="uid://dkyp2218x3gtw"]
 
 [ext_resource type="Script" uid="uid://cqcyu4xtlmrmd" path="res://scripts/gramophone/lid.gd" id="1_1d3uv"]
 [ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="2_3bvbm"]
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="3_vtf6h"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="4_afme5"]
 [ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="5_mdtl4"]
+[ext_resource type="Script" uid="uid://e42scrfnqf85" path="res://scripts/gramophone/tonearm.gd" id="6_3bvbm"]
 
 [sub_resource type="Animation" id="Animation_arv0u"]
 resource_name = "Closing"
@@ -71,6 +72,15 @@ shader_parameter/glow_max = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_dcy10"]
 size = Vector3(0.3, 0.32, 0.1)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3bvbm"]
+render_priority = 0
+shader = ExtResource("4_afme5")
+shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_color = Color(1, 1, 0, 0.2)
+shader_parameter/glow_speed = 2.0
+shader_parameter/glow_min = 0.8
+shader_parameter/glow_max = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1d3uv"]
 size = Vector3(0.22141114, 0.07602539, 0.068554685)
@@ -143,10 +153,17 @@ second_hand_grab = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
 shape = SubResource("BoxShape3D_dcy10")
 
-[node name="Tonearm" type="Node3D" parent="InteractableHinge"]
-transform = Transform3D(0.98480767, 0, -0.17364818, 0, 0.99999994, 0, 0.17364816, 0, 0.9848077, 0.08, 0.085, -0.02)
+[node name="Tonearm" type="Node3D" parent="InteractableHinge" node_paths=PackedStringArray("outline", "interactable_hinge", "interactable_handle")]
+transform = Transform3D(-4.3047308e-08, 0.98480767, -0.17364816, -0.9999999, -4.3711385e-08, 0, -7.590402e-09, 0.17364816, 0.98480767, 0.08, 0.085, -0.02)
+script = ExtResource("6_3bvbm")
+outline = NodePath("InteractableHinge/Outline/Tonearm")
+interactable_hinge = NodePath("InteractableHinge")
+interactable_handle = NodePath("InteractableHinge/HandleOrigin/InteractableHandle")
 
 [node name="InteractableHinge" parent="InteractableHinge/Tonearm" instance=ExtResource("2_3bvbm")]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
+hinge_limit_min = -30.0
+hinge_limit_max = 0.0
 
 [node name="Model" parent="InteractableHinge/Tonearm/InteractableHinge" instance=ExtResource("3_vtf6h")]
 transform = Transform3D(1, 8.881784e-16, -1.4901161e-08, 0, 1, 0, 3.2674645e-16, 0, 1, 0, 0, 0)
@@ -166,6 +183,27 @@ visible = false
 [node name="Filter" parent="InteractableHinge/Tonearm/InteractableHinge/Model" index="4"]
 visible = false
 
+[node name="Outline" parent="InteractableHinge/Tonearm/InteractableHinge" instance=ExtResource("3_vtf6h")]
+transform = Transform3D(1, 8.881784e-16, -1.4901161e-08, 8.881784e-16, 1, 3.5527137e-15, 3.2674645e-16, 0, 1.0000001, 0, 0, 0)
+
+[node name="Base" parent="InteractableHinge/Tonearm/InteractableHinge/Outline" index="0"]
+visible = false
+
+[node name="Lid" parent="InteractableHinge/Tonearm/InteractableHinge/Outline" index="1"]
+visible = false
+
+[node name="Brake" parent="InteractableHinge/Tonearm/InteractableHinge/Outline" index="2"]
+visible = false
+
+[node name="Crank" parent="InteractableHinge/Tonearm/InteractableHinge/Outline" index="3"]
+visible = false
+
+[node name="Filter" parent="InteractableHinge/Tonearm/InteractableHinge/Outline" index="4"]
+visible = false
+
+[node name="Tonearm" parent="InteractableHinge/Tonearm/InteractableHinge/Outline" index="5"]
+surface_material_override/3 = SubResource("ShaderMaterial_3bvbm")
+
 [node name="HandleOrigin" type="Node3D" parent="InteractableHinge/Tonearm/InteractableHinge"]
 transform = Transform3D(1, 1.4901163e-08, -1.4901161e-08, -1.5224606e-08, 1, 3.7535877e-09, 9.821247e-16, 1.8626416e-09, 1.0000001, -0.15, 0, 0.025)
 
@@ -180,3 +218,4 @@ shape = SubResource("BoxShape3D_1d3uv")
 [editable path="InteractableHinge/Model"]
 [editable path="InteractableHinge/Outline"]
 [editable path="InteractableHinge/Tonearm/InteractableHinge/Model"]
+[editable path="InteractableHinge/Tonearm/InteractableHinge/Outline"]
