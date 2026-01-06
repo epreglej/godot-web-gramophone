@@ -12,7 +12,11 @@ class_name Gramophone
 @export var mounted_crank_snap_zone: CrankSnapZone
 @export var stashed_crank_snap_zone: CrankSnapZone
 
-@export var vinyl_system: GramophoneVinylSystem
+#@export var vinyl_system: GramophoneVinylSystem
+@export var mounted_vinyl_snap_zone: VinylSnapZone
+@export var vinyl_cole_porter: Vinyl
+@export var stashed_vinyl_snap_zone_cole_porter: VinylSnapZone
+
 @export var brake: GramophoneBrake
 
 
@@ -45,6 +49,13 @@ func _ready():
 	stashed_crank_snap_zone.set_active(false)
 	crank_pickable.set_interactable(false)
 	
+	#TODO: Repeat for all vinyls
+	vinyl_cole_porter.set_interactable(true)
+	stashed_vinyl_snap_zone_cole_porter.set_active(true)
+	stashed_vinyl_snap_zone_cole_porter.pick_up_object(vinyl_cole_porter)
+	stashed_vinyl_snap_zone_cole_porter.set_active(false)
+	vinyl_cole_porter.set_interactable(false)
+	
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
@@ -57,9 +68,14 @@ func _ready():
 	filter_system.mounted.connect(_on_filter_mounted)
 	filter_system.stashed.connect(_on_filter_stashed)
 	
-	vinyl_system.vinyl_picked_up.connect(_on_vinyl_picked_up)
-	vinyl_system.vinyl_mounted.connect(_on_vinyl_mounted)
-	vinyl_system.vinyl_stashed.connect(_on_vinyl_stashed)
+	mounted_vinyl_snap_zone.has_picked_up.connect(_on_vinyl_mounted)
+	mounted_vinyl_snap_zone.has_dropped.connect(_on_vinyl_picked_up)
+	stashed_vinyl_snap_zone_cole_porter.has_picked_up.connect(_on_vinyl_stashed)
+	stashed_vinyl_snap_zone_cole_porter.has_dropped.connect(_on_vinyl_picked_up)
+
+	#vinyl_system.vinyl_picked_up.connect(_on_vinyl_picked_up)
+	#vinyl_system.vinyl_mounted.connect(_on_vinyl_mounted)
+	#vinyl_system.vinyl_stashed.connect(_on_vinyl_stashed)
 	
 	lid.tonearm.mounted.connect(_on_tonearm_mounted)
 	lid.tonearm.stashed.connect(_on_tonearm_stashed)
@@ -89,7 +105,11 @@ func _refresh_permissions():
 	stashed_crank_snap_zone.set_active(false)
 	
 	filter_system.set_active(false)
-	vinyl_system.reset()
+	
+	mounted_vinyl_snap_zone.set_active(false)
+	vinyl_cole_porter.set_interactable(false)
+	stashed_vinyl_snap_zone_cole_porter.set_active(false)
+	
 	lid.tonearm.reset()
 	#brake.reset()
 	
@@ -144,22 +164,33 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_highlight_visible(false)
 
 		State.FILTER_PICKED_UP:
+			state_label.text = "FILTER_PICKED_UP"
 			instructions_label.text = "Mount the filter \n - OR - \n Stash the filter"
 			filter_system.set_active(true)
 
 		State.FILTER_MOUNTED:
 			instructions_label.text = "Pick up any vinyl \n - OR - \n Pick up the filter to stash it"
-			vinyl_system.expect_pick_up()
+			
+			vinyl_cole_porter.set_interactable(true)
+			stashed_vinyl_snap_zone_cole_porter.set_active(true)
+			
 			filter_system.set_active(true)
-
+		
 		State.VINYL_PICKED_UP:
 			instructions_label.text = "Mount or stash the picked up vinyl"
-			vinyl_system.expect_mount_or_stash()
-
+			
+			mounted_vinyl_snap_zone.set_active(true)
+			if stashed_vinyl_snap_zone_cole_porter.picked_up_object != null:
+				stashed_vinyl_snap_zone_cole_porter.set_active(true)
+				vinyl_cole_porter.set_interactable(true)
+		
 		State.VINYL_MOUNTED:
 			instructions_label.text = "Mount the tonearm \n - OR - \n Remove the vinyl"
 			lid.tonearm.expect_mount()
-			vinyl_system.expect_pick_up()
+			
+			var mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
+			mounted_vinyl_snap_zone.set_active(true)
+			mounted_vinyl.set_interactable(true)
 		
 		State.TONEARM_MOUNTED:
 			instructions_label.text = "Disengage the brake to play \n - OR - \n Stash the tonearm"
@@ -257,11 +288,11 @@ func _on_vinyl_picked_up():
 	state = State.VINYL_PICKED_UP
 	_refresh_permissions()
 
-func _on_vinyl_mounted():
+func _on_vinyl_mounted(_what: Variant):
 	state = State.VINYL_MOUNTED
 	_refresh_permissions()
 
-func _on_vinyl_stashed():
+func _on_vinyl_stashed(_what: Variant):
 	state = State.FILTER_MOUNTED
 	_refresh_permissions()
 
@@ -281,11 +312,13 @@ func _on_tonearm_stashed():
 
 func _on_brake_disengaged():
 	state = State.PLAYING
+	
+	var mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
 
-	if audio_player.stream and audio_player.stream.resource_path == vinyl_system.mounted_vinyl.song.resource_path:
+	if audio_player.stream and audio_player.stream.resource_path == mounted_vinyl.song.resource_path:
 		audio_player.stream_paused = false
 	else:
-		audio_player.stream = vinyl_system.mounted_vinyl.song.audio_stream
+		audio_player.stream = mounted_vinyl.song.audio_stream
 		audio_player.play()
 
 	_refresh_permissions()
@@ -299,7 +332,8 @@ func _on_brake_engaged():
 # AUDIO WARMUP
 
 func _warmup_all_vinyls() -> void:
-	for vinyl in vinyl_system.vinyls:
+	var vinyls: Array[Vinyl] = [vinyl_cole_porter]
+	for vinyl in vinyls:
 		if vinyl == null:
 			continue
 

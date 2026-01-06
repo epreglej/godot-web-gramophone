@@ -15,6 +15,11 @@ var song: Song:
 		return _song_a if side == VinylSide.A else _song_b
 
 
+func set_interactable(value: bool) -> void:
+	self.enabled = value
+	#outline.visible = value
+
+
 # Updates which side is facing up based on world orientation
 func update_side_before_snapping() -> void:
 	if not is_instance_valid(snap_pivot):

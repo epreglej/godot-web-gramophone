@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://cgkuw1yo181wp" path="res://scripts/gramophone/vinyl_system.gd" id="12_2d80k"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "vinyl_system")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "mounted_vinyl_snap_zone", "vinyl_cole_porter", "stashed_vinyl_snap_zone_cole_porter")]
 script = ExtResource("1_ouked")
 audio_player = NodePath("AudioStreamPlayer3D")
 lid = NodePath("Lid")
@@ -20,7 +20,9 @@ filter_system = NodePath("FilterSystem")
 crank_pickable = NodePath("CrankPickable")
 mounted_crank_snap_zone = NodePath("Base/MountedCrankSnapZone")
 stashed_crank_snap_zone = NodePath("Base/StashedCrankSnapZone")
-vinyl_system = NodePath("VinylSystem")
+mounted_vinyl_snap_zone = NodePath("Base/MountedVinylSnapZone")
+vinyl_cole_porter = NodePath("VinylColePorter")
+stashed_vinyl_snap_zone_cole_porter = NodePath("Base/StashedVinylSnapZoneColePorter")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
@@ -57,7 +59,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
 [node name="MountedVinylSnapZone" parent="Base" instance=ExtResource("4_lo2t4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0.165)
 
-[node name="StashedVinylSnapZone" parent="Base" instance=ExtResource("4_lo2t4")]
+[node name="StashedVinylSnapZoneColePorter" parent="Base" instance=ExtResource("4_lo2t4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
 
 [node name="MountedCrankSnapZone" parent="Base" instance=ExtResource("9_2d80k")]
@@ -85,6 +87,6 @@ stashed_filter_snap_zone = NodePath("../Base/StashedFilterSnapZone")
 script = ExtResource("12_2d80k")
 vinyls = [NodePath("../VinylColePorter")]
 mounted_snap_zone = NodePath("../Base/MountedVinylSnapZone")
-stashed_snap_zones = [NodePath("../Base/StashedVinylSnapZone")]
+stashed_snap_zones = [NodePath("../Base/StashedVinylSnapZoneColePorter")]
 
 [editable path="Base/Model"]
