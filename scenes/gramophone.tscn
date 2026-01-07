@@ -23,7 +23,7 @@ stashed_crank_snap_zone = NodePath("Base/StashedCrankSnapZone")
 mounted_vinyl_snap_zone = NodePath("Base/MountedVinylSnapZone")
 vinyl_cole_porter = NodePath("VinylColePorter")
 stashed_vinyl_snap_zone_cole_porter = NodePath("Base/StashedVinylSnapZoneColePorter")
-brake = NodePath("Brake")
+brake = NodePath("Base/Brake")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
@@ -51,6 +51,9 @@ visible = false
 [node name="Tonearm" parent="Base/Model" index="5"]
 visible = false
 
+[node name="Brake" parent="Base" instance=ExtResource("8_grppd")]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.09706551, 0.100093216, 0.2728012)
+
 [node name="MountedFilterSnapZone" parent="Base" instance=ExtResource("2_tqyvr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.165)
 
@@ -71,8 +74,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.12, 0.03)
 
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
-
-[node name="Brake" parent="." instance=ExtResource("8_grppd")]
 
 [node name="Filter" parent="." instance=ExtResource("9_tykl6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
