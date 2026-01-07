@@ -169,6 +169,7 @@ func _refresh_permissions():
 			filter_system.set_active(true)
 
 		State.FILTER_MOUNTED:
+			state_label.text = "FILTER_MOUNTED"
 			instructions_label.text = "Pick up any vinyl \n - OR - \n Pick up the filter to stash it"
 			
 			vinyl_cole_porter.set_interactable(true)
@@ -177,14 +178,16 @@ func _refresh_permissions():
 			filter_system.set_active(true)
 		
 		State.VINYL_PICKED_UP:
+			state_label.text = "VINYL_PICKED_UP"
 			instructions_label.text = "Mount or stash the picked up vinyl"
 			
 			mounted_vinyl_snap_zone.set_active(true)
-			if stashed_vinyl_snap_zone_cole_porter.picked_up_object != null:
+			if not stashed_vinyl_snap_zone_cole_porter.has_snapped_object():
 				stashed_vinyl_snap_zone_cole_porter.set_active(true)
 				vinyl_cole_porter.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
+			state_label.text = "VINYL_MOUNTED"
 			instructions_label.text = "Mount the tonearm \n - OR - \n Remove the vinyl"
 			lid.tonearm.expect_mount()
 			
@@ -193,11 +196,13 @@ func _refresh_permissions():
 			mounted_vinyl.set_interactable(true)
 		
 		State.TONEARM_MOUNTED:
+			state_label.text = "TONEARM_MOUNTED"
 			instructions_label.text = "Disengage the brake to play \n - OR - \n Stash the tonearm"
 			brake.expect_disengage()
 			lid.tonearm.expect_stash()
 		
 		State.PLAYING:
+			state_label.text = "PLAYING"
 			instructions_label.text = "Engage the brake to stop playing"
 			brake.expect_engage()
 
