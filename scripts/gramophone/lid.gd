@@ -17,7 +17,7 @@ func _ready() -> void:
 	interactable_hinge.hinge_moved.connect(_on_hinge_moved)
 
 
-func set_active(value: bool) -> void:
+func set_interactable(value: bool) -> void:
 	interactable_handle.enabled = value
 	outline.visible = value
 
@@ -34,12 +34,12 @@ func set_outline_shader_params(color: Color, glow_speed: float) -> void:
 
 func play_animation(animation_name: String) -> void:
 	_is_animation_playing = true
-	set_active(false)
+	set_interactable(false)
 	
 	animation_player.play(animation_name)
 	await animation_player.animation_finished
 	
-	set_active(true)
+	set_interactable(true)
 	_is_animation_playing = false
 
 

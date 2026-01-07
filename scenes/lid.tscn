@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cqcyu4xtlmrmd" path="res://scripts/gramophone/lid.gd" id="1_1d3uv"]
 [ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="2_3bvbm"]
-[ext_resource type="Script" uid="uid://csfll1f4nlo0t" path="res://addons/godot-xr-tools/interactables/interactable_hinge_scoped.gd" id="3_afme5"]
+[ext_resource type="Script" uid="uid://csfll1f4nlo0t" path="res://scripts/interactable_hinge_scoped.gd" id="3_afme5"]
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="3_vtf6h"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="4_afme5"]
 [ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="5_mdtl4"]
@@ -156,7 +156,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
 shape = SubResource("BoxShape3D_dcy10")
 
 [node name="Tonearm" type="Node3D" parent="InteractableHinge" node_paths=PackedStringArray("outline", "interactable_hinge", "interactable_handle")]
-transform = Transform3D(-4.3047308e-08, 0.98480767, -0.17364816, -0.9999999, -4.3711385e-08, 0, -7.590402e-09, 0.17364816, 0.98480767, 0.08, 0.085, -0.02)
+transform = Transform3D(0.08757965, 0.9897048, -0.11319889, -0.9961566, 0.087152466, -0.008726534, 0.0012288697, 0.1135281, 0.99353397, 0.08, 0.085, -0.02)
 script = ExtResource("6_3bvbm")
 outline = NodePath("InteractableHinge/Outline/Tonearm")
 interactable_hinge = NodePath("InteractableHinge")
@@ -215,7 +215,7 @@ ranged_grab_method = 0
 second_hand_grab = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableHinge/Tonearm/InteractableHinge/HandleOrigin/InteractableHandle"]
-transform = Transform3D(-0.04494352, -0.96592593, 0.25488716, 0.9848082, -4.3047315e-08, 0.1736483, -0.16773131, 0.25881907, 0.95125186, 0, 0, 0)
+transform = Transform3D(-0.00032686442, -0.99979347, 0.020326508, 0.9732674, 0.004350461, 0.2296359, -0.22967684, 0.019858167, 0.973065, 0, 0, 0)
 shape = SubResource("BoxShape3D_1d3uv")
 
 [editable path="InteractableHinge/Model"]

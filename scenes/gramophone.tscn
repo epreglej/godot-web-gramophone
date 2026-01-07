@@ -6,13 +6,13 @@
 [ext_resource type="PackedScene" uid="uid://ygp2w4a1evh" path="res://scenes/filter_snap_zone.tscn" id="2_tqyvr"]
 [ext_resource type="PackedScene" uid="uid://dnll2qmsm8jm7" path="res://scenes/vinyl_snap_zone.tscn" id="4_lo2t4"]
 [ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="5_dcy10"]
+[ext_resource type="PackedScene" uid="uid://cfnicgoc46ii" path="res://scenes/brake.tscn" id="8_grppd"]
 [ext_resource type="PackedScene" uid="uid://dcf6yl2uhhulf" path="res://scenes/crank_snap_zone.tscn" id="9_2d80k"]
 [ext_resource type="PackedScene" uid="uid://dlno1p8v2ybw" path="res://scenes/filter.tscn" id="9_tykl6"]
 [ext_resource type="PackedScene" uid="uid://ddfxisqbepnop" path="res://scenes/crank_pickable.tscn" id="11_grppd"]
-[ext_resource type="Script" uid="uid://cgkuw1yo181wp" path="res://scripts/gramophone/vinyl_system.gd" id="12_2d80k"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "mounted_vinyl_snap_zone", "vinyl_cole_porter", "stashed_vinyl_snap_zone_cole_porter")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "mounted_vinyl_snap_zone", "vinyl_cole_porter", "stashed_vinyl_snap_zone_cole_porter", "brake")]
 script = ExtResource("1_ouked")
 audio_player = NodePath("AudioStreamPlayer3D")
 lid = NodePath("Lid")
@@ -23,6 +23,7 @@ stashed_crank_snap_zone = NodePath("Base/StashedCrankSnapZone")
 mounted_vinyl_snap_zone = NodePath("Base/MountedVinylSnapZone")
 vinyl_cole_porter = NodePath("VinylColePorter")
 stashed_vinyl_snap_zone_cole_porter = NodePath("Base/StashedVinylSnapZoneColePorter")
+brake = NodePath("Brake")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
@@ -71,6 +72,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.12, 0.03)
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
 
+[node name="Brake" parent="." instance=ExtResource("8_grppd")]
+
 [node name="Filter" parent="." instance=ExtResource("9_tykl6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
 
@@ -82,11 +85,5 @@ script = ExtResource("14_kkau2")
 filter = NodePath("../Filter")
 mounted_filter_snap_zone = NodePath("../Base/MountedFilterSnapZone")
 stashed_filter_snap_zone = NodePath("../Base/StashedFilterSnapZone")
-
-[node name="VinylSystem" type="Node3D" parent="." node_paths=PackedStringArray("vinyls", "mounted_snap_zone", "stashed_snap_zones")]
-script = ExtResource("12_2d80k")
-vinyls = [NodePath("../VinylColePorter")]
-mounted_snap_zone = NodePath("../Base/MountedVinylSnapZone")
-stashed_snap_zones = [NodePath("../Base/StashedVinylSnapZoneColePorter")]
 
 [editable path="Base/Model"]

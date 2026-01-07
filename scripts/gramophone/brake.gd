@@ -1,5 +1,5 @@
 extends Node3D
-class_name GramophoneBrake
+class_name Brake
 
 signal disengaged
 signal engaged
@@ -7,44 +7,51 @@ signal engaged
 enum Expectation { NONE, ENGAGE, DISENGAGE }
 var expectation := Expectation.NONE
 
+@export var animation_player: AnimationPlayer
+@export var outline: MeshInstance3D
 @export var interactable_hinge: XRToolsInteractableHinge
 @export var interactable_handle: XRToolsInteractableHandle
-@export var highlight: MeshInstance3D
+
+
+var _is_animation_playing: bool = false
 
 
 func _ready():
 	interactable_hinge.hinge_moved.connect(_on_hinge_moved)
-	reset()
 
 
-func reset():
-	expectation = Expectation.NONE
-	_set_active(false)
-
-
-func expect_disengage():
-	expectation = Expectation.DISENGAGE
-	_set_active(true)
-
-
-func expect_engage():
-	expectation = Expectation.ENGAGE
-	_set_active(true)
-
-
-func _set_active(value: bool):
+func set_interactable(value: bool) -> void:
 	interactable_handle.enabled = value
-	highlight.visible = value
+	outline.visible = value
+
+
+func set_outline_shader_params(color: Color, glow_speed: float) -> void:
+	if not outline:
+		return
+	
+	var mat := outline.get_surface_override_material(0)
+	if mat is ShaderMaterial:
+		mat.set_shader_parameter("shell_color", color)
+		mat.set_shader_parameter("glow_speed", glow_speed)
+
+
+func play_animation(animation_name: String) -> void:
+	_is_animation_playing = true
+	set_interactable(false)
+	
+	animation_player.play(animation_name)
+	await animation_player.animation_finished
+	
+	set_interactable(true)
+	_is_animation_playing = false
 
 
 func _on_hinge_moved(angle: float):
-	match expectation:
-		Expectation.DISENGAGE:
-			if angle >= interactable_hinge.hinge_limit_max:
-				reset()
-				disengaged.emit()
-
-		Expectation.ENGAGE:
-			if angle <= interactable_hinge.hinge_limit_min:
-				reset()
-				engaged.emit()
+	if _is_animation_playing:
+		return
+		
+	if angle >= interactable_hinge.hinge_limit_max:
+		disengaged.emit()
+		
+	elif angle <= interactable_hinge.hinge_limit_min:
+		engaged.emit()
