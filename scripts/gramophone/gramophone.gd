@@ -39,6 +39,8 @@ enum State {
 }
 
 var state: State = State.LID_CLOSED
+var mounted_vinyl: Vinyl = null
+
 # TODO: Reset it to false after adding the cranking to the crank
 var _is_cranked: bool = true
 
@@ -85,9 +87,8 @@ func _ready():
 
 
 func _physics_process(_delta: float) -> void:
-	pass
-	#if vinyl_system.mounted_vinyl and state == State.PLAYING:
-		#vinyl_system.mounted_vinyl.get_node("Model").rotate_y(deg_to_rad(1))
+	if mounted_vinyl and state == State.PLAYING:
+		mounted_vinyl.get_node("Model").rotate_y(deg_to_rad(60 * _delta))
 
 
 func _refresh_permissions():
@@ -185,7 +186,6 @@ func _refresh_permissions():
 			instructions_label.text = "Mount the tonearm \n - OR - \n Remove the vinyl"
 			lid.tonearm.expect_mount()
 			
-			var mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
 			mounted_vinyl_snap_zone.set_active(true)
 			mounted_vinyl.set_interactable(true)
 		
@@ -284,14 +284,22 @@ func _on_filter_stashed():
 	_refresh_permissions()
 
 
-# VINYL
+# Vinyl
 
 func _on_vinyl_picked_up():
 	state = State.VINYL_PICKED_UP
+	
+	# Not the cleanest solution but it works
+	if mounted_vinyl:
+		mounted_vinyl = null
+	
 	_refresh_permissions()
 
 func _on_vinyl_mounted(_what: Variant):
 	state = State.VINYL_MOUNTED
+	
+	mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
+	
 	_refresh_permissions()
 
 func _on_vinyl_stashed(_what: Variant):
@@ -299,7 +307,7 @@ func _on_vinyl_stashed(_what: Variant):
 	_refresh_permissions()
 
 
-# --- TONEARM ---
+# Tonearm
 
 func _on_tonearm_mounted():
 	state = State.TONEARM_MOUNTED
@@ -310,23 +318,24 @@ func _on_tonearm_stashed():
 	_refresh_permissions()
 
 
-# --- BRAKE / AUDIO ---
+# Brake
 
 func _on_brake_disengaged():
 	if state != State.TONEARM_MOUNTED:
 		return
-		
+	
 	state = State.PLAYING
 	
-	var mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
-
-	if audio_player.stream and audio_player.stream.resource_path == mounted_vinyl.song.resource_path:
-		audio_player.stream_paused = false
-	else:
+	# Only change the stream if the vinyl is different or if no stream is loaded
+	if not audio_player.stream or audio_player.stream.resource_path != mounted_vinyl.song.resource_path:
 		audio_player.stream = mounted_vinyl.song.audio_stream
 		audio_player.play()
-
+	else:
+		# Resume playback if it's the same vinyl
+		audio_player.stream_paused = false
+	
 	_refresh_permissions()
+
 
 func _on_brake_engaged():
 	if state != State.PLAYING:
