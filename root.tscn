@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene load_steps=24 format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_bf3um"]
 [ext_resource type="Script" uid="uid://j86yc3k7w37g" path="res://scripts/active_input_method_controller.gd" id="2_qt76e"]
@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bwsl8u7uybb5c" path="res://addons/hand_pose_detector/hand_pose_action.gd" id="12_blcw0"]
 [ext_resource type="Script" uid="uid://dhppxvui1etbk" path="res://addons/hand_pose_detector/hand_pose_action_map.gd" id="13_50g4q"]
 [ext_resource type="PackedScene" uid="uid://dabmoo0spa6vg" path="res://addons/hand_pose_detector/hands/RightHandHumanoid.gltf" id="13_qt76e"]
+[ext_resource type="PackedScene" uid="uid://dk5phtn3korrn" path="res://scenes/settings_ui.tscn" id="14_r3r3k"]
 [ext_resource type="PackedScene" uid="uid://cgtgionnf5k2" path="res://models/buildings/glb/buildings.glb" id="17_r3r3k"]
 [ext_resource type="PackedScene" uid="uid://cg6lbg7tcacmj" path="res://scenes/gramophone.tscn" id="18_blcw0"]
 
@@ -134,6 +135,19 @@ hand_tracker_name = "/user/hand_tracker/right"
 
 [node name="Environment" type="Node3D" parent="."]
 
+[node name="SettingsUI" parent="Environment" instance=ExtResource("14_r3r3k")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -0.78261775, -0.715829, -0.20450681)
+
+[node name="InstructionsLabel" type="Label3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825, -1.23)
+text = "Text"
+
+[node name="StateLabel" type="Label3D" parent="Environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -1.25)
+
+[node name="Buildings" parent="Environment" instance=ExtResource("17_r3r3k")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -15, -10)
+
 [node name="Room" parent="Environment" instance=ExtResource("8_bf3um")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
 
@@ -143,20 +157,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Room/StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_bf3um")
 
-[node name="Label3D" type="Label3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.825, -1.23)
-text = "Text"
-
-[node name="Buildings" parent="Environment" instance=ExtResource("17_r3r3k")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, -15, -10)
-
 [node name="Gramophone" parent="Environment" node_paths=PackedStringArray("instructions_label", "state_label") instance=ExtResource("18_blcw0")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4711153, -0.7414176)
-instructions_label = NodePath("../Label3D")
+instructions_label = NodePath("../InstructionsLabel")
 state_label = NodePath("../StateLabel")
-
-[node name="StateLabel" type="Label3D" parent="Environment"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, -1.25)
 
 [editable path="XROrigin3D/LeftHandOrigin/LeftHandHumanoid"]
 [editable path="XROrigin3D/RightHandOrigin/RightHandHumanoid"]
