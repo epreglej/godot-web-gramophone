@@ -192,13 +192,16 @@ func _refresh_permissions():
 		State.TONEARM_MOUNTED:
 			state_label.text = "TONEARM_MOUNTED"
 			instructions_label.text = "Disengage the brake to play \n - OR - \n Stash the tonearm"
-			brake.expect_disengage()
+			
+			brake.set_interactable(true)
+			
 			lid.tonearm.expect_stash()
 		
 		State.PLAYING:
 			state_label.text = "PLAYING"
 			instructions_label.text = "Engage the brake to stop playing"
-			brake.expect_engage()
+			
+			brake.set_interactable(true)
 
 
 # CALLBACKS
