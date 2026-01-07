@@ -126,7 +126,8 @@ size = Vector3(0.6, 0.9, 0.1)
 environment = SubResource("Environment_uwexw")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-4.371139e-08, 0.64278764, 0.76604444, 0, -0.76604444, 0.64278764, 1, 2.809714e-08, 3.3484866e-08, 0, 1.5, 0)
+transform = Transform3D(9.047514e-08, 0.6120931, 0.7907858, -9.246353e-08, -0.7907858, 0.6120931, 1, -1.2849806e-07, -1.495018e-08, 1.6605808, 1.5, 0)
+light_energy = 0.8
 directional_shadow_mode = 0
 
 [node name="StartXR" parent="." instance=ExtResource("1_bf3um")]
@@ -305,14 +306,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, -17.5, -1)
 [node name="Room" parent="Environment" instance=ExtResource("8_bf3um")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.25, 0, 1.35)
 
-[node name="doors" parent="Environment/Room" instance=ExtResource("17_0dnjj")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 2.27)
-
 [node name="StaticBody3D" type="StaticBody3D" parent="Environment/Room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Room/StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_bf3um")
+
+[node name="Doors" parent="Environment/Room" instance=ExtResource("17_0dnjj")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 2.27)
 
 [node name="Painting" parent="Environment/Room" instance=ExtResource("18_1xb4a")]
 transform = Transform3D(-3.059797e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, -3.059797e-08, 2.3000002, 1, 0)
@@ -324,20 +325,13 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0299916, 0.6815504, -0.17873454)
 
 [node name="LambisShell" parent="Environment/Room/Cabinet" instance=ExtResource("21_ub8w1")]
-transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.4045794, -0.7050486, 0.6791854, 0.096298575)
+transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.4045794, -0.18341547, 0.6791854, 0.016846359)
 
 [node name="SettingsUI" parent="Environment/Room" instance=ExtResource("14_r3r3k")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.3787284, 0.920761, -1.2863785)
 
 [node name="Chandelier" parent="Environment/Room" instance=ExtResource("22_ub8w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-
-[node name="OmniLight3D" type="OmniLight3D" parent="Environment/Room/Chandelier"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.67266786, 0)
-light_color = Color(1, 1, 0.8117647, 1)
-light_energy = 1.3
-light_specular = 0.05
-light_bake_mode = 1
 
 [node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("instructions_label", "state_label") instance=ExtResource("18_blcw0")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.0914176, 0.69603163, -1.25)
