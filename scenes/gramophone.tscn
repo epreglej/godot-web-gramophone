@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=13 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
@@ -10,14 +10,16 @@
 [ext_resource type="PackedScene" uid="uid://dcf6yl2uhhulf" path="res://scenes/crank_snap_zone.tscn" id="9_2d80k"]
 [ext_resource type="PackedScene" uid="uid://dlno1p8v2ybw" path="res://scenes/filter.tscn" id="9_tykl6"]
 [ext_resource type="PackedScene" uid="uid://ddfxisqbepnop" path="res://scenes/crank_pickable.tscn" id="11_grppd"]
+[ext_resource type="PackedScene" uid="uid://bhenaq4xt857k" path="res://scenes/crank_crankable.tscn" id="12_2d80k"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "mounted_vinyl_snap_zone", "vinyl_cole_porter", "stashed_vinyl_snap_zone_cole_porter", "brake")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter_system", "crank_pickable", "crank_crankable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "mounted_vinyl_snap_zone", "vinyl_cole_porter", "stashed_vinyl_snap_zone_cole_porter", "brake")]
 script = ExtResource("1_ouked")
 audio_player = NodePath("AudioStreamPlayer3D")
 lid = NodePath("Lid")
 filter_system = NodePath("FilterSystem")
 crank_pickable = NodePath("CrankPickable")
+crank_crankable = NodePath("CrankCrankable")
 mounted_crank_snap_zone = NodePath("Base/MountedCrankSnapZone")
 stashed_crank_snap_zone = NodePath("Base/StashedCrankSnapZone")
 mounted_vinyl_snap_zone = NodePath("Base/MountedVinylSnapZone")
@@ -70,7 +72,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15565708, 0.068458036, 0.13786781)
 
 [node name="StashedCrankSnapZone" parent="Base" instance=ExtResource("9_2d80k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.12, 0.03)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.12, 0.040024713)
 
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
@@ -86,5 +88,8 @@ script = ExtResource("14_kkau2")
 filter = NodePath("../Filter")
 mounted_filter_snap_zone = NodePath("../Base/MountedFilterSnapZone")
 stashed_filter_snap_zone = NodePath("../Base/StashedFilterSnapZone")
+
+[node name="CrankCrankable" parent="." instance=ExtResource("12_2d80k")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15447551, 0.066179566, 0.14647447)
 
 [editable path="Base/Model"]

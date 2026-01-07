@@ -9,6 +9,7 @@ class_name Gramophone
 @export var filter_system: FilterSystem
 
 @export var crank_pickable: CrankPickable
+@export var crank_crankable: CrankCrankable
 @export var mounted_crank_snap_zone: CrankSnapZone
 @export var stashed_crank_snap_zone: CrankSnapZone
 
@@ -42,10 +43,12 @@ var state: State = State.LID_CLOSED
 var mounted_vinyl: Vinyl = null
 
 # TODO: Reset it to false after adding the cranking to the crank
-var _is_cranked: bool = true
+var _is_cranked: bool = false
 
 
 func _ready():
+	crank_crankable.set_visible(false)
+	
 	crank_pickable.set_interactable(true)
 	stashed_crank_snap_zone.set_active(true)
 	stashed_crank_snap_zone.pick_up_object(crank_pickable)
@@ -66,6 +69,7 @@ func _ready():
 	stashed_crank_snap_zone.has_dropped.connect(_on_crank_picked_up)
 	mounted_crank_snap_zone.has_picked_up.connect(_on_crank_inserted)
 	stashed_crank_snap_zone.has_picked_up.connect(_on_crank_stashed)
+	crank_crankable.crank_cranked.connect(_on_crank_cranked)
 	
 	filter_system.picked_up.connect(_on_filter_picked_up)
 	filter_system.mounted.connect(_on_filter_mounted)
@@ -95,11 +99,13 @@ func _refresh_permissions():
 	lid.set_interactable(false)
 	
 	crank_pickable.set_interactable(false)
+	crank_crankable.set_interactable(false)
 	mounted_crank_snap_zone.set_active(false)
 	stashed_crank_snap_zone.set_active(false)
 	
 	filter_system.set_active(false)
 	
+	#TODO: Repeat for all vinyls
 	mounted_vinyl_snap_zone.set_active(false)
 	vinyl_cole_porter.set_interactable(false)
 	stashed_vinyl_snap_zone_cole_porter.set_active(false)
@@ -139,12 +145,16 @@ func _refresh_permissions():
 		
 		State.CRANK_INSERTED:
 			state_label.text = "CRANK_INSERTED"
+			
+			crank_pickable.set_visible(false)
+			crank_crankable.set_visible(true)
+			crank_crankable.set_interactable(true)
+			
 			if _is_cranked:
 				_on_crank_cranked()
 			else:
 				instructions_label.text = "Crank the crank"
-				#crank_system.expect_cranking()
-
+		
 		State.CRANK_CRANKED:
 			state_label.text = "CRANK_CRANKED"
 			instructions_label.text = "Pick up the filter \n - OR - \n Pick up the crank to stash it"
@@ -245,6 +255,9 @@ func _on_crank_cranked():
 	# it should be possible to creank the crank when
 	# it finally unwinds
 	
+	crank_pickable.set_visible(true)
+	crank_crankable.set_visible(false)
+	
 	state = State.CRANK_CRANKED
 	_refresh_permissions()
 
@@ -252,6 +265,7 @@ func _on_crank_stashed(_what: Variant):
 	#if state != State.CRANK_PICKED_UP:
 		#return
 	
+	# TODO: Sometimes reset the crank, it cant give infinite playback
 	#_is_cranked = false
 	
 	state = State.LID_OPEN

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ddfxisqbepnop"]
+[gd_scene load_steps=8 format=3 uid="uid://ddfxisqbepnop"]
 
 [ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_3wlke"]
 [ext_resource type="Script" uid="uid://dv4vfv6rbv4bf" path="res://scripts/gramophone/crank_pickable.gd" id="2_x3vxh"]
@@ -10,15 +10,6 @@
 size = Vector3(0.25, 0.055, 0.085)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_bps3b"]
-render_priority = 0
-shader = ExtResource("7_rthht")
-shader_parameter/shell_thickness = 0.002
-shader_parameter/shell_color = Color(1, 1, 0, 0.2)
-shader_parameter/glow_speed = 2.0
-shader_parameter/glow_min = 0.8
-shader_parameter/glow_max = 1.0
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_60abc"]
 render_priority = 0
 shader = ExtResource("7_rthht")
 shader_parameter/shell_thickness = 0.002
@@ -71,7 +62,6 @@ visible = false
 
 [node name="Crank" parent="Outline" index="3"]
 surface_material_override/0 = SubResource("ShaderMaterial_bps3b")
-surface_material_override/1 = SubResource("ShaderMaterial_60abc")
 
 [node name="Filter" parent="Outline" index="4"]
 visible = false

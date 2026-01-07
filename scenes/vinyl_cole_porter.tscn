@@ -27,3 +27,5 @@ shape = SubResource("CylinderShape3D_5q42x")
 [node name="GrabPointSnap" parent="SnapPivot" index="0" instance=ExtResource("7_mucuw")]
 
 [node name="Model" parent="SnapPivot" index="1" instance=ExtResource("7_n8xky")]
+
+[editable path="SnapPivot/Model"]
