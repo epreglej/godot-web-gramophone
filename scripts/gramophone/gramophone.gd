@@ -258,6 +258,8 @@ func _on_crank_cranked():
 	crank_pickable.set_visible(true)
 	crank_crankable.set_visible(false)
 	
+	_is_cranked = true
+	
 	state = State.CRANK_CRANKED
 	_refresh_permissions()
 
