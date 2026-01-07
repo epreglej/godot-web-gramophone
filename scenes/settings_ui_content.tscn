@@ -13,6 +13,6 @@ offset_bottom = 40.0
 
 [node name="Button" type="Button" parent="VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 16
 text = "Restart"
 script = ExtResource("1_oe7bq")
