@@ -148,14 +148,12 @@ func _refresh_permissions():
 	
 	match state:
 		State.LID_CLOSED:
-			#state_label.text = "LID_CLOSED"
 			settings_ui.set_instructions("Open the lid")
 			
 			lid.set_interactable(true)
 			lid.set_outline_shader_params(Color(1,1,0,0.3), 1)
 		
 		State.LID_OPEN:
-			#state_label.text = "LID_OPEN"
 			settings_ui.set_instructions("Pick up the crank \n - OR - \n Close the lid")
 			
 			crank_pickable.set_interactable(true)
@@ -168,7 +166,6 @@ func _refresh_permissions():
 			lid.set_outline_shader_params(Color(1,0.4,0,0.3), 1)
 		
 		State.CRANK_PICKED_UP:
-			#state_label.text = "CRANK_PICKED_UP"
 			settings_ui.set_instructions("Insert the crank \n - OR - \n Stash the crank")
 			
 			crank_pickable.set_interactable(true)
@@ -176,8 +173,6 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_active(true)
 		
 		State.CRANK_INSERTED:
-			#state_label.text = "CRANK_INSERTED"
-			
 			crank_pickable.set_visible(false)
 			crank_crankable.set_visible(true)
 			crank_crankable.set_interactable(true)
@@ -188,11 +183,13 @@ func _refresh_permissions():
 				settings_ui.set_instructions("Crank the crank")
 		
 		State.CRANK_CRANKED:
-			#state_label.text = "CRANK_CRANKED"
 			settings_ui.set_instructions("Pick up the filter \n - OR - \n Pick up the crank to stash it")
 			
 			filter.set_interactable(true)
+			mounted_filter_snap_zone.set_active(true)
+			mounted_filter_snap_zone.set_highlight_visible(false)
 			stashed_filter_snap_zone.set_active(true)
+			stashed_filter_snap_zone.set_highlight_visible(false)
 			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
@@ -201,7 +198,6 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_highlight_visible(false)
 		
 		State.FILTER_PICKED_UP:
-			#state_label.text = "FILTER_PICKED_UP"
 			settings_ui.set_instructions("Mount the filter \n - OR - \n Stash the filter")
 			
 			filter.set_interactable(true)
@@ -209,7 +205,6 @@ func _refresh_permissions():
 			mounted_filter_snap_zone.set_active(true)
 		
 		State.FILTER_MOUNTED:
-			#state_label.text = "FILTER_MOUNTED"
 			settings_ui.set_instructions("Pick up any vinyl \n - OR - \n Pick up the filter to stash it")
 			
 			#TODO: Repeat for all vinyls
@@ -220,6 +215,9 @@ func _refresh_permissions():
 			
 			filter.set_interactable(true)
 			mounted_filter_snap_zone.set_active(true)
+			mounted_filter_snap_zone.set_highlight_visible(false)
+			stashed_filter_snap_zone.set_active(true)
+			stashed_filter_snap_zone.set_highlight_visible(false)
 		
 		State.VINYL_PICKED_UP:
 			settings_ui.set_instructions("Mount or stash the picked up vinyl")
@@ -234,7 +232,6 @@ func _refresh_permissions():
 				vinyl_conchita_martinez.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
-			#state_label.text = "VINYL_MOUNTED"
 			settings_ui.set_instructions("Disengage the brake \n - OR - \n Remove the vinyl")
 			
 			brake.set_interactable(true)
@@ -243,7 +240,6 @@ func _refresh_permissions():
 			mounted_vinyl.set_interactable(true)
 		
 		State.BRAKE_DISENGAGED:
-			#state_label.text = "BRAKE_RELEASED"
 			settings_ui.set_instructions("Mount the tonearm to start playing \n - OR - \n Engage the brake")
 			
 			lid.tonearm.expect_mount()
@@ -251,7 +247,6 @@ func _refresh_permissions():
 			brake.set_interactable(true)
 		
 		State.TONEARM_MOUNTED:
-			#state_label.text = "PLAYING"
 			settings_ui.set_instructions("Stash the tonearm to stop playing")
 			
 			lid.tonearm.expect_stash()
@@ -286,12 +281,14 @@ func _on_crank_picked_up():
 	state = State.CRANK_PICKED_UP
 	_refresh_permissions()
 
+
 func _on_crank_inserted(_what: Variant):
 	if state != State.CRANK_PICKED_UP:
 		return
 	
 	state = State.CRANK_INSERTED
 	_refresh_permissions()
+
 
 func _on_crank_cranked():
 	# Maybe there shouldn't be a checker here because
@@ -305,6 +302,7 @@ func _on_crank_cranked():
 	
 	state = State.CRANK_CRANKED
 	_refresh_permissions()
+
 
 func _on_crank_stashed(_what: Variant):
 	if state != State.CRANK_PICKED_UP:
@@ -332,6 +330,7 @@ func _on_filter_mounted():
 		return
 	
 	state = State.FILTER_MOUNTED
+	
 	_refresh_permissions()
 
 
@@ -340,6 +339,7 @@ func _on_filter_stashed():
 		return
 	
 	state = State.CRANK_CRANKED
+	
 	_refresh_permissions()
 
 
@@ -356,12 +356,14 @@ func _on_vinyl_picked_up():
 	
 	_refresh_permissions()
 
+
 func _on_vinyl_mounted(_what: Variant):
 	mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
 	
 	state = State.VINYL_MOUNTED
 	
 	_refresh_permissions()
+
 
 func _on_vinyl_stashed(_what: Variant):
 	# Not the cleanest solution but it works
