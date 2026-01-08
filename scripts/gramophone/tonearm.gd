@@ -4,47 +4,49 @@ class_name Tonearm
 signal mounted
 signal stashed
 
-enum Expectation { NONE, MOUNT, STASH }
-var expectation := Expectation.NONE
-
 @export var outline: MeshInstance3D
+@export var animation_player: AnimationPlayer
 @export var interactable_hinge: XRToolsInteractableHinge
 @export var interactable_handle: XRToolsInteractableHandle
+
+var _is_animation_playing: bool = false
 
 
 func _ready():
 	interactable_hinge.hinge_moved.connect(_on_hinge_moved)
-	reset()
 
 
-func reset():
-	expectation = Expectation.NONE
-	set_interactable(false)
-
-
-func expect_mount():
-	expectation = Expectation.MOUNT
-	set_interactable(true)
-
-
-func expect_stash():
-	expectation = Expectation.STASH
-	set_interactable(true)
-
-
-func set_interactable(value: bool):
+func set_interactable(value: bool) -> void:
 	interactable_handle.enabled = value
 	outline.visible = value
 
 
-func _on_hinge_moved(angle: float):
-	match expectation:
-		Expectation.MOUNT:
-			if angle <= -55.0:
-				reset()
-				mounted.emit()
+func set_outline_shader_color(color: Color) -> void:
+	if not outline:
+		return
+	
+	var mat3 := outline.get_surface_override_material(3)
+	if mat3 is ShaderMaterial:
+		mat3.set_shader_parameter("shell_color", color)
 
-		Expectation.STASH:
-			if angle >= 0.0:
-				reset()
-				stashed.emit()
+
+func play_animation(animation_name: String) -> void:
+	_is_animation_playing = true
+	set_interactable(false)
+	
+	animation_player.play(animation_name)
+	await animation_player.animation_finished
+	
+	set_interactable(true)
+	_is_animation_playing = false
+
+
+func _on_hinge_moved(angle: float):
+	if _is_animation_playing:
+		return
+		
+	if angle <= -55.0:
+		mounted.emit()
+		
+	elif angle >= 0.0:
+		stashed.emit()

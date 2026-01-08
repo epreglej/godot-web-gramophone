@@ -6,6 +6,7 @@ enum VinylSide { A, B }
 
 @onready var snap_pivot: Node3D = $SnapPivot
 
+@export var outline: MeshInstance3D
 @export var _song_a: Song
 @export var _song_b: Song
 
@@ -17,7 +18,14 @@ var song: Song:
 
 func set_interactable(value: bool) -> void:
 	self.enabled = value
-	#outline.visible = value
+	outline.visible = value
+
+
+func set_outline_shader_color(color: Color) -> void:
+	var mat := outline.get_surface_override_material(0)
+	
+	if mat is ShaderMaterial:
+		mat.set_shader_parameter("shell_color", color)
 
 
 # Updates which side is facing up based on world orientation

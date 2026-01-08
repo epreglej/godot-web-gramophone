@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=35 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
@@ -26,6 +26,20 @@ transparency = 1
 no_depth_test = true
 shading_mode = 0
 albedo_texture = SubResource("CompressedTexture2D_legmv")
+billboard_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_legmv"]
+resource_local_to_scene = true
+radius = 0.1
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yer63"]
+load_path = "res://.godot/imported/ring.png-34d9c9e9780f2732148a5b14fcac48dd.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ln3yr"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("CompressedTexture2D_yer63")
 billboard_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dcquk"]
@@ -56,6 +70,34 @@ transparency = 1
 no_depth_test = true
 shading_mode = 0
 albedo_texture = SubResource("CompressedTexture2D_ln3yr")
+billboard_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_yc4pg"]
+resource_local_to_scene = true
+radius = 0.1
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_c66i1"]
+load_path = "res://.godot/imported/ring.png-34d9c9e9780f2732148a5b14fcac48dd.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ln7g1"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("CompressedTexture2D_c66i1")
+billboard_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_rp1at"]
+resource_local_to_scene = true
+radius = 0.1
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rk540"]
+load_path = "res://.godot/imported/ring.png-34d9c9e9780f2732148a5b14fcac48dd.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7tecs"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("CompressedTexture2D_rk540")
 billboard_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ln3yr"]
@@ -131,6 +173,12 @@ surface_material_override/0 = SubResource("StandardMaterial3D_yer63")
 [node name="MountedVinylSnapZone" parent="Base" instance=ExtResource("4_lo2t4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0.165)
 
+[node name="CollisionShape3D" parent="Base/MountedVinylSnapZone" index="0"]
+shape = SubResource("SphereShape3D_legmv")
+
+[node name="Highlight" parent="Base/MountedVinylSnapZone" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_ln3yr")
+
 [node name="MountedCrankSnapZone" parent="Base" instance=ExtResource("9_2d80k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15565708, 0.068458036, 0.13786781)
 
@@ -152,11 +200,23 @@ surface_material_override/0 = SubResource("StandardMaterial3D_yc4pg")
 [node name="StashedVinylSnapZoneColePorter" parent="." instance=ExtResource("4_lo2t4")]
 transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.475, 0.1, 0.165)
 
+[node name="CollisionShape3D" parent="StashedVinylSnapZoneColePorter" index="0"]
+shape = SubResource("SphereShape3D_yc4pg")
+
+[node name="Highlight" parent="StashedVinylSnapZoneColePorter" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_ln7g1")
+
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
 transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.475, 0.1, 0.165)
 
 [node name="StashedVinylSnapZoneConchitaMartinez" parent="." instance=ExtResource("4_lo2t4")]
 transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.53499997, 0.1, 0.165)
+
+[node name="CollisionShape3D" parent="StashedVinylSnapZoneConchitaMartinez" index="0"]
+shape = SubResource("SphereShape3D_rp1at")
+
+[node name="Highlight" parent="StashedVinylSnapZoneConchitaMartinez" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_7tecs")
 
 [node name="VinylConchitaMartinez" parent="." instance=ExtResource("9_dcquk")]
 transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.53532594, 0.1, 0.165)
@@ -187,6 +247,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15155065, 0.066179566, 0.14
 
 [editable path="Base/Model"]
 [editable path="Base/MountedFilterSnapZone"]
+[editable path="Base/MountedVinylSnapZone"]
 [editable path="Base/MountedCrankSnapZone"]
 [editable path="Base/StashedCrankSnapZone"]
+[editable path="StashedVinylSnapZoneColePorter"]
+[editable path="StashedVinylSnapZoneConchitaMartinez"]
 [editable path="StashedFilterSnapZone"]

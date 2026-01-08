@@ -155,12 +155,15 @@ second_hand_grab = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
 shape = SubResource("BoxShape3D_dcy10")
 
-[node name="Tonearm" type="Node3D" parent="InteractableHinge" node_paths=PackedStringArray("outline", "interactable_hinge", "interactable_handle")]
-transform = Transform3D(0.1564046, 0.98118466, -0.11319889, -0.9876506, 0.1564285, -0.008726534, 0.009145192, 0.113165826, 0.99353397, 0.08, 0.085, -0.02)
+[node name="Tonearm" type="Node3D" parent="InteractableHinge" node_paths=PackedStringArray("outline", "animation_player", "interactable_hinge", "interactable_handle")]
+transform = Transform3D(0.15643446, 0.98768824, 0, -0.98392975, 0.1558392, -0.08715573, -0.08608269, 0.013634161, 0.99619466, 0.08, 0.085, -0.025)
 script = ExtResource("6_3bvbm")
 outline = NodePath("InteractableHinge/Outline/Tonearm")
+animation_player = NodePath("AnimationPlayer")
 interactable_hinge = NodePath("InteractableHinge")
 interactable_handle = NodePath("InteractableHinge/HandleOrigin/InteractableHandle")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="InteractableHinge/Tonearm"]
 
 [node name="InteractableHinge" parent="InteractableHinge/Tonearm" instance=ExtResource("2_3bvbm")]
 script = ExtResource("3_afme5")

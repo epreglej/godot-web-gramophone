@@ -44,8 +44,9 @@ enum State {
 	TONEARM_MOUNTED
 }
 
-const COLOR_GREEN: Color = Color(0,1,0,0.4)
-const COLOR_YELLOW: Color = Color(1,1,0,0.4)
+const COLOR_GREEN: Color = Color(0,1,0,0.25)
+const COLOR_YELLOW: Color = Color(1,0.8,0,0.3)
+const COLOR_NEUTRAL: Color = Color(0.8,0.8,0.8,0.25)
 
 var color_assemble: Color = COLOR_GREEN
 var color_disassemble: Color = COLOR_YELLOW
@@ -148,7 +149,7 @@ func _refresh_permissions():
 	vinyl_conchita_martinez.set_interactable(false)
 	stashed_vinyl_snap_zone_conchita_martinez.set_active(false)
 	
-	lid.tonearm.reset()
+	lid.tonearm.set_interactable(false)
 	
 	brake.set_interactable(false)
 	
@@ -175,8 +176,8 @@ func _refresh_permissions():
 		State.CRANK_PICKED_UP:
 			settings_ui.set_instructions("Insert the crank \n - OR - \n Stash the crank")
 			
+			crank_pickable.set_outline_shader_color(COLOR_NEUTRAL)
 			crank_pickable.set_interactable(true)
-			crank_pickable.set_outline_visible(false)
 			mounted_crank_snap_zone.set_highlight_color(color_assemble)
 			stashed_crank_snap_zone.set_highlight_color(color_disassemble)
 			mounted_crank_snap_zone.set_active(true)
@@ -213,6 +214,7 @@ func _refresh_permissions():
 		State.FILTER_PICKED_UP:
 			settings_ui.set_instructions("Mount the filter \n - OR - \n Stash the filter")
 			
+			filter.set_outline_shader_color(COLOR_NEUTRAL)
 			filter.set_interactable(true)
 			mounted_filter_snap_zone.set_highlight_color(color_assemble)
 			stashed_filter_snap_zone.set_highlight_color(color_disassemble)
@@ -223,11 +225,14 @@ func _refresh_permissions():
 			settings_ui.set_instructions("Pick up any vinyl \n - OR - \n Pick up the filter to stash it")
 			
 			#TODO: Repeat for all vinyls
+			vinyl_cole_porter.set_outline_shader_color(color_assemble)
 			vinyl_cole_porter.set_interactable(true)
 			stashed_vinyl_snap_zone_cole_porter.set_active(true)
+			vinyl_conchita_martinez.set_outline_shader_color(color_assemble)
 			vinyl_conchita_martinez.set_interactable(true)
 			stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
 			
+			filter.set_outline_shader_color(color_disassemble)
 			filter.set_interactable(true)
 			mounted_filter_snap_zone.set_active(true)
 			mounted_filter_snap_zone.set_highlight_visible(false)
@@ -238,33 +243,44 @@ func _refresh_permissions():
 			settings_ui.set_instructions("Mount or stash the picked up vinyl")
 			
 			#TODO: Repeat for all vinyls
+			mounted_vinyl_snap_zone.set_highlight_color(color_assemble)
 			mounted_vinyl_snap_zone.set_active(true)
 			if not stashed_vinyl_snap_zone_cole_porter.has_snapped_object():
 				stashed_vinyl_snap_zone_cole_porter.set_active(true)
+				stashed_vinyl_snap_zone_cole_porter.set_highlight_color(color_disassemble)
+				vinyl_cole_porter.set_outline_shader_color(COLOR_NEUTRAL)
 				vinyl_cole_porter.set_interactable(true)
 			elif not stashed_vinyl_snap_zone_conchita_martinez.has_snapped_object():
+				stashed_vinyl_snap_zone_conchita_martinez.set_highlight_color(color_disassemble)
 				stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
+				vinyl_conchita_martinez.set_outline_shader_color(COLOR_NEUTRAL)
 				vinyl_conchita_martinez.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
 			settings_ui.set_instructions("Disengage the brake \n - OR - \n Remove the vinyl")
 			
+			brake.set_outline_shader_color(color_assemble)
 			brake.set_interactable(true)
 			
 			mounted_vinyl_snap_zone.set_active(true)
+			mounted_vinyl_snap_zone.set_highlight_visible(false)
+			mounted_vinyl.set_outline_shader_color(color_disassemble)
 			mounted_vinyl.set_interactable(true)
 		
 		State.BRAKE_DISENGAGED:
 			settings_ui.set_instructions("Mount the tonearm to start playing \n - OR - \n Engage the brake")
 			
-			lid.tonearm.expect_mount()
+			lid.tonearm.set_outline_shader_color(color_assemble)
+			lid.tonearm.set_interactable(true)
 			
+			brake.set_outline_shader_color(color_disassemble)
 			brake.set_interactable(true)
 		
 		State.TONEARM_MOUNTED:
 			settings_ui.set_instructions("Stash the tonearm to stop playing")
 			
-			lid.tonearm.expect_stash()
+			lid.tonearm.set_outline_shader_color(color_disassemble)
+			lid.tonearm.set_interactable(true)
 
 
 # CALLBACKS
