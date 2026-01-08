@@ -52,8 +52,8 @@ var _state_before_crank_depleted: State = State.CRANK_INSERTED
 
 
 func _ready():
-	await settings_ui.content_ready
 	await _warmup_all_vinyls()
+	await settings_ui.content_ready
 	
 	crank_crankable.set_visible(false)
 	
@@ -195,8 +195,11 @@ func _refresh_permissions():
 			#state_label.text = "FILTER_MOUNTED"
 			settings_ui.set_instructions("Pick up any vinyl \n - OR - \n Pick up the filter to stash it")
 			
+			#TODO: Repeat for all vinyls
 			vinyl_cole_porter.set_interactable(true)
 			stashed_vinyl_snap_zone_cole_porter.set_active(true)
+			vinyl_conchita_martinez.set_interactable(true)
+			stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
 			
 			filter_system.set_active(true)
 		
