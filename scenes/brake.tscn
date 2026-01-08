@@ -15,9 +15,8 @@ shader_parameter/glow_speed = 2.0
 shader_parameter/glow_min = 0.8
 shader_parameter/glow_max = 1.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_n6ap3"]
-margin = 0.12
-radius = 0.04
+[sub_resource type="BoxShape3D" id="BoxShape3D_584al"]
+size = Vector3(0.05, 0.02, 0.06)
 
 [node name="Brake" type="Node3D" node_paths=PackedStringArray("animation_player", "outline", "interactable_hinge", "interactable_handle")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
@@ -73,7 +72,7 @@ visible = false
 visible = false
 
 [node name="Handle" type="Node3D" parent="InteractableHinge"]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -0.005, 0.01)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0.0054140687, -3.7108784e-05, 0.005488286)
 
 [node name="InteractableHandle" type="RigidBody3D" parent="InteractableHinge/Handle"]
 collision_layer = 262144
@@ -86,7 +85,7 @@ ranged_grab_method = 0
 second_hand_grab = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableHinge/Handle/InteractableHandle"]
-shape = SubResource("SphereShape3D_n6ap3")
+shape = SubResource("BoxShape3D_584al")
 
 [editable path="InteractableHinge/Model"]
 [editable path="InteractableHinge/Outline"]

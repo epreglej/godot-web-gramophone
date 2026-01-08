@@ -15,6 +15,9 @@ class_name Gramophone
 @export var mounted_vinyl_snap_zone: VinylSnapZone
 @export var vinyl_cole_porter: Vinyl
 @export var stashed_vinyl_snap_zone_cole_porter: VinylSnapZone
+@export var vinyl_conchita_martinez: Vinyl
+@export var stashed_vinyl_snap_zone_conchita_martinez: VinylSnapZone
+
 
 @export var brake: Brake
 
@@ -67,6 +70,12 @@ func _ready():
 	stashed_vinyl_snap_zone_cole_porter.set_active(false)
 	vinyl_cole_porter.set_interactable(false)
 	
+	vinyl_conchita_martinez.set_interactable(true)
+	stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
+	stashed_vinyl_snap_zone_conchita_martinez.pick_up_object(vinyl_conchita_martinez)
+	stashed_vinyl_snap_zone_conchita_martinez.set_active(false)
+	vinyl_conchita_martinez.set_interactable(false)
+	
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
@@ -80,10 +89,13 @@ func _ready():
 	filter_system.mounted.connect(_on_filter_mounted)
 	filter_system.stashed.connect(_on_filter_stashed)
 	
+	#TODO: Repeat for all vinyls
 	mounted_vinyl_snap_zone.has_picked_up.connect(_on_vinyl_mounted)
 	mounted_vinyl_snap_zone.has_dropped.connect(_on_vinyl_picked_up)
 	stashed_vinyl_snap_zone_cole_porter.has_picked_up.connect(_on_vinyl_stashed)
 	stashed_vinyl_snap_zone_cole_porter.has_dropped.connect(_on_vinyl_picked_up)
+	stashed_vinyl_snap_zone_conchita_martinez.has_picked_up.connect(_on_vinyl_stashed)
+	stashed_vinyl_snap_zone_conchita_martinez.has_dropped.connect(_on_vinyl_picked_up)
 	
 	lid.tonearm.mounted.connect(_on_tonearm_mounted)
 	lid.tonearm.stashed.connect(_on_tonearm_stashed)
@@ -95,7 +107,7 @@ func _ready():
 
 
 func _physics_process(delta: float) -> void:
-	if mounted_vinyl and state == State.BRAKE_DISENGAGED:
+	if mounted_vinyl and (state == State.BRAKE_DISENGAGED or state == State.TONEARM_MOUNTED):
 		mounted_vinyl.get_node("SnapPivot").get_node("Model").rotate_y(deg_to_rad(60 * delta))
 
 
@@ -113,6 +125,8 @@ func _refresh_permissions():
 	mounted_vinyl_snap_zone.set_active(false)
 	vinyl_cole_porter.set_interactable(false)
 	stashed_vinyl_snap_zone_cole_porter.set_active(false)
+	vinyl_conchita_martinez.set_interactable(false)
+	stashed_vinyl_snap_zone_conchita_martinez.set_active(false)
 	
 	lid.tonearm.reset()
 	
@@ -187,13 +201,16 @@ func _refresh_permissions():
 			filter_system.set_active(true)
 		
 		State.VINYL_PICKED_UP:
-			#state_label.text = "VINYL_PICKED_UP"
 			settings_ui.set_instructions("Mount or stash the picked up vinyl")
 			
+			#TODO: Repeat for all vinyls
 			mounted_vinyl_snap_zone.set_active(true)
 			if not stashed_vinyl_snap_zone_cole_porter.has_snapped_object():
 				stashed_vinyl_snap_zone_cole_porter.set_active(true)
 				vinyl_cole_porter.set_interactable(true)
+			elif not stashed_vinyl_snap_zone_conchita_martinez.has_snapped_object():
+				stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
+				vinyl_conchita_martinez.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
 			#state_label.text = "VINYL_MOUNTED"
@@ -400,7 +417,7 @@ func _start_or_resume_playback() -> void:
 
 func _warmup_all_vinyls() -> void:
 	#TODO: Repeat for all vinyls
-	var vinyls: Array[Vinyl] = [vinyl_cole_porter]
+	var vinyls: Array[Vinyl] = [vinyl_cole_porter, vinyl_conchita_martinez]
 	for vinyl in vinyls:
 		if vinyl == null:
 			continue

@@ -1,0 +1,33 @@
+[gd_scene load_steps=7 format=3 uid="uid://p2k7wfjq40j8"]
+
+[ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="1_i0mce"]
+[ext_resource type="Resource" uid="uid://dig7033amqu58" path="res://data/conchita_martinez_pase_el_puerto_de_pallares.tres" id="2_rrpue"]
+[ext_resource type="Resource" uid="uid://djp4j0fydd1lb" path="res://data/conchita_martinez_foliada_gallega.tres" id="3_5aivj"]
+[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="4_j6uho"]
+[ext_resource type="PackedScene" uid="uid://7yw5sc77vs6v" path="res://models/vinyls/vinyl_conchita_martinez/glb/vinyl_conchita_martinez.glb" id="5_cvutm"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_5q42x"]
+height = 0.03
+radius = 0.1
+
+[node name="VinylConchitaMartinez" type="RigidBody3D" groups=["Vinyls"]]
+collision_layer = 4
+collision_mask = 196615
+freeze = true
+freeze_mode = 1
+script = ExtResource("1_i0mce")
+_song_a = ExtResource("2_rrpue")
+_song_b = ExtResource("3_5aivj")
+ranged_grab_method = 0
+second_hand_grab = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_5q42x")
+
+[node name="SnapPivot" type="Node3D" parent="."]
+
+[node name="GrabPointSnap" parent="SnapPivot" instance=ExtResource("4_j6uho")]
+
+[node name="Model" parent="SnapPivot" instance=ExtResource("5_cvutm")]
+
+[editable path="SnapPivot/Model"]

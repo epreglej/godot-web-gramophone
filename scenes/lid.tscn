@@ -156,7 +156,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.16, 0)
 shape = SubResource("BoxShape3D_dcy10")
 
 [node name="Tonearm" type="Node3D" parent="InteractableHinge" node_paths=PackedStringArray("outline", "interactable_hinge", "interactable_handle")]
-transform = Transform3D(0.08757965, 0.9897048, -0.11319889, -0.9961566, 0.087152466, -0.008726534, 0.0012288697, 0.1135281, 0.99353397, 0.08, 0.085, -0.02)
+transform = Transform3D(0.1564046, 0.98118466, -0.11319889, -0.9876506, 0.1564285, -0.008726534, 0.009145192, 0.113165826, 0.99353397, 0.08, 0.085, -0.02)
 script = ExtResource("6_3bvbm")
 outline = NodePath("InteractableHinge/Outline/Tonearm")
 interactable_hinge = NodePath("InteractableHinge")

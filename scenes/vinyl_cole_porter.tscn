@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dmbv5u2dwmkye" path="res://models/vinyls/vinyl_cole_porter/glb/vinyl_cole_porter.glb" id="7_n8xky"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_5q42x"]
-height = 0.02
+height = 0.03
 radius = 0.1
 
 [node name="VinylColePorter" groups=["Vinyls"] instance=ExtResource("1_k71av")]
