@@ -155,13 +155,13 @@ func _refresh_permissions():
 	
 	match state:
 		State.LID_CLOSED:
-			settings_ui.set_instructions("Open the lid")
+			settings_ui.set_instructions("Abre la tapa")
 			
 			lid.set_outline_shader_color(color_assemble)
 			lid.set_interactable(true)
 		
 		State.LID_OPEN:
-			settings_ui.set_instructions("Pick up the crank \n - OR - \n Close the lid")
+			settings_ui.set_instructions("Coge la manivela \n - O - \n Cierra la tapa")
 			
 			crank_pickable.set_outline_shader_color(color_assemble)
 			crank_pickable.set_interactable(true)
@@ -174,7 +174,7 @@ func _refresh_permissions():
 			lid.set_interactable(true)
 		
 		State.CRANK_PICKED_UP:
-			settings_ui.set_instructions("Insert the crank \n - OR - \n Stash the crank")
+			settings_ui.set_instructions("Inserta la manivela \n - O - \n Guarda la manivela")
 			
 			crank_pickable.set_outline_shader_color(COLOR_NEUTRAL)
 			crank_pickable.set_interactable(true)
@@ -192,10 +192,10 @@ func _refresh_permissions():
 			if _is_cranked:
 				_on_crank_cranked()
 			else:
-				settings_ui.set_instructions("Crank the crank")
+				settings_ui.set_instructions("Gira la manivela hasta tener suficiente cuerda")
 		
 		State.CRANK_CRANKED:
-			settings_ui.set_instructions("Pick up the filter \n - OR - \n Pick up the crank to stash it")
+			settings_ui.set_instructions("Coge el fieltro \n - O - \n Coge la manivela para guardarla")
 			
 			filter.set_outline_shader_color(color_assemble)
 			filter.set_interactable(true)
@@ -212,7 +212,7 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_highlight_visible(false)
 		
 		State.FILTER_PICKED_UP:
-			settings_ui.set_instructions("Mount the filter \n - OR - \n Stash the filter")
+			settings_ui.set_instructions("Monta el fieltro \n - O - \n Guarda el fieltro")
 			
 			filter.set_outline_shader_color(COLOR_NEUTRAL)
 			filter.set_interactable(true)
@@ -222,7 +222,7 @@ func _refresh_permissions():
 			stashed_filter_snap_zone.set_active(true)
 		
 		State.FILTER_MOUNTED:
-			settings_ui.set_instructions("Pick up any vinyl \n - OR - \n Pick up the filter to stash it")
+			settings_ui.set_instructions("Coge cualquier disco \n - O - \n Coge el fieltro para guardarlo")
 			
 			#TODO: Repeat for all vinyls
 			vinyl_cole_porter.set_outline_shader_color(color_assemble)
@@ -242,7 +242,7 @@ func _refresh_permissions():
 			stashed_filter_snap_zone.set_highlight_visible(false)
 		
 		State.VINYL_PICKED_UP:
-			settings_ui.set_instructions("Mount or stash the picked up vinyl")
+			settings_ui.set_instructions("Monta o guarda el disco que hayas cogido")
 			
 			#TODO: Repeat for all vinyls
 			mounted_vinyl_snap_zone.set_highlight_color(color_assemble)
@@ -259,7 +259,7 @@ func _refresh_permissions():
 				vinyl_conchita_martinez.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
-			settings_ui.set_instructions("Disengage the brake \n - OR - \n Remove the vinyl")
+			settings_ui.set_instructions("Desactiva el freno para que el plato empiece a girar \n - O - \n Retira el disco")
 			
 			brake.set_outline_shader_color(color_assemble)
 			brake.set_interactable(true)
@@ -270,7 +270,7 @@ func _refresh_permissions():
 			mounted_vinyl.set_interactable(true)
 		
 		State.BRAKE_DISENGAGED:
-			settings_ui.set_instructions("Mount the tonearm to start playing \n - OR - \n Engage the brake")
+			settings_ui.set_instructions("Monta el brazo fonocaptor en posición con la aguja sobre el disco para reproducir \n - O - \n Activa el freno para que el plato deje de girar")
 			
 			lid.tonearm.set_outline_shader_color(color_assemble)
 			lid.tonearm.set_interactable(true)
@@ -280,7 +280,7 @@ func _refresh_permissions():
 		
 		State.TONEARM_MOUNTED:
 			settings_ui.set_instructions(
-				"NOW PLAYING:\n%s -\n%s \n\n Stash the tonearm to stop playing" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
+				"En reproducción:\n%s -\n%s \n\n Quita el brazo fonocaptor con la aguja del disco para detener la reproducción" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
 			)
 			
 			lid.tonearm.set_outline_shader_color(color_disassemble)

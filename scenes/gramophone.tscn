@@ -207,7 +207,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ln7g1")
 transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.26483706, 0.1, 0.165)
 
 [node name="StashedVinylSnapZoneConchitaMartinez" parent="." instance=ExtResource("4_lo2t4")]
-transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.32483703, 0.1, 0.165)
+transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.355, 0.1, 0.165)
 
 [node name="CollisionShape3D" parent="StashedVinylSnapZoneConchitaMartinez" index="0"]
 shape = SubResource("SphereShape3D_rp1at")
@@ -216,7 +216,7 @@ shape = SubResource("SphereShape3D_rp1at")
 surface_material_override/0 = SubResource("StandardMaterial3D_7tecs")
 
 [node name="VinylConchitaMartinez" parent="." instance=ExtResource("9_dcquk")]
-transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.325163, 0.1, 0.165)
+transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.355, 0.1, 0.165)
 
 [node name="StashedFilterSnapZone" parent="." instance=ExtResource("2_tqyvr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)

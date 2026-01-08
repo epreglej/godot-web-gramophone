@@ -329,7 +329,7 @@ transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1
 settings_ui = NodePath("../SettingsUI")
 
 [node name="SettingsUI" parent="Environment/Room" instance=ExtResource("14_r3r3k")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.379, 1.269, -1.2)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.379, 1.45, -1.25)
 
 [node name="Chandelier" parent="Environment/Room" instance=ExtResource("22_ub8w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)

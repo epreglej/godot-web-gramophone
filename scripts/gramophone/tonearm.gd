@@ -45,8 +45,8 @@ func _on_hinge_moved(angle: float):
 	if _is_animation_playing:
 		return
 		
-	if angle <= -55.0:
+	if angle <= -35.0:
 		mounted.emit()
 		
-	elif angle >= 0.0:
+	elif angle >= -20.0:
 		stashed.emit()
