@@ -12,6 +12,9 @@ func set_active(value: bool) -> void:
 func set_highlight_visible(value: bool) -> void:
 	highlight.visible = value
 
+# You have to make the children editable in the parent node 
+# and  highlight material unique in the editor
+# for the following function to work
 func set_highlight_color(color: Color) -> void:
 	var mat := highlight.get_surface_override_material(0)
 	
