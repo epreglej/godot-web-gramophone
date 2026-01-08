@@ -325,7 +325,7 @@ func _on_filter_picked_up():
 	_refresh_permissions()
 
 
-func _on_filter_mounted():
+func _on_filter_mounted(_what: Variant):
 	if state != State.FILTER_PICKED_UP:
 		return
 	
@@ -334,7 +334,7 @@ func _on_filter_mounted():
 	_refresh_permissions()
 
 
-func _on_filter_stashed():
+func _on_filter_stashed(_what: Variant):
 	if state != State.FILTER_PICKED_UP:
 		return
 	
