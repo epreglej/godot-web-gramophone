@@ -94,9 +94,9 @@ func _ready():
 	_refresh_permissions()
 
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if mounted_vinyl and state == State.BRAKE_DISENGAGED:
-		mounted_vinyl.get_node("Model").rotate_y(deg_to_rad(60 * _delta))
+		mounted_vinyl.get_node("SnapPivot").get_node("Model").rotate_y(deg_to_rad(60 * delta))
 
 
 func _refresh_permissions():

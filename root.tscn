@@ -325,7 +325,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0299916, 0.6815504, -0.178
 transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.4045794, -0.18341547, 0.6791854, 0.016846359)
 
 [node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("settings_ui") instance=ExtResource("18_blcw0")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.0914176, 0.69603163, -1.2500001)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 0.7, -1.25)
 settings_ui = NodePath("../SettingsUI")
 
 [node name="SettingsUI" parent="Environment/Room" instance=ExtResource("14_r3r3k")]

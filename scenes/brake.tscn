@@ -17,7 +17,7 @@ shader_parameter/glow_max = 1.0
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_n6ap3"]
 margin = 0.12
-radius = 0.05
+radius = 0.04
 
 [node name="Brake" type="Node3D" node_paths=PackedStringArray("animation_player", "outline", "interactable_hinge", "interactable_handle")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
@@ -73,14 +73,14 @@ visible = false
 visible = false
 
 [node name="Handle" type="Node3D" parent="InteractableHinge"]
-transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -0.005, 0.02)
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 0, -0.005, 0.01)
 
 [node name="InteractableHandle" type="RigidBody3D" parent="InteractableHinge/Handle"]
 collision_layer = 262144
 collision_mask = 0
 freeze = true
 script = ExtResource("3_pe5bk")
-snap_distance = 0.05
+snap_distance = 0.04
 picked_up_layer = 0
 ranged_grab_method = 0
 second_hand_grab = 2
