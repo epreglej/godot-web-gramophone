@@ -31,19 +31,18 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="CenterContainer" type="CenterContainer" parent="Control/VBoxContainer"]
-custom_minimum_size = Vector2(240, 200)
+custom_minimum_size = Vector2(240, 260)
 layout_mode = 2
 
 [node name="InstructionsLabel" type="Label" parent="Control/VBoxContainer/CenterContainer"]
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
+theme_override_font_sizes/font_size = 20
 text = "Instructions"
 horizontal_alignment = 1
-vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="Button" type="Button" parent="Control/VBoxContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 16
-text = "Restart"
+text = "[RESTART]"
 script = ExtResource("1_oe7bq")

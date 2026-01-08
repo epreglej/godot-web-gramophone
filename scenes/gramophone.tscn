@@ -137,8 +137,6 @@ brake = NodePath("Base/Brake")
 [node name="Lid" parent="." instance=ExtResource("2_grppd")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, 0)
 
-[node name="Tonearm" type="Node3D" parent="."]
-
 [node name="Base" type="Node3D" parent="."]
 
 [node name="Model" parent="Base" instance=ExtResource("1_dylsv")]

@@ -44,9 +44,9 @@ enum State {
 	TONEARM_MOUNTED
 }
 
-const COLOR_GREEN: Color = Color(0,1,0,0.25)
+const COLOR_GREEN: Color = Color(0,1,0,0.3)
 const COLOR_YELLOW: Color = Color(1,0.8,0,0.3)
-const COLOR_NEUTRAL: Color = Color(0.8,0.8,0.8,0.25)
+const COLOR_NEUTRAL: Color = Color(0.7,0.7,1,0.3)
 
 var color_assemble: Color = COLOR_GREEN
 var color_disassemble: Color = COLOR_YELLOW
@@ -228,9 +228,11 @@ func _refresh_permissions():
 			vinyl_cole_porter.set_outline_shader_color(color_assemble)
 			vinyl_cole_porter.set_interactable(true)
 			stashed_vinyl_snap_zone_cole_porter.set_active(true)
+			stashed_vinyl_snap_zone_cole_porter.set_highlight_visible(false)
 			vinyl_conchita_martinez.set_outline_shader_color(color_assemble)
 			vinyl_conchita_martinez.set_interactable(true)
 			stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
+			stashed_vinyl_snap_zone_conchita_martinez.set_highlight_visible(false)
 			
 			filter.set_outline_shader_color(color_disassemble)
 			filter.set_interactable(true)
@@ -277,7 +279,9 @@ func _refresh_permissions():
 			brake.set_interactable(true)
 		
 		State.TONEARM_MOUNTED:
-			settings_ui.set_instructions("Stash the tonearm to stop playing")
+			settings_ui.set_instructions(
+				"Playing: %s - %s \n Stash the tonearm to stop playing" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
+			)
 			
 			lid.tonearm.set_outline_shader_color(color_disassemble)
 			lid.tonearm.set_interactable(true)
@@ -432,8 +436,9 @@ func _on_tonearm_mounted():
 	if state != State.BRAKE_DISENGAGED:
 		return
 	
-	state = State.TONEARM_MOUNTED
+	lid.tonearm.play_animation("Mounting")
 	
+	state = State.TONEARM_MOUNTED
 	_start_or_resume_playback()
 	
 	_refresh_permissions()
@@ -443,8 +448,9 @@ func _on_tonearm_stashed():
 	if state != State.TONEARM_MOUNTED:
 		return
 	
-	state = State.BRAKE_DISENGAGED
+	lid.tonearm.play_animation("Stashing")
 	
+	state = State.BRAKE_DISENGAGED
 	audio_player.stream_paused = true
 	
 	_refresh_permissions()
