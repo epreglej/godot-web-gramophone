@@ -293,6 +293,7 @@ func _on_lid_opened():
 	if state != State.LID_CLOSED:
 		return
 	
+	lid.interactable_handle.drop()
 	lid.play_animation("Opening")
 	
 	state = State.LID_OPEN
@@ -303,6 +304,7 @@ func _on_lid_closed():
 	if state != State.LID_OPEN:
 		return
 	
+	lid.interactable_handle.drop()
 	lid.play_animation("Closing")
 	
 	state = State.LID_CLOSED
