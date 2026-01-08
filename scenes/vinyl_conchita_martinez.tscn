@@ -16,8 +16,8 @@ render_priority = 0
 shader = ExtResource("6_rrpue")
 shader_parameter/shell_thickness = 0.002
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
-shader_parameter/glow_speed = 2.0
-shader_parameter/glow_min = 0.8
+shader_parameter/glow_speed = 3.0
+shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
 [node name="VinylConchitaMartinez" type="RigidBody3D" node_paths=PackedStringArray("outline") groups=["Vinyls"]]

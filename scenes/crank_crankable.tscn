@@ -14,11 +14,11 @@ render_priority = 0
 shader = ExtResource("5_ws1v3")
 shader_parameter/shell_thickness = 0.002
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
-shader_parameter/glow_speed = 2.0
-shader_parameter/glow_min = 0.8
+shader_parameter/glow_speed = 3.0
+shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="CrankCrankable" type="Node3D" node_paths=PackedStringArray("outline", "animation_player", "interactable_hinge", "interactable_handle")]
+[node name="CrankCrankable" type="Node3D" node_paths=PackedStringArray("outline", "animation_player", "interactable_hinge", "interactable_handle") groups=["Cranks"]]
 script = ExtResource("1_gl80r")
 outline = NodePath("InteractableHinge/Outline/Crank")
 animation_player = NodePath("AnimationPlayer")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=34 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
@@ -12,7 +12,6 @@
 [ext_resource type="PackedScene" uid="uid://dlno1p8v2ybw" path="res://scenes/filter.tscn" id="9_tykl6"]
 [ext_resource type="PackedScene" uid="uid://ddfxisqbepnop" path="res://scenes/crank_pickable.tscn" id="11_grppd"]
 [ext_resource type="PackedScene" uid="uid://bhenaq4xt857k" path="res://scenes/crank_crankable.tscn" id="12_2d80k"]
-[ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_kkau2"]
 resource_local_to_scene = true
@@ -196,7 +195,7 @@ shape = SubResource("SphereShape3D_yer63")
 surface_material_override/0 = SubResource("StandardMaterial3D_yc4pg")
 
 [node name="StashedVinylSnapZoneColePorter" parent="." instance=ExtResource("4_lo2t4")]
-transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.475, 0.1, 0.165)
+transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.26483706, 0.1, 0.165)
 
 [node name="CollisionShape3D" parent="StashedVinylSnapZoneColePorter" index="0"]
 shape = SubResource("SphereShape3D_yc4pg")
@@ -205,10 +204,10 @@ shape = SubResource("SphereShape3D_yc4pg")
 surface_material_override/0 = SubResource("StandardMaterial3D_ln7g1")
 
 [node name="VinylColePorter" parent="." instance=ExtResource("5_dcy10")]
-transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.475, 0.1, 0.165)
+transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.26483706, 0.1, 0.165)
 
 [node name="StashedVinylSnapZoneConchitaMartinez" parent="." instance=ExtResource("4_lo2t4")]
-transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.53499997, 0.1, 0.165)
+transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.32483703, 0.1, 0.165)
 
 [node name="CollisionShape3D" parent="StashedVinylSnapZoneConchitaMartinez" index="0"]
 shape = SubResource("SphereShape3D_rp1at")
@@ -217,10 +216,10 @@ shape = SubResource("SphereShape3D_rp1at")
 surface_material_override/0 = SubResource("StandardMaterial3D_7tecs")
 
 [node name="VinylConchitaMartinez" parent="." instance=ExtResource("9_dcquk")]
-transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 0, 1, 0.53532594, 0.1, 0.165)
+transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, -0.325163, 0.1, 0.165)
 
 [node name="StashedFilterSnapZone" parent="." instance=ExtResource("2_tqyvr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
 
 [node name="CollisionShape3D" parent="StashedFilterSnapZone" index="0"]
 shape = SubResource("SphereShape3D_ln3yr")
@@ -229,16 +228,10 @@ shape = SubResource("SphereShape3D_ln3yr")
 surface_material_override/0 = SubResource("StandardMaterial3D_c66i1")
 
 [node name="Filter" parent="." instance=ExtResource("9_tykl6")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.3, 0, 0.165)
 
 [node name="CrankPickable" parent="." instance=ExtResource("11_grppd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.02)
-
-[node name="FilterSystem" type="Node3D" parent="." node_paths=PackedStringArray("filter", "mounted_filter_snap_zone", "stashed_filter_snap_zone")]
-script = ExtResource("14_kkau2")
-filter = NodePath("../Filter")
-mounted_filter_snap_zone = NodePath("../Base/MountedFilterSnapZone")
-stashed_filter_snap_zone = NodePath("../StashedFilterSnapZone")
 
 [node name="CrankCrankable" parent="." instance=ExtResource("12_2d80k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15155065, 0.066179566, 0.14647447)

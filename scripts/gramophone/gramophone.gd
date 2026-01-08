@@ -44,9 +44,9 @@ enum State {
 	TONEARM_MOUNTED
 }
 
-const COLOR_GREEN: Color = Color(0,1,0,0.3)
-const COLOR_YELLOW: Color = Color(1,0.8,0,0.3)
-const COLOR_NEUTRAL: Color = Color(0.7,0.7,1,0.3)
+const COLOR_GREEN: Color = Color(0,1,0,0.35)
+const COLOR_YELLOW: Color = Color(1,0.8,0,0.35)
+const COLOR_NEUTRAL: Color = Color(0.7,0.7,1,0.35)
 
 var color_assemble: Color = COLOR_GREEN
 var color_disassemble: Color = COLOR_YELLOW
@@ -280,7 +280,7 @@ func _refresh_permissions():
 		
 		State.TONEARM_MOUNTED:
 			settings_ui.set_instructions(
-				"Playing: %s - %s \n Stash the tonearm to stop playing" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
+				"NOW PLAYING:\n%s -\n%s \n\n Stash the tonearm to stop playing" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
 			)
 			
 			lid.tonearm.set_outline_shader_color(color_disassemble)
