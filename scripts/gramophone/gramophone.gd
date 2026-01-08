@@ -44,6 +44,9 @@ enum State {
 	TONEARM_MOUNTED
 }
 
+var color_assemble: Color = Color(0.1,1,0.1,0.4)
+var color_disassemble: Color = Color(1,1,0,0.4)
+
 var state: State = State.LID_CLOSED
 var mounted_vinyl: Vinyl = null
 
@@ -151,7 +154,7 @@ func _refresh_permissions():
 			settings_ui.set_instructions("Open the lid")
 			
 			lid.set_interactable(true)
-			lid.set_outline_shader_params(Color(1,1,0,0.3), 1)
+			lid.set_outline_shader_color(color_assemble)
 		
 		State.LID_OPEN:
 			settings_ui.set_instructions("Pick up the crank \n - OR - \n Close the lid")
@@ -161,9 +164,10 @@ func _refresh_permissions():
 			mounted_crank_snap_zone.set_highlight_visible(false)
 			stashed_crank_snap_zone.set_active(true)
 			stashed_crank_snap_zone.set_highlight_visible(false)
+			crank_pickable.set_outline_shader_color(color_assemble)
 			
 			lid.set_interactable(true)
-			lid.set_outline_shader_params(Color(1,0.4,0,0.3), 1)
+			lid.set_outline_shader_color(color_disassemble)
 		
 		State.CRANK_PICKED_UP:
 			settings_ui.set_instructions("Insert the crank \n - OR - \n Stash the crank")
@@ -171,6 +175,8 @@ func _refresh_permissions():
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
 			stashed_crank_snap_zone.set_active(true)
+			mounted_crank_snap_zone.set_highlight_color(color_assemble)
+			stashed_crank_snap_zone.set_highlight_color(color_disassemble)
 		
 		State.CRANK_INSERTED:
 			crank_pickable.set_visible(false)

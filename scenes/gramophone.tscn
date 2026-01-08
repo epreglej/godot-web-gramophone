@@ -59,7 +59,7 @@ visible = false
 visible = false
 
 [node name="Brake" parent="Base" instance=ExtResource("8_grppd")]
-transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.09706551, 0.100093216, 0.2728012)
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.0997434, 0.100093216, 0.27473375)
 
 [node name="MountedFilterSnapZone" parent="Base" instance=ExtResource("2_tqyvr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.165)

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dcf6yl2uhhulf"]
 
 [ext_resource type="Script" uid="uid://bb4u7rbk1v76y" path="res://scripts/gramophone/crank_snap_zone.gd" id="1_gf8pf"]
-[ext_resource type="Material" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tres" id="2_mrkr2"]
+[ext_resource type="Material" uid="uid://c0kjtkjtwgkrc" path="res://addons/godot-xr-tools/objects/highlight/highlight_ring.tres" id="2_mrkr2"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hronh"]
 resource_local_to_scene = true
