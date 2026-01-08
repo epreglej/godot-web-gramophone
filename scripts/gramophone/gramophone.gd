@@ -34,16 +34,19 @@ enum State {
 	VINYL_PICKED_UP,
 	VINYL_MOUNTED,
 	
-	TONEARM_MOUNTED,
+	BRAKE_DISENGAGED,
 	
-	PLAYING
+	TONEARM_MOUNTED
 }
 
 var state: State = State.LID_CLOSED
 var mounted_vinyl: Vinyl = null
 
+var _last_played_audio_stream: AudioStream = null
+
 # TODO: Reset it to false after adding the cranking to the crank
 var _is_cranked: bool = false
+var _state_before_crank_depleted: State = State.CRANK_INSERTED
 
 
 func _ready():
@@ -91,7 +94,7 @@ func _ready():
 
 
 func _physics_process(_delta: float) -> void:
-	if mounted_vinyl and state == State.PLAYING:
+	if mounted_vinyl and state == State.BRAKE_DISENGAGED:
 		mounted_vinyl.get_node("Model").rotate_y(deg_to_rad(60 * _delta))
 
 
@@ -167,12 +170,12 @@ func _refresh_permissions():
 			mounted_crank_snap_zone.set_highlight_visible(false)
 			stashed_crank_snap_zone.set_active(true)
 			stashed_crank_snap_zone.set_highlight_visible(false)
-
+		
 		State.FILTER_PICKED_UP:
 			state_label.text = "FILTER_PICKED_UP"
 			instructions_label.text = "Mount the filter \n - OR - \n Stash the filter"
 			filter_system.set_active(true)
-
+		
 		State.FILTER_MOUNTED:
 			state_label.text = "FILTER_MOUNTED"
 			instructions_label.text = "Pick up any vinyl \n - OR - \n Pick up the filter to stash it"
@@ -193,25 +196,26 @@ func _refresh_permissions():
 		
 		State.VINYL_MOUNTED:
 			state_label.text = "VINYL_MOUNTED"
-			instructions_label.text = "Mount the tonearm \n - OR - \n Remove the vinyl"
-			lid.tonearm.expect_mount()
+			instructions_label.text = "Disengage the brake \n - OR - \n Remove the vinyl"
+			
+			brake.set_interactable(true)
 			
 			mounted_vinyl_snap_zone.set_active(true)
 			mounted_vinyl.set_interactable(true)
 		
-		State.TONEARM_MOUNTED:
-			state_label.text = "TONEARM_MOUNTED"
-			instructions_label.text = "Disengage the brake to play \n - OR - \n Stash the tonearm"
+		State.BRAKE_DISENGAGED:
+			state_label.text = "BRAKE_RELEASED"
+			instructions_label.text = "Mount the tonearm to start playing \n - OR - \n Engage the brake"
+			
+			lid.tonearm.expect_mount()
 			
 			brake.set_interactable(true)
+		
+		State.TONEARM_MOUNTED:
+			state_label.text = "PLAYING"
+			instructions_label.text = "Stash the tonearm to stop playing"
 			
 			lid.tonearm.expect_stash()
-		
-		State.PLAYING:
-			state_label.text = "PLAYING"
-			instructions_label.text = "Engage the brake to stop playing"
-			
-			brake.set_interactable(true)
 
 
 # CALLBACKS
@@ -244,8 +248,8 @@ func _on_crank_picked_up():
 	_refresh_permissions()
 
 func _on_crank_inserted(_what: Variant):
-	#if state != State.CRANK_PICKED_UP:
-		#return
+	if state != State.CRANK_PICKED_UP:
+		return
 	
 	state = State.CRANK_INSERTED
 	_refresh_permissions()
@@ -264,8 +268,8 @@ func _on_crank_cranked():
 	_refresh_permissions()
 
 func _on_crank_stashed(_what: Variant):
-	#if state != State.CRANK_PICKED_UP:
-		#return
+	if state != State.CRANK_PICKED_UP:
+		return
 	
 	# TODO: Sometimes reset the crank, it cant give infinite playback
 	#_is_cranked = false
@@ -305,9 +309,8 @@ func _on_filter_stashed():
 func _on_vinyl_picked_up():
 	state = State.VINYL_PICKED_UP
 	
-	# Not the cleanest solution but it works
-	if mounted_vinyl:
-		mounted_vinyl = null
+	# When user picks up the vinyl, we should reset the playback cache
+	_last_played_audio_stream = null
 	
 	_refresh_permissions()
 
@@ -320,51 +323,78 @@ func _on_vinyl_mounted(_what: Variant):
 
 func _on_vinyl_stashed(_what: Variant):
 	state = State.FILTER_MOUNTED
-	_refresh_permissions()
-
-
-# Tonearm
-
-func _on_tonearm_mounted():
-	state = State.TONEARM_MOUNTED
-	_refresh_permissions()
-
-func _on_tonearm_stashed():
-	state = State.VINYL_MOUNTED
+	
+	# Not the cleanest solution but it works
+	if mounted_vinyl:
+		mounted_vinyl = null
+		
 	_refresh_permissions()
 
 
 # Brake
 
 func _on_brake_disengaged():
-	if state != State.TONEARM_MOUNTED:
+	if state != State.VINYL_MOUNTED:
 		return
-	
-	state = State.PLAYING
-	
-	# Only change the stream if the vinyl is different or if no stream is loaded
-	if not audio_player.stream or audio_player.stream.resource_path != mounted_vinyl.song.resource_path:
-		audio_player.stream = mounted_vinyl.song.audio_stream
-		audio_player.play()
-	else:
-		# Resume playback if it's the same vinyl
-		audio_player.stream_paused = false
-	
+
+	state = State.BRAKE_DISENGAGED
 	_refresh_permissions()
 
 
 func _on_brake_engaged():
-	if state != State.PLAYING:
+	if state != State.BRAKE_DISENGAGED:
+		return
+
+	state = State.FILTER_MOUNTED
+	
+	_refresh_permissions()
+
+
+# Tonearm
+
+func _on_tonearm_mounted():
+	if state != State.BRAKE_DISENGAGED:
 		return
 	
 	state = State.TONEARM_MOUNTED
+	
+	_start_or_resume_playback()
+	
+	_refresh_permissions()
+
+
+func _on_tonearm_stashed():
+	if state != State.TONEARM_MOUNTED:
+		return
+	
+	state = State.BRAKE_DISENGAGED
 	
 	audio_player.stream_paused = true
 	
 	_refresh_permissions()
 
 
-# AUDIO WARMUP
+# AUDIO HELPERS
+
+func _get_current_song_stream() -> AudioStream:
+	if mounted_vinyl == null:
+		return null
+
+	return mounted_vinyl.song.audio_stream
+
+
+func _start_or_resume_playback() -> void:
+	var stream := _get_current_song_stream()
+	if stream == null:
+		return
+
+	if _last_played_audio_stream != stream:
+		audio_player.stream = stream
+		audio_player.play()
+		_last_played_audio_stream = stream
+	else:
+		audio_player.stream_paused = false
+
 
 func _warmup_all_vinyls() -> void:
 	#TODO: Repeat for all vinyls
