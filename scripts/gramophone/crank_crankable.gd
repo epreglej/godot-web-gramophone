@@ -31,7 +31,7 @@ func play_animation(animation_name: String) -> void:
 	_is_animation_playing = false
 
 
-func set_highlight_color(color: Color, glow_speed: float) -> void:
+func set_outline_shader_params(color: Color, glow_speed: float) -> void:
 	var mat2 := outline.get_surface_override_material(1)
 	
 	if mat2 is ShaderMaterial:

@@ -5,7 +5,10 @@ class_name Gramophone
 @export var settings_ui: SettingsUI
 
 @export var lid: Lid
-@export var filter_system: FilterSystem
+
+@export var filter: Filter
+@export var mounted_filter_snap_zone: FilterSnapZone
+@export var stashed_filter_snap_zone: FilterSnapZone
 
 @export var crank_pickable: CrankPickable
 @export var crank_crankable: CrankCrankable
@@ -52,8 +55,8 @@ var _state_before_crank_depleted: State = State.CRANK_INSERTED
 
 
 func _ready():
-	await _warmup_all_vinyls()
 	await settings_ui.content_ready
+	await _warmup_all_vinyls()
 	
 	crank_crankable.set_visible(false)
 	
@@ -85,9 +88,10 @@ func _ready():
 	stashed_crank_snap_zone.has_picked_up.connect(_on_crank_stashed)
 	crank_crankable.crank_cranked.connect(_on_crank_cranked)
 	
-	filter_system.picked_up.connect(_on_filter_picked_up)
-	filter_system.mounted.connect(_on_filter_mounted)
-	filter_system.stashed.connect(_on_filter_stashed)
+	mounted_filter_snap_zone.has_picked_up.connect(_on_filter_mounted)
+	stashed_filter_snap_zone.has_picked_up.connect(_on_filter_stashed)
+	mounted_filter_snap_zone.has_dropped.connect(_on_filter_picked_up)
+	stashed_filter_snap_zone.has_dropped.connect(_on_filter_picked_up)
 	
 	#TODO: Repeat for all vinyls
 	mounted_vinyl_snap_zone.has_picked_up.connect(_on_vinyl_mounted)
@@ -107,6 +111,7 @@ func _ready():
 
 
 func _physics_process(delta: float) -> void:
+	# TODO: Reset the roatation of the model after picking up the vinyl
 	if mounted_vinyl and (state == State.BRAKE_DISENGAGED or state == State.TONEARM_MOUNTED):
 		mounted_vinyl.get_node("SnapPivot").get_node("Model").rotate_y(deg_to_rad(60 * delta))
 
@@ -119,7 +124,9 @@ func _refresh_permissions():
 	mounted_crank_snap_zone.set_active(false)
 	stashed_crank_snap_zone.set_active(false)
 	
-	filter_system.set_active(false)
+	filter.set_interactable(false)
+	mounted_filter_snap_zone.set_active(false)
+	stashed_filter_snap_zone.set_active(false)
 	
 	#TODO: Repeat for all vinyls
 	mounted_vinyl_snap_zone.set_active(false)
@@ -177,8 +184,8 @@ func _refresh_permissions():
 			#state_label.text = "CRANK_CRANKED"
 			settings_ui.set_instructions("Pick up the filter \n - OR - \n Pick up the crank to stash it")
 			
-			filter_system.set_active(true)
-			filter_system.show_pickup_hint(Color(1, 0.7, 0))
+			filter.set_interactable(true)
+			stashed_filter_snap_zone.set_active(true)
 			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
@@ -189,7 +196,10 @@ func _refresh_permissions():
 		State.FILTER_PICKED_UP:
 			#state_label.text = "FILTER_PICKED_UP"
 			settings_ui.set_instructions("Mount the filter \n - OR - \n Stash the filter")
-			filter_system.set_active(true)
+			
+			filter.set_interactable(true)
+			stashed_filter_snap_zone.set_active(true)
+			mounted_filter_snap_zone.set_active(true)
 		
 		State.FILTER_MOUNTED:
 			#state_label.text = "FILTER_MOUNTED"
@@ -201,7 +211,8 @@ func _refresh_permissions():
 			vinyl_conchita_martinez.set_interactable(true)
 			stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
 			
-			filter_system.set_active(true)
+			filter.set_interactable(true)
+			mounted_filter_snap_zone.set_active(true)
 		
 		State.VINYL_PICKED_UP:
 			settings_ui.set_instructions("Mount or stash the picked up vinyl")
@@ -328,27 +339,30 @@ func _on_filter_stashed():
 # Vinyl
 
 func _on_vinyl_picked_up():
-	state = State.VINYL_PICKED_UP
+	if mounted_vinyl:
+		mounted_vinyl.get_node("SnapPivot").get_node("Model").basis = Basis.IDENTITY
 	
 	# When user picks up the vinyl, we should reset the playback cache
 	_last_played_audio_stream = null
 	
+	state = State.VINYL_PICKED_UP
+	
 	_refresh_permissions()
 
 func _on_vinyl_mounted(_what: Variant):
-	state = State.VINYL_MOUNTED
-	
 	mounted_vinyl = mounted_vinyl_snap_zone.picked_up_object as Vinyl
+	
+	state = State.VINYL_MOUNTED
 	
 	_refresh_permissions()
 
 func _on_vinyl_stashed(_what: Variant):
-	state = State.FILTER_MOUNTED
-	
 	# Not the cleanest solution but it works
 	if mounted_vinyl:
 		mounted_vinyl = null
-		
+	
+	state = State.FILTER_MOUNTED
+	
 	_refresh_permissions()
 
 
