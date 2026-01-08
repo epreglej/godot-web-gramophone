@@ -66,6 +66,12 @@ func _ready():
 	stashed_crank_snap_zone.set_active(false)
 	crank_pickable.set_interactable(false)
 	
+	filter.set_interactable(true)
+	stashed_filter_snap_zone.set_active(true)
+	stashed_filter_snap_zone.pick_up_object(filter)
+	stashed_filter_snap_zone.set_active(false)
+	filter.set_interactable(false)
+	
 	#TODO: Repeat for all vinyls
 	vinyl_cole_porter.set_interactable(true)
 	stashed_vinyl_snap_zone_cole_porter.set_active(true)
@@ -79,6 +85,7 @@ func _ready():
 	stashed_vinyl_snap_zone_conchita_martinez.set_active(false)
 	vinyl_conchita_martinez.set_interactable(false)
 	
+	# Connect signals to callbacks
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
@@ -88,10 +95,10 @@ func _ready():
 	stashed_crank_snap_zone.has_picked_up.connect(_on_crank_stashed)
 	crank_crankable.crank_cranked.connect(_on_crank_cranked)
 	
-	mounted_filter_snap_zone.has_picked_up.connect(_on_filter_mounted)
-	stashed_filter_snap_zone.has_picked_up.connect(_on_filter_stashed)
 	mounted_filter_snap_zone.has_dropped.connect(_on_filter_picked_up)
 	stashed_filter_snap_zone.has_dropped.connect(_on_filter_picked_up)
+	mounted_filter_snap_zone.has_picked_up.connect(_on_filter_mounted)
+	stashed_filter_snap_zone.has_picked_up.connect(_on_filter_stashed)
 	
 	#TODO: Repeat for all vinyls
 	mounted_vinyl_snap_zone.has_picked_up.connect(_on_vinyl_mounted)
@@ -313,8 +320,8 @@ func _on_crank_stashed(_what: Variant):
 # FILTER
 
 func _on_filter_picked_up():
-	#if state != State.CRANK_CRANKED and state != State.FILTER_MOUNTED:
-		#return
+	if state != State.CRANK_CRANKED and state != State.FILTER_MOUNTED:
+		return
 	
 	state = State.FILTER_PICKED_UP
 	_refresh_permissions()
