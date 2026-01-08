@@ -11,6 +11,10 @@ func set_interactable(value: bool) -> void:
 	outline.visible = value
 
 
+func set_outline_visible(value: bool) -> void:
+	outline.visible = value
+
+
 func set_outline_shader_color(color: Color) -> void:
 	var mat := outline.get_surface_override_material(0)
 	

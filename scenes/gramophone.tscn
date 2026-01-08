@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=26 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="Script" uid="uid://df4j64fa1wfle" path="res://scripts/gramophone/gramophone.gd" id="1_ouked"]
@@ -13,6 +13,20 @@
 [ext_resource type="PackedScene" uid="uid://ddfxisqbepnop" path="res://scenes/crank_pickable.tscn" id="11_grppd"]
 [ext_resource type="PackedScene" uid="uid://bhenaq4xt857k" path="res://scenes/crank_crankable.tscn" id="12_2d80k"]
 [ext_resource type="Script" uid="uid://bpgrm807ye206" path="res://scripts/gramophone/filter_system.gd" id="14_kkau2"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_kkau2"]
+resource_local_to_scene = true
+radius = 0.1
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_legmv"]
+load_path = "res://.godot/imported/ring.png-34d9c9e9780f2732148a5b14fcac48dd.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yer63"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("CompressedTexture2D_legmv")
+billboard_mode = 1
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_dcquk"]
 resource_local_to_scene = true
@@ -42,6 +56,20 @@ transparency = 1
 no_depth_test = true
 shading_mode = 0
 albedo_texture = SubResource("CompressedTexture2D_ln3yr")
+billboard_mode = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ln3yr"]
+resource_local_to_scene = true
+radius = 0.1
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_yc4pg"]
+load_path = "res://.godot/imported/ring.png-34d9c9e9780f2732148a5b14fcac48dd.s3tc.ctex"
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c66i1"]
+transparency = 1
+no_depth_test = true
+shading_mode = 0
+albedo_texture = SubResource("CompressedTexture2D_yc4pg")
 billboard_mode = 1
 
 [node name="Gramophone" type="Node3D" node_paths=PackedStringArray("audio_player", "lid", "filter", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "crank_pickable", "crank_crankable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "mounted_vinyl_snap_zone", "vinyl_cole_porter", "stashed_vinyl_snap_zone_cole_porter", "vinyl_conchita_martinez", "stashed_vinyl_snap_zone_conchita_martinez", "brake")]
@@ -94,6 +122,12 @@ transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, -0.0
 [node name="MountedFilterSnapZone" parent="Base" instance=ExtResource("2_tqyvr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.12, 0.165)
 
+[node name="CollisionShape3D" parent="Base/MountedFilterSnapZone" index="0"]
+shape = SubResource("SphereShape3D_kkau2")
+
+[node name="Highlight" parent="Base/MountedFilterSnapZone" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_yer63")
+
 [node name="MountedVinylSnapZone" parent="Base" instance=ExtResource("4_lo2t4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0.165)
 
@@ -130,6 +164,12 @@ transform = Transform3D(0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, 
 [node name="StashedFilterSnapZone" parent="." instance=ExtResource("2_tqyvr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
 
+[node name="CollisionShape3D" parent="StashedFilterSnapZone" index="0"]
+shape = SubResource("SphereShape3D_ln3yr")
+
+[node name="Highlight" parent="StashedFilterSnapZone" index="2"]
+surface_material_override/0 = SubResource("StandardMaterial3D_c66i1")
+
 [node name="Filter" parent="." instance=ExtResource("9_tykl6")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 0, 0.165)
 
@@ -146,5 +186,7 @@ stashed_filter_snap_zone = NodePath("../StashedFilterSnapZone")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15155065, 0.066179566, 0.14647447)
 
 [editable path="Base/Model"]
+[editable path="Base/MountedFilterSnapZone"]
 [editable path="Base/MountedCrankSnapZone"]
 [editable path="Base/StashedCrankSnapZone"]
+[editable path="StashedFilterSnapZone"]

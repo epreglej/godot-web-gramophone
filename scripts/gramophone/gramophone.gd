@@ -44,8 +44,11 @@ enum State {
 	TONEARM_MOUNTED
 }
 
-var color_assemble: Color = Color(0.1,1,0.1,0.4)
-var color_disassemble: Color = Color(1,1,0,0.4)
+const COLOR_GREEN: Color = Color(0,1,0,0.4)
+const COLOR_YELLOW: Color = Color(1,1,0,0.4)
+
+var color_assemble: Color = COLOR_GREEN
+var color_disassemble: Color = COLOR_YELLOW
 
 var state: State = State.LID_CLOSED
 var mounted_vinyl: Vinyl = null
@@ -153,34 +156,36 @@ func _refresh_permissions():
 		State.LID_CLOSED:
 			settings_ui.set_instructions("Open the lid")
 			
-			lid.set_interactable(true)
 			lid.set_outline_shader_color(color_assemble)
+			lid.set_interactable(true)
 		
 		State.LID_OPEN:
 			settings_ui.set_instructions("Pick up the crank \n - OR - \n Close the lid")
 			
+			crank_pickable.set_outline_shader_color(color_assemble)
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
 			mounted_crank_snap_zone.set_highlight_visible(false)
 			stashed_crank_snap_zone.set_active(true)
 			stashed_crank_snap_zone.set_highlight_visible(false)
-			crank_pickable.set_outline_shader_color(color_assemble)
 			
-			lid.set_interactable(true)
 			lid.set_outline_shader_color(color_disassemble)
+			lid.set_interactable(true)
 		
 		State.CRANK_PICKED_UP:
 			settings_ui.set_instructions("Insert the crank \n - OR - \n Stash the crank")
 			
 			crank_pickable.set_interactable(true)
-			mounted_crank_snap_zone.set_active(true)
-			stashed_crank_snap_zone.set_active(true)
+			crank_pickable.set_outline_visible(false)
 			mounted_crank_snap_zone.set_highlight_color(color_assemble)
 			stashed_crank_snap_zone.set_highlight_color(color_disassemble)
+			mounted_crank_snap_zone.set_active(true)
+			stashed_crank_snap_zone.set_active(true)
 		
 		State.CRANK_INSERTED:
 			crank_pickable.set_visible(false)
 			crank_crankable.set_visible(true)
+			crank_crankable.set_outline_shader_color(COLOR_GREEN)
 			crank_crankable.set_interactable(true)
 			
 			if _is_cranked:
@@ -191,12 +196,14 @@ func _refresh_permissions():
 		State.CRANK_CRANKED:
 			settings_ui.set_instructions("Pick up the filter \n - OR - \n Pick up the crank to stash it")
 			
+			filter.set_outline_shader_color(color_assemble)
 			filter.set_interactable(true)
 			mounted_filter_snap_zone.set_active(true)
 			mounted_filter_snap_zone.set_highlight_visible(false)
 			stashed_filter_snap_zone.set_active(true)
 			stashed_filter_snap_zone.set_highlight_visible(false)
 			
+			crank_pickable.set_outline_shader_color(color_disassemble)
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
 			mounted_crank_snap_zone.set_highlight_visible(false)
@@ -207,8 +214,10 @@ func _refresh_permissions():
 			settings_ui.set_instructions("Mount the filter \n - OR - \n Stash the filter")
 			
 			filter.set_interactable(true)
-			stashed_filter_snap_zone.set_active(true)
+			mounted_filter_snap_zone.set_highlight_color(color_assemble)
+			stashed_filter_snap_zone.set_highlight_color(color_disassemble)
 			mounted_filter_snap_zone.set_active(true)
+			stashed_filter_snap_zone.set_active(true)
 		
 		State.FILTER_MOUNTED:
 			settings_ui.set_instructions("Pick up any vinyl \n - OR - \n Pick up the filter to stash it")
