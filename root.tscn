@@ -1,4 +1,4 @@
-[gd_scene load_steps=46 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene load_steps=45 format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="1_bf3um"]
 [ext_resource type="Script" uid="uid://j86yc3k7w37g" path="res://scripts/active_input_method_controller.gd" id="2_qt76e"]
@@ -117,10 +117,9 @@ metadata/_custom_type_script = "uid://dhppxvui1etbk"
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bf3um"]
 
-[sub_resource type="BoxMesh" id="BoxMesh_1xb4a"]
-size = Vector3(0.6, 0.9, 0.1)
-
 [node name="Root" type="Node3D"]
+
+[node name="StartXR" parent="." instance=ExtResource("1_bf3um")]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_uwexw")
@@ -129,8 +128,6 @@ environment = SubResource("Environment_uwexw")
 transform = Transform3D(9.047514e-08, 0.6120931, 0.7907858, -9.246353e-08, -0.7907858, 0.6120931, 1, -1.2849806e-07, -1.495018e-08, 1.6605808, 1.5, 0)
 light_energy = 0.8
 directional_shadow_mode = 0
-
-[node name="StartXR" parent="." instance=ExtResource("1_bf3um")]
 
 [node name="XROrigin3D" type="XROrigin3D" parent="." node_paths=PackedStringArray("left_joystick_controller", "left_hand_controller", "left_hand_origin", "left_hand_pose_detector", "right_joystick_controller", "right_hand_controller", "right_hand_origin", "right_hand_pose_detector")]
 script = ExtResource("2_qt76e")
@@ -327,16 +324,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0299916, 0.6815504, -0.178
 [node name="LambisShell" parent="Environment/Room/Cabinet" instance=ExtResource("21_ub8w1")]
 transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.4045794, -0.18341547, 0.6791854, 0.016846359)
 
+[node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("settings_ui") instance=ExtResource("18_blcw0")]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.0914176, 0.69603163, -1.2500001)
+settings_ui = NodePath("../SettingsUI")
+
 [node name="SettingsUI" parent="Environment/Room" instance=ExtResource("14_r3r3k")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.3787284, 0.920761, -1.2863785)
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.3787284, 1.2690172, -1.2863787)
 
 [node name="Chandelier" parent="Environment/Room" instance=ExtResource("22_ub8w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
-
-[node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("instructions_label", "state_label") instance=ExtResource("18_blcw0")]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.0914176, 0.69603163, -1.25)
-instructions_label = NodePath("../Blackboard/InstructionsLabel")
-state_label = NodePath("../Blackboard/StateLabel")
 
 [node name="VintageClock" parent="Environment/Room" instance=ExtResource("24_ynlg5")]
 transform = Transform3D(-3.4969112e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.4969112e-08, 2.2696018, 0, -1.3732421)
@@ -349,23 +345,6 @@ visible = false
 
 [node name="Sofa" parent="Environment/Room" instance=ExtResource("25_ab83r")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.0000272, 0, -1.1920929e-07)
-
-[node name="Blackboard" type="Node3D" parent="Environment/Room"]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.349087, 1.5712867, -0.701998)
-
-[node name="StateLabel" type="Label3D" parent="Environment/Room/Blackboard"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0505594)
-visible = false
-text = "State"
-
-[node name="InstructionsLabel" type="Label3D" parent="Environment/Room/Blackboard"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0505594)
-text = "Instructions"
-font_size = 12
-outline_size = 4
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Environment/Room/Blackboard"]
-mesh = SubResource("BoxMesh_1xb4a")
 
 [editable path="XROrigin3D/LeftJoystickController/LeftHand"]
 [editable path="XROrigin3D/LeftJoystickController/LeftHand/Hand_Nails_L"]

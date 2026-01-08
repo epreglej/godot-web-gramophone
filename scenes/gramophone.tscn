@@ -90,6 +90,6 @@ mounted_filter_snap_zone = NodePath("../Base/MountedFilterSnapZone")
 stashed_filter_snap_zone = NodePath("../Base/StashedFilterSnapZone")
 
 [node name="CrankCrankable" parent="." instance=ExtResource("12_2d80k")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15447551, 0.066179566, 0.14647447)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15155065, 0.066179566, 0.14647447)
 
 [editable path="Base/Model"]

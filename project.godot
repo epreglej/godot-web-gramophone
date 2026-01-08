@@ -38,6 +38,10 @@ Cranks=""
 
 player/standard_height=1.8
 
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true
+
 [layer_names]
 
 3d_physics/layer_1="Static World"

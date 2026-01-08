@@ -2,8 +2,7 @@ extends Node
 class_name Gramophone
 
 @export var audio_player: AudioStreamPlayer3D
-@export var instructions_label: Label3D
-@export var state_label: Label3D
+@export var settings_ui: SettingsUI
 
 @export var lid: Lid
 @export var filter_system: FilterSystem
@@ -50,6 +49,9 @@ var _state_before_crank_depleted: State = State.CRANK_INSERTED
 
 
 func _ready():
+	await settings_ui.content_ready
+	await _warmup_all_vinyls()
+	
 	crank_crankable.set_visible(false)
 	
 	crank_pickable.set_interactable(true)
@@ -89,7 +91,6 @@ func _ready():
 	brake.disengaged.connect(_on_brake_disengaged)
 	brake.engaged.connect(_on_brake_engaged)
 	
-	await _warmup_all_vinyls()
 	_refresh_permissions()
 
 
@@ -119,15 +120,15 @@ func _refresh_permissions():
 	
 	match state:
 		State.LID_CLOSED:
-			state_label.text = "LID_CLOSED"
-			instructions_label.text = "Open the lid"
+			#state_label.text = "LID_CLOSED"
+			settings_ui.set_instructions("Open the lid")
 			
 			lid.set_interactable(true)
 			lid.set_outline_shader_params(Color(1,1,0,0.3), 1)
 		
 		State.LID_OPEN:
-			state_label.text = "LID_OPEN"
-			instructions_label.text = "Pick up the crank \n - OR - \n Close the lid"
+			#state_label.text = "LID_OPEN"
+			settings_ui.set_instructions("Pick up the crank \n - OR - \n Close the lid")
 			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
@@ -139,15 +140,15 @@ func _refresh_permissions():
 			lid.set_outline_shader_params(Color(1,0.4,0,0.3), 1)
 		
 		State.CRANK_PICKED_UP:
-			state_label.text = "CRANK_PICKED_UP"
-			instructions_label.text = "Insert the crank \n - OR - \n Stash the crank"
+			#state_label.text = "CRANK_PICKED_UP"
+			settings_ui.set_instructions("Insert the crank \n - OR - \n Stash the crank")
 			
 			crank_pickable.set_interactable(true)
 			mounted_crank_snap_zone.set_active(true)
 			stashed_crank_snap_zone.set_active(true)
 		
 		State.CRANK_INSERTED:
-			state_label.text = "CRANK_INSERTED"
+			#state_label.text = "CRANK_INSERTED"
 			
 			crank_pickable.set_visible(false)
 			crank_crankable.set_visible(true)
@@ -156,11 +157,11 @@ func _refresh_permissions():
 			if _is_cranked:
 				_on_crank_cranked()
 			else:
-				instructions_label.text = "Crank the crank"
+				settings_ui.set_instructions("Crank the crank")
 		
 		State.CRANK_CRANKED:
-			state_label.text = "CRANK_CRANKED"
-			instructions_label.text = "Pick up the filter \n - OR - \n Pick up the crank to stash it"
+			#state_label.text = "CRANK_CRANKED"
+			settings_ui.set_instructions("Pick up the filter \n - OR - \n Pick up the crank to stash it")
 			
 			filter_system.set_active(true)
 			filter_system.show_pickup_hint(Color(1, 0.7, 0))
@@ -172,13 +173,13 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_highlight_visible(false)
 		
 		State.FILTER_PICKED_UP:
-			state_label.text = "FILTER_PICKED_UP"
-			instructions_label.text = "Mount the filter \n - OR - \n Stash the filter"
+			#state_label.text = "FILTER_PICKED_UP"
+			settings_ui.set_instructions("Mount the filter \n - OR - \n Stash the filter")
 			filter_system.set_active(true)
 		
 		State.FILTER_MOUNTED:
-			state_label.text = "FILTER_MOUNTED"
-			instructions_label.text = "Pick up any vinyl \n - OR - \n Pick up the filter to stash it"
+			#state_label.text = "FILTER_MOUNTED"
+			settings_ui.set_instructions("Pick up any vinyl \n - OR - \n Pick up the filter to stash it")
 			
 			vinyl_cole_porter.set_interactable(true)
 			stashed_vinyl_snap_zone_cole_porter.set_active(true)
@@ -186,8 +187,8 @@ func _refresh_permissions():
 			filter_system.set_active(true)
 		
 		State.VINYL_PICKED_UP:
-			state_label.text = "VINYL_PICKED_UP"
-			instructions_label.text = "Mount or stash the picked up vinyl"
+			#state_label.text = "VINYL_PICKED_UP"
+			settings_ui.set_instructions("Mount or stash the picked up vinyl")
 			
 			mounted_vinyl_snap_zone.set_active(true)
 			if not stashed_vinyl_snap_zone_cole_porter.has_snapped_object():
@@ -195,8 +196,8 @@ func _refresh_permissions():
 				vinyl_cole_porter.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
-			state_label.text = "VINYL_MOUNTED"
-			instructions_label.text = "Disengage the brake \n - OR - \n Remove the vinyl"
+			#state_label.text = "VINYL_MOUNTED"
+			settings_ui.set_instructions("Disengage the brake \n - OR - \n Remove the vinyl")
 			
 			brake.set_interactable(true)
 			
@@ -204,16 +205,16 @@ func _refresh_permissions():
 			mounted_vinyl.set_interactable(true)
 		
 		State.BRAKE_DISENGAGED:
-			state_label.text = "BRAKE_RELEASED"
-			instructions_label.text = "Mount the tonearm to start playing \n - OR - \n Engage the brake"
+			#state_label.text = "BRAKE_RELEASED"
+			settings_ui.set_instructions("Mount the tonearm to start playing \n - OR - \n Engage the brake")
 			
 			lid.tonearm.expect_mount()
 			
 			brake.set_interactable(true)
 		
 		State.TONEARM_MOUNTED:
-			state_label.text = "PLAYING"
-			instructions_label.text = "Stash the tonearm to stop playing"
+			#state_label.text = "PLAYING"
+			settings_ui.set_instructions("Stash the tonearm to stop playing")
 			
 			lid.tonearm.expect_stash()
 
@@ -336,8 +337,9 @@ func _on_vinyl_stashed(_what: Variant):
 func _on_brake_disengaged():
 	if state != State.VINYL_MOUNTED:
 		return
-
+	
 	state = State.BRAKE_DISENGAGED
+	
 	_refresh_permissions()
 
 
@@ -345,7 +347,7 @@ func _on_brake_engaged():
 	if state != State.BRAKE_DISENGAGED:
 		return
 
-	state = State.FILTER_MOUNTED
+	state = State.VINYL_MOUNTED
 	
 	_refresh_permissions()
 

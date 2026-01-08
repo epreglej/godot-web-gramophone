@@ -35,7 +35,7 @@ hinge_limit_max = 0.0
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.20132706, 0.034790397, 0.048894286)
 
 [node name="InteractableHandle" parent="InteractableHinge/HandleOrigin" instance=ExtResource("3_o7l5e")]
-snap_distance = 0.05
+snap_distance = 0.1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractableHinge/HandleOrigin/InteractableHandle"]
 shape = SubResource("SphereShape3D_dcquk")
