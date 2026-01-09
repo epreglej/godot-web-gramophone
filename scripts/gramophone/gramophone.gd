@@ -418,6 +418,9 @@ func _on_brake_disengaged():
 	if state != State.VINYL_MOUNTED:
 		return
 	
+	brake.interactable_handle.drop()
+	brake.play_animation("Disengaging")
+	
 	state = State.BRAKE_DISENGAGED
 	
 	_refresh_permissions()
@@ -426,7 +429,10 @@ func _on_brake_disengaged():
 func _on_brake_engaged():
 	if state != State.BRAKE_DISENGAGED:
 		return
-
+	
+	brake.interactable_handle.drop()
+	brake.play_animation("Engaging")
+	
 	state = State.VINYL_MOUNTED
 	
 	_refresh_permissions()
@@ -438,6 +444,7 @@ func _on_tonearm_mounted():
 	if state != State.BRAKE_DISENGAGED:
 		return
 	
+	lid.tonearm.interactable_handle.drop()
 	lid.tonearm.play_animation("Mounting")
 	
 	state = State.TONEARM_MOUNTED
@@ -450,6 +457,7 @@ func _on_tonearm_stashed():
 	if state != State.TONEARM_MOUNTED:
 		return
 	
+	lid.tonearm.interactable_handle.drop()
 	lid.tonearm.play_animation("Stashing")
 	
 	state = State.BRAKE_DISENGAGED

@@ -1,10 +1,64 @@
-[gd_scene load_steps=8 format=3 uid="uid://cfnicgoc46ii"]
+[gd_scene load_steps=12 format=3 uid="uid://cfnicgoc46ii"]
 
 [ext_resource type="Script" uid="uid://dcu3147d4h610" path="res://scripts/gramophone/brake.gd" id="1_buxuq"]
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="2_fdjcm"]
 [ext_resource type="Script" uid="uid://c8gx2wc7hsxf5" path="res://addons/godot-xr-tools/interactables/interactable_hinge.gd" id="2_pe5bk"]
 [ext_resource type="Script" uid="uid://dlojnwxo25bky" path="res://addons/godot-xr-tools/interactables/interactable_handle.gd" id="3_pe5bk"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="4_584al"]
+
+[sub_resource type="Animation" id="Animation_gjds7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractableHinge:hinge_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_584al"]
+resource_name = "Engaging"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractableHinge:hinge_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [25.0, 45.0]
+}
+
+[sub_resource type="Animation" id="Animation_4ssv4"]
+resource_name = "Disengaging"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("InteractableHinge:hinge_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [20.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4ssv4"]
+_data = {
+&"Disengaging": SubResource("Animation_584al"),
+&"Engaging": SubResource("Animation_4ssv4"),
+&"RESET": SubResource("Animation_gjds7")
+}
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gjds7"]
 render_priority = 0
@@ -27,6 +81,9 @@ interactable_hinge = NodePath("InteractableHinge")
 interactable_handle = NodePath("InteractableHinge/Handle/InteractableHandle")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_4ssv4")
+}
 
 [node name="InteractableHinge" type="Node3D" parent="."]
 script = ExtResource("2_pe5bk")

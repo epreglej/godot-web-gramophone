@@ -49,8 +49,8 @@ func _on_hinge_moved(angle: float):
 	if _is_animation_playing:
 		return
 		
-	if angle >= interactable_hinge.hinge_limit_max:
+	if angle >= 25:
 		disengaged.emit()
 		
-	elif angle <= interactable_hinge.hinge_limit_min:
+	elif angle <= 20:
 		engaged.emit()
