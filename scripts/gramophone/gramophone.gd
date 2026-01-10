@@ -20,7 +20,10 @@ class_name Gramophone
 @export var stashed_vinyl_snap_zone_cole_porter: VinylSnapZone
 @export var vinyl_conchita_martinez: Vinyl
 @export var stashed_vinyl_snap_zone_conchita_martinez: VinylSnapZone
-
+@export var vinyl_alejandro_ulloa: Vinyl
+@export var stashed_vinyl_snap_zone_alejandro_ulloa: VinylSnapZone
+@export var vinyl_pepe_blanco: Vinyl
+@export var stashed_vinyl_snap_zone_pepe_blanco: VinylSnapZone
 
 @export var brake: Brake
 
@@ -92,6 +95,18 @@ func _ready():
 	stashed_vinyl_snap_zone_conchita_martinez.set_active(false)
 	vinyl_conchita_martinez.set_interactable(false)
 	
+	vinyl_alejandro_ulloa.set_interactable(true)
+	stashed_vinyl_snap_zone_alejandro_ulloa.set_active(true)
+	stashed_vinyl_snap_zone_alejandro_ulloa.pick_up_object(vinyl_alejandro_ulloa)
+	stashed_vinyl_snap_zone_alejandro_ulloa.set_active(false)
+	vinyl_alejandro_ulloa.set_interactable(false)
+	
+	vinyl_pepe_blanco.set_interactable(true)
+	stashed_vinyl_snap_zone_pepe_blanco.set_active(true)
+	stashed_vinyl_snap_zone_pepe_blanco.pick_up_object(vinyl_pepe_blanco)
+	stashed_vinyl_snap_zone_pepe_blanco.set_active(false)
+	vinyl_pepe_blanco.set_interactable(false)
+	
 	# Connect signals to callbacks
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
@@ -114,6 +129,11 @@ func _ready():
 	stashed_vinyl_snap_zone_cole_porter.has_dropped.connect(_on_vinyl_picked_up)
 	stashed_vinyl_snap_zone_conchita_martinez.has_picked_up.connect(_on_vinyl_stashed)
 	stashed_vinyl_snap_zone_conchita_martinez.has_dropped.connect(_on_vinyl_picked_up)
+	stashed_vinyl_snap_zone_alejandro_ulloa.has_picked_up.connect(_on_vinyl_stashed)
+	stashed_vinyl_snap_zone_alejandro_ulloa.has_dropped.connect(_on_vinyl_picked_up)
+	stashed_vinyl_snap_zone_pepe_blanco.has_picked_up.connect(_on_vinyl_stashed)
+	stashed_vinyl_snap_zone_pepe_blanco.has_dropped.connect(_on_vinyl_picked_up)
+	
 	
 	lid.tonearm.mounted.connect(_on_tonearm_mounted)
 	lid.tonearm.stashed.connect(_on_tonearm_stashed)
@@ -148,6 +168,10 @@ func _refresh_permissions():
 	stashed_vinyl_snap_zone_cole_porter.set_active(false)
 	vinyl_conchita_martinez.set_interactable(false)
 	stashed_vinyl_snap_zone_conchita_martinez.set_active(false)
+	vinyl_alejandro_ulloa.set_interactable(false)
+	stashed_vinyl_snap_zone_alejandro_ulloa.set_active(false)
+	vinyl_pepe_blanco.set_interactable(false)
+	stashed_vinyl_snap_zone_pepe_blanco.set_active(false)
 	
 	lid.tonearm.set_interactable(false)
 	
@@ -233,6 +257,14 @@ func _refresh_permissions():
 			vinyl_conchita_martinez.set_interactable(true)
 			stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
 			stashed_vinyl_snap_zone_conchita_martinez.set_highlight_visible(false)
+			vinyl_alejandro_ulloa.set_outline_shader_color(color_assemble)
+			vinyl_alejandro_ulloa.set_interactable(true)
+			stashed_vinyl_snap_zone_alejandro_ulloa.set_active(true)
+			stashed_vinyl_snap_zone_alejandro_ulloa.set_highlight_visible(false)
+			vinyl_pepe_blanco.set_outline_shader_color(color_assemble)
+			vinyl_pepe_blanco.set_interactable(true)
+			stashed_vinyl_snap_zone_pepe_blanco.set_active(true)
+			stashed_vinyl_snap_zone_pepe_blanco.set_highlight_visible(false)
 			
 			filter.set_outline_shader_color(color_disassemble)
 			filter.set_interactable(true)
@@ -248,8 +280,8 @@ func _refresh_permissions():
 			mounted_vinyl_snap_zone.set_highlight_color(color_assemble)
 			mounted_vinyl_snap_zone.set_active(true)
 			if not stashed_vinyl_snap_zone_cole_porter.has_snapped_object():
-				stashed_vinyl_snap_zone_cole_porter.set_active(true)
 				stashed_vinyl_snap_zone_cole_porter.set_highlight_color(color_disassemble)
+				stashed_vinyl_snap_zone_cole_porter.set_active(true)
 				vinyl_cole_porter.set_outline_shader_color(COLOR_NEUTRAL)
 				vinyl_cole_porter.set_interactable(true)
 			elif not stashed_vinyl_snap_zone_conchita_martinez.has_snapped_object():
@@ -257,6 +289,16 @@ func _refresh_permissions():
 				stashed_vinyl_snap_zone_conchita_martinez.set_active(true)
 				vinyl_conchita_martinez.set_outline_shader_color(COLOR_NEUTRAL)
 				vinyl_conchita_martinez.set_interactable(true)
+			elif not stashed_vinyl_snap_zone_alejandro_ulloa.has_snapped_object():
+				stashed_vinyl_snap_zone_alejandro_ulloa.set_highlight_color(color_disassemble)
+				stashed_vinyl_snap_zone_alejandro_ulloa.set_active(true)
+				vinyl_alejandro_ulloa.set_outline_shader_color(COLOR_NEUTRAL)
+				vinyl_alejandro_ulloa.set_interactable(true)
+			elif not stashed_vinyl_snap_zone_pepe_blanco.has_snapped_object():
+				stashed_vinyl_snap_zone_pepe_blanco.set_highlight_color(color_disassemble)
+				stashed_vinyl_snap_zone_pepe_blanco.set_active(true)
+				vinyl_pepe_blanco.set_outline_shader_color(COLOR_NEUTRAL)
+				vinyl_pepe_blanco.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
 			settings_ui.set_instructions("Desactiva el freno para que el plato empiece a girar \n - O - \n Retira el disco")
@@ -490,7 +532,7 @@ func _start_or_resume_playback() -> void:
 
 func _warmup_all_vinyls() -> void:
 	#TODO: Repeat for all vinyls
-	var vinyls: Array[Vinyl] = [vinyl_cole_porter, vinyl_conchita_martinez]
+	var vinyls: Array[Vinyl] = [vinyl_cole_porter, vinyl_conchita_martinez, vinyl_alejandro_ulloa, vinyl_pepe_blanco]
 	for vinyl in vinyls:
 		if vinyl == null:
 			continue
