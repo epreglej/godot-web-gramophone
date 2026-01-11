@@ -338,6 +338,7 @@ func _on_started():
 		return
 	
 	state = State.LID_CLOSED
+	_refresh_permissions()
 
 func _on_lid_opened():
 	if state != State.LID_CLOSED:
