@@ -110,7 +110,7 @@ func _ready():
 	vinyl_pepe_blanco.set_interactable(false)
 	
 	# Connect signals to callbacks
-	settings_ui.started.connect(_on_started)
+	settings_ui.content.started.connect(_on_started)
 	
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
@@ -137,7 +137,6 @@ func _ready():
 	stashed_vinyl_snap_zone_alejandro_ulloa.has_dropped.connect(_on_vinyl_picked_up)
 	stashed_vinyl_snap_zone_pepe_blanco.has_picked_up.connect(_on_vinyl_stashed)
 	stashed_vinyl_snap_zone_pepe_blanco.has_dropped.connect(_on_vinyl_picked_up)
-	
 	
 	lid.tonearm.mounted.connect(_on_tonearm_mounted)
 	lid.tonearm.stashed.connect(_on_tonearm_stashed)
