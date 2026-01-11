@@ -27,7 +27,6 @@ class_name Gramophone
 
 @export var brake: Brake
 
-
 enum State {
 	NONE,
 	
@@ -181,6 +180,9 @@ func _refresh_permissions():
 	brake.set_interactable(false)
 	
 	match state:
+		State.NONE:
+			pass
+			
 		State.LID_CLOSED:
 			settings_ui.set_instructions("[color=green]Abre la tapa[/color]")
 			
