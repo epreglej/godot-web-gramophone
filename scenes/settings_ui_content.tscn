@@ -1,7 +1,23 @@
-[gd_scene load_steps=3 format=3 uid="uid://c2i07drgdo4ab"]
+[gd_scene load_steps=4 format=3 uid="uid://c2i07drgdo4ab"]
 
 [ext_resource type="Script" uid="uid://306rnvql554a" path="res://scripts/settings_ui_content.gd" id="1_a6e8d"]
-[ext_resource type="Script" uid="uid://50nyv6jeu7ao" path="res://scripts/restart_button.gd" id="1_oe7bq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a6e8d"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5882353)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.6, 0.6, 0.6, 0.5882353)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oe7bq"]
+bg_color = Color(0.6, 0.6, 0.6, 0.5882353)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.6, 0.6, 0.6, 0.5882353)
+border_blend = true
 
 [node name="SettingsUIContent" type="Control"]
 layout_mode = 3
@@ -35,6 +51,7 @@ custom_minimum_size = Vector2(240, 270)
 layout_mode = 2
 
 [node name="InstructionsLabel" type="Label" parent="Control/VBoxContainer/CenterContainer"]
+visible = false
 custom_minimum_size = Vector2(200, 100)
 layout_mode = 2
 theme_override_font_sizes/font_size = 14
@@ -42,15 +59,29 @@ text = "Instructions"
 horizontal_alignment = 1
 autowrap_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Control/VBoxContainer/CenterContainer"]
-visible = false
-custom_minimum_size = Vector2(200, 100)
+[node name="StartLabel" type="RichTextLabel" parent="Control/VBoxContainer/CenterContainer"]
+custom_minimum_size = Vector2(200, 160)
 layout_mode = 2
+theme_override_font_sizes/normal_font_size = 14
 bbcode_enabled = true
-text = "[center] Instructions [/center]"
+text = "[center]Sigue los [color=green]pasos verdes[/color] para montar el gramófono y los [color=yellow]pasos amarillos[/color] para desmontarlo.[/center]
 
-[node name="Button" type="Button" parent="Control/VBoxContainer"]
+
+[center]Pulsa el botón con el dedo para comenzar.[/center]"
+
+[node name="RestartButton" type="Button" parent="Control/VBoxContainer"]
+visible = false
+custom_minimum_size = Vector2(80, 24)
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_a6e8d")
 text = "[RESTART]"
-script = ExtResource("1_oe7bq")
+
+[node name="StartButton" type="Button" parent="Control/VBoxContainer"]
+custom_minimum_size = Vector2(80, 24)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 10
+theme_override_styles/normal = SubResource("StyleBoxFlat_oe7bq")
+text = "[EMPEZAR]"
