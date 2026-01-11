@@ -29,6 +29,8 @@ class_name Gramophone
 
 
 enum State {
+	NONE,
+	
 	LID_CLOSED,
 	LID_OPEN,
 
@@ -54,7 +56,7 @@ const COLOR_NEUTRAL: Color = Color(0.7,0.7,1,0.35)
 var color_assemble: Color = COLOR_GREEN
 var color_disassemble: Color = COLOR_YELLOW
 
-var state: State = State.LID_CLOSED
+var state: State = State.NONE
 var mounted_vinyl: Vinyl = null
 
 var _last_played_audio_stream: AudioStream = null
@@ -108,6 +110,8 @@ func _ready():
 	vinyl_pepe_blanco.set_interactable(false)
 	
 	# Connect signals to callbacks
+	settings_ui.started.connect(_on_started)
+	
 	lid.opened.connect(_on_lid_opened)
 	lid.closed.connect(_on_lid_closed)
 	
@@ -179,13 +183,13 @@ func _refresh_permissions():
 	
 	match state:
 		State.LID_CLOSED:
-			settings_ui.set_instructions("Abre la tapa")
+			settings_ui.set_instructions("[color=green]Abre la tapa[/color]")
 			
 			lid.set_outline_shader_color(color_assemble)
 			lid.set_interactable(true)
 		
 		State.LID_OPEN:
-			settings_ui.set_instructions("Coge la manivela \n - O - \n Cierra la tapa")
+			settings_ui.set_instructions("[color=green]Coge la manivela[/color] \n - O - \n [color=yellow]Cierra la tapa[/color]")
 			
 			crank_pickable.set_outline_shader_color(color_assemble)
 			crank_pickable.set_interactable(true)
@@ -198,7 +202,7 @@ func _refresh_permissions():
 			lid.set_interactable(true)
 		
 		State.CRANK_PICKED_UP:
-			settings_ui.set_instructions("Inserta la manivela \n - O - \n Guarda la manivela")
+			settings_ui.set_instructions("[color=green]Inserta la manivela[/color] \n - O - \n [color=yellow]Guarda la manivela[/color]")
 			
 			crank_pickable.set_outline_shader_color(COLOR_NEUTRAL)
 			crank_pickable.set_interactable(true)
@@ -216,10 +220,10 @@ func _refresh_permissions():
 			if _is_cranked:
 				_on_crank_cranked()
 			else:
-				settings_ui.set_instructions("Gira la manivela hasta tener suficiente cuerda")
+				settings_ui.set_instructions("[color=green]Gira la manivela hasta tener suficiente cuerda[/color]")
 		
 		State.CRANK_CRANKED:
-			settings_ui.set_instructions("Coge el fieltro \n - O - \n Coge la manivela para guardarla")
+			settings_ui.set_instructions("[color=green]Coge el fieltro[/color] \n - O - \n [color=yellow]Coge la manivela para guardarla[/color]")
 			
 			filter.set_outline_shader_color(color_assemble)
 			filter.set_interactable(true)
@@ -236,7 +240,7 @@ func _refresh_permissions():
 			stashed_crank_snap_zone.set_highlight_visible(false)
 		
 		State.FILTER_PICKED_UP:
-			settings_ui.set_instructions("Monta el fieltro \n - O - \n Guarda el fieltro")
+			settings_ui.set_instructions("[color=green]Monta el fieltro[/color] \n - O - \n [color=yellow]Guarda el fieltro[/color]")
 			
 			filter.set_outline_shader_color(COLOR_NEUTRAL)
 			filter.set_interactable(true)
@@ -246,7 +250,7 @@ func _refresh_permissions():
 			stashed_filter_snap_zone.set_active(true)
 		
 		State.FILTER_MOUNTED:
-			settings_ui.set_instructions("Coge cualquier disco \n - O - \n Coge el fieltro para guardarlo")
+			settings_ui.set_instructions("[color=green]Coge cualquier disco[/color] \n - O - \n [color=yellow]Coge el fieltro para guardarlo[/color]")
 			
 			#TODO: Repeat for all vinyls
 			vinyl_cole_porter.set_outline_shader_color(color_assemble)
@@ -274,7 +278,7 @@ func _refresh_permissions():
 			stashed_filter_snap_zone.set_highlight_visible(false)
 		
 		State.VINYL_PICKED_UP:
-			settings_ui.set_instructions("Monta o guarda el disco que hayas cogido")
+			settings_ui.set_instructions("[color=green]Monta o guarda el disco que hayas cogido[/color]")
 			
 			#TODO: Repeat for all vinyls
 			mounted_vinyl_snap_zone.set_highlight_color(color_assemble)
@@ -301,7 +305,7 @@ func _refresh_permissions():
 				vinyl_pepe_blanco.set_interactable(true)
 		
 		State.VINYL_MOUNTED:
-			settings_ui.set_instructions("Desactiva el freno para que el plato empiece a girar \n - O - \n Retira el disco")
+			settings_ui.set_instructions("[color=green]Desactiva el freno girándolo hacia la derecha para que el plato comience a girar[/color] \n - O - \n [color=yellow]Retira el disco[/color]")
 			
 			brake.set_outline_shader_color(color_assemble)
 			brake.set_interactable(true)
@@ -312,7 +316,7 @@ func _refresh_permissions():
 			mounted_vinyl.set_interactable(true)
 		
 		State.BRAKE_DISENGAGED:
-			settings_ui.set_instructions("Monta el brazo fonocaptor en posición con la aguja sobre el disco para reproducir \n - O - \n Activa el freno para que el plato deje de girar")
+			settings_ui.set_instructions("[color=green]Monta el brazo fonocaptor en posición con la aguja sobre el disco para reproducir[/color] \n - O - \n [color=yellow]Activa el freno girándolo hacia la izquierda para que el plato deje de girar[/color]")
 			
 			lid.tonearm.set_outline_shader_color(color_assemble)
 			lid.tonearm.set_interactable(true)
@@ -322,7 +326,7 @@ func _refresh_permissions():
 		
 		State.TONEARM_MOUNTED:
 			settings_ui.set_instructions(
-				"En reproducción:\n%s -\n%s \n\n Quita el brazo fonocaptor con la aguja del disco para detener la reproducción" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
+				"En reproducción:\n%s -\n%s \n\n [color=yellow]Quita el brazo fonocaptor con la aguja del disco para detener la reproducción[/color]" % [mounted_vinyl.song.artist, mounted_vinyl.song.title]
 			)
 			
 			lid.tonearm.set_outline_shader_color(color_disassemble)
@@ -330,6 +334,11 @@ func _refresh_permissions():
 
 
 # CALLBACKS
+func _on_started():
+	if state != State.NONE:
+		return
+	
+	state = State.LID_CLOSED
 
 func _on_lid_opened():
 	if state != State.LID_CLOSED:

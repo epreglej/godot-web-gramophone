@@ -1,13 +1,21 @@
 extends Control
 class_name SettingsUIContent
 
-@onready var instructions_label: Label = $Control/VBoxContainer/CenterContainer/InstructionsLabel
-@onready var start_label: RichTextLabel = $Control/VBoxContainer/CenterContainer/StartLabel
-@onready var start_button: Button = $Control/VBoxContainer/StartButton
-@onready var restart_button: Button = $Control/VBoxContainer/RestartButton
+signal started
+
+@onready var hand_interactions_control: Control = $Control/HandInteractionsControl
+@onready var continue_button: Button = $Control/HandInteractionsControl/ContinueButton
+
+@onready var steps_control: Control = $Control/StepsControl
+@onready var start_button: Button = $Control/StepsControl/StartButton
+
+@onready var instructions_control: Control = $Control/InstructionsControl
+@onready var instructions_label: RichTextLabel = $Control/InstructionsControl/VBoxContainer/InstructionsLabel
+@onready var restart_button: Button = $Control/InstructionsControl/RestartButton
 
 
 func _ready() -> void:
+	continue_button.pressed.connect(_on_continue_pressed)
 	start_button.pressed.connect(_on_start_pressed)
 	restart_button.pressed.connect(_on_restart_pressed)
 
@@ -16,11 +24,15 @@ func set_instructions(text: String) -> void:
 	instructions_label.text = text
 
 
+func _on_continue_pressed() -> void:
+	hand_interactions_control.set_visible(false)
+	steps_control.set_visible(true)
+
+
 func _on_start_pressed() -> void:
-	start_label.set_visible(false)
-	start_button.set_visible(false)
-	instructions_label.set_visible(true)
-	restart_button.set_visible(true)
+	steps_control.set_visible(false)
+	instructions_control.set_visible(true)
+	started.emit()
 
 
 func _on_restart_pressed() -> void:
