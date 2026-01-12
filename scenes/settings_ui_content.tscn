@@ -101,7 +101,7 @@ grow_vertical = 0
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 10
 theme_override_styles/normal = SubResource("StyleBoxFlat_oe7bq")
-text = "[SIGUE]"
+text = "[CONTINUAR]"
 
 [node name="StepsControl" type="Control" parent="Control"]
 visible = false

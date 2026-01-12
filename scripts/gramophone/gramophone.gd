@@ -317,7 +317,7 @@ func _refresh_permissions():
 			mounted_vinyl.set_interactable(true)
 		
 		State.BRAKE_DISENGAGED:
-			settings_ui.set_instructions("[color=green]Monta el brazo fonocaptor en posición con la aguja sobre el disco para reproducir[/color] \n - O - \n [color=yellow]Activa el freno girándolo hacia la izquierda para que el plato deje de girar[/color]")
+			settings_ui.set_instructions("[color=green]Monta el brazo fonocaptor en posición, acercándolo hacia ti, con la aguja sobre el disco para reproducir[/color] \n - O - \n [color=yellow]Activa el freno girándolo hacia la izquierda para que el plato deje de girar[/color]")
 			
 			lid.tonearm.set_outline_shader_color(color_assemble)
 			lid.tonearm.set_interactable(true)
