@@ -81,7 +81,8 @@ stretch_mode = 5
 layout_mode = 2
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
-text = "Pulsa el botón con el dedo para continuar"
+text = "
+Pulsa el botón [CONTINUAR] con tu dedo para continuar"
 fit_content = true
 horizontal_alignment = 1
 
