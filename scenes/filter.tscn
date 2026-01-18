@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dlno1p8v2ybw"]
 
-[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_i3jku"]
+[ext_resource type="PackedScene" path="res://scenes/mouse_pickable.tscn" id="1_i3jku"]
 [ext_resource type="Script" uid="uid://biqcq7wcu034x" path="res://scripts/gramophone/filter.gd" id="2_yqkek"]
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="3_3sfm7"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="4_yqkek"]

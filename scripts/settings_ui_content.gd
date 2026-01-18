@@ -30,10 +30,12 @@ func _on_continue_pressed() -> void:
 
 
 func _on_start_pressed() -> void:
+	print("Start pressed - emitting started signal")
 	steps_control.set_visible(false)
 	instructions_control.set_visible(true)
 	started.emit()
 
 
 func _on_restart_pressed() -> void:
-	get_tree().reload_current_scene()
+	if is_inside_tree() and get_tree():
+		get_tree().reload_current_scene()

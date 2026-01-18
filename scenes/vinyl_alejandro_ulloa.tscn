@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="1_8n2i4"]
 [ext_resource type="Resource" uid="uid://w38xc6tkjv3c" path="res://data/alejandro_ulloa_sonatina.tres" id="2_two5p"]
 [ext_resource type="Resource" uid="uid://clm6sgpmddvbl" path="res://data/alejandro_ulloa_oriental.tres" id="3_ph4nk"]
-[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="4_jqvcm"]
 [ext_resource type="PackedScene" uid="uid://c82jg8b3hl2gh" path="res://models/vinyls/vinyl_alejandro_ulloa/glb/vinyl_alejandro_ulloa.glb" id="5_wmpod"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="6_khbku"]
 
@@ -38,7 +37,6 @@ shape = SubResource("CylinderShape3D_5q42x")
 
 [node name="SnapPivot" type="Node3D" parent="."]
 
-[node name="GrabPointSnap" parent="SnapPivot" instance=ExtResource("4_jqvcm")]
 
 [node name="Model" parent="SnapPivot" instance=ExtResource("5_wmpod")]
 transform = Transform3D(1, -1.9106857e-15, 0, -1.9106857e-15, 1, 0, 1.7763568e-15, 0, 1, 0, 0, 0)

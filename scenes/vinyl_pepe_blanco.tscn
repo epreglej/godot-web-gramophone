@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="1_804s8"]
 [ext_resource type="Resource" uid="uid://bsy3ebnqsa2jp" path="res://data/pepe_blanco_el_granate.tres" id="2_31dkf"]
 [ext_resource type="Resource" uid="uid://u1qvmyrvpbnw" path="res://data/pepe_blanco_barquito_sin_rumbo.tres" id="3_3gf3t"]
-[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="4_apers"]
 [ext_resource type="PackedScene" uid="uid://crlhf35f2ew6k" path="res://models/vinyls/vinyl_pepe_blanco/glb/vinyl_pepe_blanco.glb" id="5_003c7"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="6_4qhbc"]
 
@@ -27,18 +26,17 @@ collision_mask = 196615
 freeze = true
 freeze_mode = 1
 script = ExtResource("1_804s8")
-outline = NodePath("SnapPivot/Outline/Exterior")
 _song_a = ExtResource("2_31dkf")
 _song_b = ExtResource("3_3gf3t")
 ranged_grab_method = 0
 second_hand_grab = 1
+outline = NodePath("SnapPivot/Outline/Exterior")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_5q42x")
 
 [node name="SnapPivot" type="Node3D" parent="."]
 
-[node name="GrabPointSnap" parent="SnapPivot" instance=ExtResource("4_apers")]
 
 [node name="Model" parent="SnapPivot" instance=ExtResource("5_003c7")]
 

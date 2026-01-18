@@ -1,8 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://ddfxisqbepnop"]
 
-[ext_resource type="PackedScene" uid="uid://c8l60rnugru40" path="res://addons/godot-xr-tools/objects/pickable.tscn" id="1_3wlke"]
+[ext_resource type="PackedScene" path="res://scenes/mouse_pickable.tscn" id="1_3wlke"]
 [ext_resource type="Script" uid="uid://dv4vfv6rbv4bf" path="res://scripts/gramophone/crank_pickable.gd" id="2_x3vxh"]
-[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="4_qsvbl"]
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="5_im7t2"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="7_rthht"]
 
@@ -29,8 +28,6 @@ second_hand_grab = 1
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.116, 0.027, 0.03)
 shape = SubResource("BoxShape3D_jdape")
 
-[node name="GrabPointSnap" parent="." index="1" instance=ExtResource("4_qsvbl")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.01, 0.007, 0)
 
 [node name="Model" parent="." index="2" instance=ExtResource("5_im7t2")]
 

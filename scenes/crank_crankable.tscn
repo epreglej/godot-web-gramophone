@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=3 uid="uid://bhenaq4xt857k"]
 
 [ext_resource type="Script" uid="uid://b3rkdxoqo0tuv" path="res://scripts/gramophone/crank_crankable.gd" id="1_gl80r"]
-[ext_resource type="PackedScene" uid="uid://bnvxqb33lltmj" path="res://addons/godot-xr-tools/interactables/interactable_hinge.tscn" id="2_2hvbi"]
-[ext_resource type="PackedScene" uid="uid://bddj5m7ull6g0" path="res://addons/godot-xr-tools/interactables/interactable_handle.tscn" id="3_o7l5e"]
+[ext_resource type="PackedScene" path="res://scenes/mouse_interactable_hinge.tscn" id="2_2hvbi"]
+[ext_resource type="PackedScene" path="res://scenes/mouse_interactable_handle.tscn" id="3_o7l5e"]
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="4_nb5ma"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="5_ws1v3"]
 

@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="1_i0mce"]
 [ext_resource type="Resource" uid="uid://dig7033amqu58" path="res://data/conchita_martinez_pase_el_puerto_de_pallares.tres" id="2_rrpue"]
 [ext_resource type="Resource" uid="uid://djp4j0fydd1lb" path="res://data/conchita_martinez_foliada_gallega.tres" id="3_5aivj"]
-[ext_resource type="PackedScene" uid="uid://dh8grd7s3n8kg" path="res://addons/godot-xr-tools/objects/grab_points/grab_point_snap.tscn" id="4_j6uho"]
 [ext_resource type="PackedScene" uid="uid://7yw5sc77vs6v" path="res://models/vinyls/vinyl_conchita_martinez/glb/vinyl_conchita_martinez.glb" id="5_cvutm"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="6_rrpue"]
 
@@ -37,7 +36,6 @@ shape = SubResource("CylinderShape3D_5q42x")
 
 [node name="SnapPivot" type="Node3D" parent="."]
 
-[node name="GrabPointSnap" parent="SnapPivot" instance=ExtResource("4_j6uho")]
 
 [node name="Model" parent="SnapPivot" instance=ExtResource("5_cvutm")]
 

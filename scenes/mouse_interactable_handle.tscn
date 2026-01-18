@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/mouse_interactable_handle.gd" id="1"]
+
+[node name="MouseInteractableHandle" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 0
+gravity_scale = 0.0
+freeze = true
+script = ExtResource("1")
+enabled = false
+snap_distance = 0.1
+second_hand_grab = 1
