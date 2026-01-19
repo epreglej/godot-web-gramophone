@@ -12,6 +12,7 @@ signal entered_snap_zone(zone: Area3D)
 @export var drag_height: float = 0.08  # Height above the original position to drag at
 @export var outline: Node3D
 @export var snap_distance: float = 0.15  # Distance to detect snap zones
+@export var collision_margin: float = 0.02  # Extra margin to prevent clipping into walls
 
 var is_held: bool = false
 var _original_freeze: bool = false
@@ -34,6 +35,30 @@ func set_interactable(value: bool):
 
 func set_outline_visible(value: bool):
 	_set_outline_visibility(value)
+
+func set_outline_color(color: Color):
+	if not outline:
+		return
+	# Find all mesh instances in outline and set shader color
+	_set_shader_color_recursive(outline, color)
+
+func _set_shader_color_recursive(node: Node, color: Color):
+	if node is MeshInstance3D:
+		var mesh_instance := node as MeshInstance3D
+		# Check surface material overrides first
+		for i in range(mesh_instance.get_surface_override_material_count()):
+			var mat = mesh_instance.get_surface_override_material(i)
+			if mat is ShaderMaterial:
+				mat.set_shader_parameter("shell_color", color)
+		# Also check mesh materials
+		if mesh_instance.mesh:
+			for i in range(mesh_instance.mesh.get_surface_count()):
+				var mat = mesh_instance.mesh.surface_get_material(i)
+				if mat is ShaderMaterial:
+					mat.set_shader_parameter("shell_color", color)
+	# Recurse into children
+	for child in node.get_children():
+		_set_shader_color_recursive(child, color)
 
 func can_grab() -> bool:
 	return enabled and not is_held
@@ -119,5 +144,28 @@ func on_drag(mouse_pos: Vector2, _start_mouse: Vector2, camera: Camera3D):
 	if abs(direction.y) > 0.001:
 		var t = (_drag_plane_y - from.y) / direction.y
 		if t > 0:  # Only if intersection is in front of camera
-			var intersection = from + direction * t
-			global_position = intersection
+			var target_pos = from + direction * t
+			
+			# Check for collision between current position and target
+			var safe_pos = _check_movement_collision(global_position, target_pos)
+			global_position = safe_pos
+
+func _check_movement_collision(from_pos: Vector3, to_pos: Vector3) -> Vector3:
+	## Check if movement would cause collision, return safe position
+	var space_state = get_world_3d().direct_space_state
+	
+	# Raycast from current to target position
+	var query = PhysicsRayQueryParameters3D.create(from_pos, to_pos)
+	query.exclude = [get_rid()]  # Exclude self
+	query.collision_mask = collision_mask  # Use our own collision mask
+	
+	var result = space_state.intersect_ray(query)
+	
+	if result:
+		# Hit something - stop short of the collision point
+		var hit_point = result.position
+		var move_dir = (to_pos - from_pos).normalized()
+		return hit_point - move_dir * collision_margin
+	
+	# No collision, safe to move
+	return to_pos

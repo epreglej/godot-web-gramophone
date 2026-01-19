@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=28 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="PackedScene" uid="uid://dkyp2218x3gtw" path="res://scenes/lid.tscn" id="2_grppd"]
@@ -9,33 +9,96 @@
 [ext_resource type="Script" uid="uid://brfgf6dg6k3yr" path="res://scripts/states/state_lid_open.gd" id="7_lidopen"]
 [ext_resource type="Script" uid="uid://dqibycfuhv2lp" path="res://scripts/states/state_crank_picked_up.gd" id="8_crankpickedup"]
 [ext_resource type="Script" uid="uid://bff4hmbboka2k" path="res://scripts/states/state_crank_inserted.gd" id="9_crankinserted"]
-[ext_resource type="Script" uid="uid://8hkehvk7q0m2" path="res://scripts/simple_pickable.gd" id="11_pickable"]
-[ext_resource type="Script" uid="uid://c8ep21m1q6kq7" path="res://scripts/simple_snap_zone.gd" id="13_snapzone"]
-[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="14_outline"]
+[ext_resource type="Script" uid="uid://b0od0casm1y45" path="res://scripts/states/state_crank_cranking.gd" id="10_crankcranking"]
+[ext_resource type="Script" uid="uid://b8ekshe3cai4l" path="res://scripts/states/state_crank_cranked.gd" id="11_crankcranked"]
+[ext_resource type="Script" uid="uid://dirhnpg0geaxi" path="res://scripts/states/state_filter_ready.gd" id="12_filterready"]
+[ext_resource type="Script" uid="uid://nuordxevdop" path="res://scripts/states/state_filter_picked_up.gd" id="13_filterpickedup"]
+[ext_resource type="Script" uid="uid://blf3rpkoivsdf" path="res://scripts/states/state_filter_mounted.gd" id="14_filtermounted"]
+[ext_resource type="Script" uid="uid://8hkehvk7q0m2" path="res://scripts/simple_pickable.gd" id="15_pickable"]
+[ext_resource type="Script" uid="uid://c8ep21m1q6kq7" path="res://scripts/simple_snap_zone.gd" id="16_snapzone"]
+[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="17_outline"]
+[ext_resource type="Material" path="res://materials/highlight_ring.tres" id="18_highlight"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crank"]
-size = Vector3(0.25, 0.055, 0.085)
+size = Vector3(0.25, 0.04, 0.08)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crank_outline"]
 render_priority = 0
-shader = ExtResource("14_outline")
+shader = ExtResource("17_outline")
 shader_parameter/shell_thickness = 0.002
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
 shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_snapzone"]
-radius = 0.15
+[sub_resource type="Animation" id="Animation_cranking"]
+resource_name = "Cranking"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-12.5664, 0, 0)]
+}
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone")]
+[sub_resource type="Animation" id="Animation_crank_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_crank"]
+_data = {
+&"Cranking": SubResource("Animation_cranking"),
+&"RESET": SubResource("Animation_crank_reset")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_snapzone"]
+radius = 0.18
+
+[sub_resource type="QuadMesh" id="QuadMesh_highlight"]
+material = ExtResource("18_highlight")
+size = Vector2(0.06, 0.06)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_filter"]
+height = 0.02
+radius = 0.11
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_filter_outline"]
+render_priority = 0
+shader = ExtResource("17_outline")
+shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_color = Color(1, 1, 0, 0.2)
+shader_parameter/glow_speed = 3.0
+shader_parameter/glow_min = 0.7
+shader_parameter/glow_max = 1.0
+
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone")]
 script = ExtResource("3_controller")
 state_machine = NodePath("StateMachine")
 lid = NodePath("Lid")
 audio_player = NodePath("AudioStreamPlayer3D")
-crank_pickable = NodePath("CrankPickable")
+crank_pickable = NodePath("Crank")
 mounted_crank_snap_zone = NodePath("MountedCrankSnapZone")
 stashed_crank_snap_zone = NodePath("StashedCrankSnapZone")
+filter_pickable = NodePath("Filter")
+mounted_filter_snap_zone = NodePath("MountedFilterSnapZone")
+stashed_filter_snap_zone = NodePath("StashedFilterSnapZone")
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("4_statemachine")
@@ -55,6 +118,21 @@ script = ExtResource("8_crankpickedup")
 
 [node name="CrankInserted" type="Node" parent="StateMachine"]
 script = ExtResource("9_crankinserted")
+
+[node name="CrankCranking" type="Node" parent="StateMachine"]
+script = ExtResource("10_crankcranking")
+
+[node name="CrankCranked" type="Node" parent="StateMachine"]
+script = ExtResource("11_crankcranked")
+
+[node name="FilterReady" type="Node" parent="StateMachine"]
+script = ExtResource("12_filterready")
+
+[node name="FilterPickedUp" type="Node" parent="StateMachine"]
+script = ExtResource("13_filterpickedup")
+
+[node name="FilterMounted" type="Node" parent="StateMachine"]
+script = ExtResource("14_filtermounted")
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
@@ -80,72 +158,173 @@ visible = false
 [node name="Tonearm" parent="Base/Model" index="5"]
 visible = false
 
-[node name="CrankPickable" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Cranks"]]
+[node name="Crank" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Cranks"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
+collision_layer = 2
 freeze = true
-script = ExtResource("11_pickable")
+script = ExtResource("15_pickable")
 outline = NodePath("Outline")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CrankPickable"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.11542815, 0, 0.032168508)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Crank"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 0.02838397, 0.030000001)
 shape = SubResource("BoxShape3D_crank")
 
-[node name="Model" parent="CrankPickable" instance=ExtResource("1_dylsv")]
+[node name="Model" parent="Crank" instance=ExtResource("1_dylsv")]
 
-[node name="Base" parent="CrankPickable/Model" index="0"]
+[node name="Base" parent="Crank/Model" index="0"]
 visible = false
 
-[node name="Lid" parent="CrankPickable/Model" index="1"]
+[node name="Lid" parent="Crank/Model" index="1"]
 visible = false
 
-[node name="Brake" parent="CrankPickable/Model" index="2"]
+[node name="Brake" parent="Crank/Model" index="2"]
 visible = false
 
-[node name="Filter" parent="CrankPickable/Model" index="4"]
+[node name="Filter" parent="Crank/Model" index="4"]
 visible = false
 
-[node name="Tonearm" parent="CrankPickable/Model" index="5"]
+[node name="Tonearm" parent="Crank/Model" index="5"]
 visible = false
 
-[node name="Outline" parent="CrankPickable" instance=ExtResource("1_dylsv")]
+[node name="Outline" parent="Crank" instance=ExtResource("1_dylsv")]
 visible = false
 
-[node name="Base" parent="CrankPickable/Outline" index="0"]
+[node name="Base" parent="Crank/Outline" index="0"]
 visible = false
 
-[node name="Lid" parent="CrankPickable/Outline" index="1"]
+[node name="Lid" parent="Crank/Outline" index="1"]
 visible = false
 
-[node name="Brake" parent="CrankPickable/Outline" index="2"]
+[node name="Brake" parent="Crank/Outline" index="2"]
 visible = false
 
-[node name="Crank" parent="CrankPickable/Outline" index="3"]
+[node name="Crank" parent="Crank/Outline" index="3"]
 surface_material_override/0 = SubResource("ShaderMaterial_crank_outline")
+surface_material_override/1 = SubResource("ShaderMaterial_crank_outline")
 
-[node name="Filter" parent="CrankPickable/Outline" index="4"]
+[node name="Filter" parent="Crank/Outline" index="4"]
 visible = false
 
-[node name="Tonearm" parent="CrankPickable/Outline" index="5"]
+[node name="Tonearm" parent="Crank/Outline" index="5"]
 visible = false
 
-[node name="MountedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("snap_position")]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Crank"]
+libraries = {
+&"": SubResource("AnimationLibrary_crank")
+}
+
+[node name="MountedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15112917, 0.07363949, 0.14668855)
-script = ExtResource("13_snapzone")
+script = ExtResource("16_snapzone")
 snap_group = "Cranks"
+highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MountedCrankSnapZone"]
 shape = SubResource("SphereShape3D_snapzone")
 
-[node name="StashedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("snap_position")]
+[node name="Highlight" type="MeshInstance3D" parent="MountedCrankSnapZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+visible = false
+mesh = SubResource("QuadMesh_highlight")
+
+[node name="StashedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
-script = ExtResource("13_snapzone")
+script = ExtResource("16_snapzone")
 snap_group = "Cranks"
+highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StashedCrankSnapZone"]
 shape = SubResource("SphereShape3D_snapzone")
 
+[node name="Highlight" type="MeshInstance3D" parent="StashedCrankSnapZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+visible = false
+mesh = SubResource("QuadMesh_highlight")
+
+[node name="Filter" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Filters"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, -0.050105035)
+collision_layer = 2
+freeze = true
+script = ExtResource("15_pickable")
+drag_height = 0.125
+outline = NodePath("Outline")
+snap_distance = 0.18
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Filter"]
+shape = SubResource("CylinderShape3D_filter")
+
+[node name="Model" parent="Filter" instance=ExtResource("1_dylsv")]
+
+[node name="Base" parent="Filter/Model" index="0"]
+visible = false
+
+[node name="Lid" parent="Filter/Model" index="1"]
+visible = false
+
+[node name="Brake" parent="Filter/Model" index="2"]
+visible = false
+
+[node name="Crank" parent="Filter/Model" index="3"]
+visible = false
+
+[node name="Tonearm" parent="Filter/Model" index="5"]
+visible = false
+
+[node name="Outline" parent="Filter" instance=ExtResource("1_dylsv")]
+visible = false
+
+[node name="Base" parent="Filter/Outline" index="0"]
+visible = false
+
+[node name="Lid" parent="Filter/Outline" index="1"]
+visible = false
+
+[node name="Brake" parent="Filter/Outline" index="2"]
+visible = false
+
+[node name="Crank" parent="Filter/Outline" index="3"]
+visible = false
+
+[node name="Filter" parent="Filter/Outline" index="4"]
+surface_material_override/0 = SubResource("ShaderMaterial_filter_outline")
+
+[node name="Tonearm" parent="Filter/Outline" index="5"]
+visible = false
+
+[node name="MountedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.11653774, 0.16)
+script = ExtResource("16_snapzone")
+snap_group = "Filters"
+highlight_node = NodePath("Highlight")
+snap_position = NodePath(".")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MountedFilterSnapZone"]
+shape = SubResource("SphereShape3D_snapzone")
+
+[node name="Highlight" type="MeshInstance3D" parent="MountedFilterSnapZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+visible = false
+mesh = SubResource("QuadMesh_highlight")
+
+[node name="StashedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, -0.050105035)
+script = ExtResource("16_snapzone")
+snap_group = "Filters"
+highlight_node = NodePath("Highlight")
+snap_position = NodePath(".")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StashedFilterSnapZone"]
+shape = SubResource("SphereShape3D_snapzone")
+
+[node name="Highlight" type="MeshInstance3D" parent="StashedFilterSnapZone"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+visible = false
+mesh = SubResource("QuadMesh_highlight")
+
 [editable path="Base/Model"]
-[editable path="CrankPickable/Model"]
-[editable path="CrankPickable/Outline"]
+[editable path="Crank/Model"]
+[editable path="Crank/Outline"]
+[editable path="Filter/Model"]
+[editable path="Filter/Outline"]

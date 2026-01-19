@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene load_steps=20 format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="Texture2D" uid="uid://bdktybj8dp4ui" path="res://skyboxes/sky.hdr" id="2_tw3kd"]
 [ext_resource type="Script" uid="uid://5kx2wbs1mlvo" path="res://scripts/mouse_controller.gd" id="3_mouse"]
@@ -31,6 +31,9 @@ tonemap_white = 0.8
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_bf3um"]
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_qwhpj"]
+size = Vector3(0.35, 2.8, 5)
+
 [node name="Root" type="Node3D"]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -43,6 +46,7 @@ directional_shadow_mode = 0
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.57357645, 0, -0.57357645, 0.81915206, 0, 1.6, 0)
+fov = 70.0
 
 [node name="MouseController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
 script = ExtResource("3_mouse")
@@ -58,9 +62,14 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.2
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Environment/Room"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Room/StaticBody3D"]
 shape = SubResource("WorldBoundaryShape3D_bf3um")
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Environment/Room/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.4, 1)
+shape = SubResource("BoxShape3D_qwhpj")
 
 [node name="Doors" parent="Environment/Room" instance=ExtResource("17_0dnjj")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 2.27)

@@ -5,8 +5,13 @@ extends GameState
 func enter_state():
 	print("Entered: LidClosed")
 	
-	# Enable lid interaction and show outline
+	# Disable all interactions first
+	if gramophone:
+		gramophone.disable_all_interactables()
+	
+	# Enable lid interaction and show outline (green = forward/assemble)
 	if gramophone and gramophone.lid:
+		gramophone.lid.set_outline_color(GameColors.OUTLINE_ASSEMBLE)
 		gramophone.lid.set_interactable(true)
 		gramophone.lid.opened.connect(_on_lid_opened)
 	

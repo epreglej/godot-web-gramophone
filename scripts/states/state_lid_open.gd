@@ -5,18 +5,24 @@ extends GameState
 func enter_state():
 	print("Entered: LidOpen")
 	
-	# Enable lid (to allow closing)
+	# Disable all interactions first
+	if gramophone:
+		gramophone.disable_all_interactables()
+	
+	# Enable lid (to allow closing) - red = disassemble/back
 	if gramophone and gramophone.lid:
+		gramophone.lid.set_outline_color(GameColors.OUTLINE_DISASSEMBLE)
 		gramophone.lid.set_interactable(true)
 		gramophone.lid.closed.connect(_on_lid_closed)
 	
-	# Enable crank pickup
+	# Enable crank pickup - green = assemble/forward
 	if gramophone and gramophone.crank_pickable:
+		gramophone.crank_pickable.set_outline_color(GameColors.OUTLINE_ASSEMBLE)
 		gramophone.crank_pickable.set_interactable(true)
 		gramophone.crank_pickable.picked_up.connect(_on_crank_picked_up)
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]Coge la manivela[/color]\no cierra la tapa")
+		gramophone.set_instructions("[color=green]Coge la manivela[/color]\no [color=red]cierra la tapa[/color]")
 
 func exit_state():
 	if gramophone and gramophone.lid:

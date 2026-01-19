@@ -5,9 +5,7 @@ extends GameState
 func enter_state():
 	print("Entered: Intro")
 	
-	# Disable all interactions and hide outlines
-	if gramophone and gramophone.lid:
-		gramophone.lid.set_interactable(false)
-	
+	# Disable all interactions first
 	if gramophone:
+		gramophone.disable_all_interactables()
 		gramophone.set_instructions("Presiona 'Comenzar' para empezar")

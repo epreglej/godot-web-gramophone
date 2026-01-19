@@ -25,10 +25,33 @@ func _ready():
 func set_active(value: bool):
 	enabled = value
 	print("SnapZone ", name, " set_active: ", value)
+	# Show highlight when active and no object snapped
+	if highlight_node:
+		highlight_node.visible = value and snapped_object == null
 
 func set_highlight_visible(value: bool):
 	if highlight_node:
 		highlight_node.visible = value
+
+func set_highlight_color(color: Color):
+	if not highlight_node or not highlight_node is MeshInstance3D:
+		return
+	
+	var mesh_instance := highlight_node as MeshInstance3D
+	
+	# Get or create a unique material for this highlight
+	var mat = mesh_instance.get_surface_override_material(0)
+	if not mat:
+		# Duplicate the mesh material
+		if mesh_instance.mesh and mesh_instance.mesh.get_surface_count() > 0:
+			var original = mesh_instance.mesh.surface_get_material(0)
+			if original:
+				mat = original.duplicate()
+				mesh_instance.set_surface_override_material(0, mat)
+	
+	# Set the color on the material
+	if mat and mat is StandardMaterial3D:
+		mat.albedo_color = color
 
 func try_snap(object: Node3D) -> bool:
 	## Try to snap an object - called manually when object is released nearby

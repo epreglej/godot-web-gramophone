@@ -16,6 +16,11 @@ class_name GramophoneController
 @export var mounted_crank_snap_zone: SimpleSnapZone
 @export var stashed_crank_snap_zone: SimpleSnapZone
 
+# Filter components
+@export var filter_pickable: SimplePickable
+@export var mounted_filter_snap_zone: SimpleSnapZone
+@export var stashed_filter_snap_zone: SimpleSnapZone
+
 func _ready():
 	# Find state machine if not set
 	if not state_machine:
@@ -42,6 +47,30 @@ func _on_ui_started():
 func set_instructions(text: String):
 	if ui:
 		ui.set_instructions(text)
+
+func disable_all_interactables():
+	## Disables ALL interactive components and snap zones
+	## Call this at the start of each state to ensure a clean slate
+	
+	# Lid
+	if lid:
+		lid.set_interactable(false)
+	
+	# Crank
+	if crank_pickable:
+		crank_pickable.set_interactable(false)
+	if mounted_crank_snap_zone:
+		mounted_crank_snap_zone.set_active(false)
+	if stashed_crank_snap_zone:
+		stashed_crank_snap_zone.set_active(false)
+	
+	# Filter
+	if filter_pickable:
+		filter_pickable.set_interactable(false)
+	if mounted_filter_snap_zone:
+		mounted_filter_snap_zone.set_active(false)
+	if stashed_filter_snap_zone:
+		stashed_filter_snap_zone.set_active(false)
 
 func _setup_crank():
 	# Place crank in stashed snap zone
