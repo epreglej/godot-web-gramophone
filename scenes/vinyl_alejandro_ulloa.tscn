@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://75bjk40cn1kv"]
 
-[ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="1_8n2i4"]
+[ext_resource type="Script" path="res://scripts/simple_vinyl.gd" id="1_8n2i4"]
 [ext_resource type="Resource" uid="uid://w38xc6tkjv3c" path="res://data/alejandro_ulloa_sonatina.tres" id="2_two5p"]
 [ext_resource type="Resource" uid="uid://clm6sgpmddvbl" path="res://data/alejandro_ulloa_oriental.tres" id="3_ph4nk"]
 [ext_resource type="PackedScene" uid="uid://c82jg8b3hl2gh" path="res://models/vinyls/vinyl_alejandro_ulloa/glb/vinyl_alejandro_ulloa.glb" id="5_wmpod"]
@@ -19,7 +19,7 @@ shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="VinylAlejandroUlloa" type="RigidBody3D" node_paths=PackedStringArray("outline") groups=["Vinyls"]]
+[node name="VinylAlejandroUlloa" type="RigidBody3D" node_paths=PackedStringArray("outline", "snap_pivot") groups=["Vinyls"]]
 transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, 0, 0, 0)
 collision_layer = 4
 collision_mask = 196615
@@ -27,10 +27,9 @@ freeze = true
 freeze_mode = 1
 script = ExtResource("1_8n2i4")
 outline = NodePath("SnapPivot/Outline/Exterior")
-_song_a = ExtResource("2_two5p")
-_song_b = ExtResource("3_ph4nk")
-ranged_grab_method = 0
-second_hand_grab = 1
+snap_pivot = NodePath("SnapPivot")
+song_a = ExtResource("2_two5p")
+song_b = ExtResource("3_ph4nk")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_5q42x")

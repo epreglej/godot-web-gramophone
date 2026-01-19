@@ -1,6 +1,6 @@
 extends GameState
 
-## Filter mounted - filter is on the turntable
+## Filter mounted - filter is on the turntable, auto-transition to VinylReady
 
 func enter_state():
 	print("Entered: FilterMounted")
@@ -9,21 +9,13 @@ func enter_state():
 	if gramophone:
 		gramophone.disable_all_interactables()
 	
-	# Enable filter pickable (to allow removal) - red = back
-	if gramophone and gramophone.filter_pickable:
-		gramophone.filter_pickable.set_outline_color(GameColors.OUTLINE_DISASSEMBLE)
-		gramophone.filter_pickable.set_interactable(true)
-		gramophone.filter_pickable.picked_up.connect(_on_filter_picked_up)
-	
 	if gramophone:
-		gramophone.set_instructions("[color=green]¡Filtro colocado![/color]\n[color=red]Puedes retirarlo[/color]")
+		gramophone.set_instructions("[color=green]¡Filtro colocado![/color]")
+	
+	# Auto-transition to VinylReady after a brief moment
+	var tween = create_tween()
+	tween.tween_interval(0.5)
+	tween.tween_callback(func(): goto("VinylReady"))
 
 func exit_state():
-	if gramophone and gramophone.filter_pickable:
-		if gramophone.filter_pickable.picked_up.is_connected(_on_filter_picked_up):
-			gramophone.filter_pickable.picked_up.disconnect(_on_filter_picked_up)
-		gramophone.filter_pickable.set_interactable(false)
-
-func _on_filter_picked_up():
-	# User picked up the filter to move it
-	goto("FilterPickedUp")
+	pass

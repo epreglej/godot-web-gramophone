@@ -19,10 +19,11 @@ func enter_state():
 		gramophone.set_instructions("[color=green]Abre la tapa[/color]")
 
 func exit_state():
-	# Disconnect signal
+	# Disconnect signal and disable lid
 	if gramophone and gramophone.lid:
 		if gramophone.lid.opened.is_connected(_on_lid_opened):
 			gramophone.lid.opened.disconnect(_on_lid_opened)
+		gramophone.lid.set_interactable(false)
 
 func _on_lid_opened():
 	if gramophone and gramophone.lid:

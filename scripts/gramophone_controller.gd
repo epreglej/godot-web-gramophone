@@ -22,6 +22,15 @@ class_name GramophoneController
 @export var mounted_filter_snap_zone: SimpleSnapZone
 @export var stashed_filter_snap_zone: SimpleSnapZone
 
+# Vinyl components
+@export var mounted_vinyl_snap_zone: Node3D  # Position for vinyl on turntable
+var vinyls: Array[SimpleVinyl] = []  # Found automatically by group
+
+# Vinyl state
+var inspecting_vinyl: SimpleVinyl = null
+var mounted_vinyl: SimpleVinyl = null
+var selected_song: Song = null
+
 # Camera rotation
 var _camera_rotation_target: float = 0.0
 var _camera_rotation_speed: float = 5.0
@@ -43,9 +52,18 @@ func _ready():
 			ui.started.connect(_on_ui_started)
 		if ui.has_signal("rotate_camera"):
 			ui.rotate_camera.connect(_on_rotate_camera)
+		if ui.has_signal("vinyl_flip"):
+			ui.vinyl_flip.connect(_on_vinyl_flip)
+		if ui.has_signal("vinyl_select"):
+			ui.vinyl_select.connect(_on_vinyl_select)
+		if ui.has_signal("vinyl_cancel"):
+			ui.vinyl_cancel.connect(_on_vinyl_cancel)
 	
 	# Initialize crank in stashed position
 	_setup_crank()
+	
+	# Find all vinyls by group
+	_find_vinyls()
 
 func _process(delta: float):
 	# Smooth camera rotation
@@ -65,6 +83,22 @@ func _on_rotate_camera(degrees: float):
 	# Clamp rotation to reasonable range (-45 to 45 degrees)
 	_camera_rotation_target = clamp(_camera_rotation_target, -45.0, 45.0)
 	print("New _camera_rotation_target: ", _camera_rotation_target)
+
+func _on_vinyl_flip():
+	# Forward to current state if it handles vinyl inspection
+	var current_state = state_machine.get_current_state() if state_machine else null
+	if current_state and current_state.has_method("flip_vinyl"):
+		current_state.flip_vinyl()
+
+func _on_vinyl_select():
+	var current_state = state_machine.get_current_state() if state_machine else null
+	if current_state and current_state.has_method("select_vinyl"):
+		current_state.select_vinyl()
+
+func _on_vinyl_cancel():
+	var current_state = state_machine.get_current_state() if state_machine else null
+	if current_state and current_state.has_method("cancel_inspection"):
+		current_state.cancel_inspection()
 
 func set_instructions(text: String):
 	if ui:
@@ -93,9 +127,23 @@ func disable_all_interactables():
 		mounted_filter_snap_zone.set_active(false)
 	if stashed_filter_snap_zone:
 		stashed_filter_snap_zone.set_active(false)
+	
+	# Vinyls
+	for vinyl in vinyls:
+		if vinyl:
+			vinyl.set_interactable(false)
 
 func _setup_crank():
 	# Place crank in stashed snap zone
 	if crank_pickable and stashed_crank_snap_zone:
 		crank_pickable.global_position = stashed_crank_snap_zone.global_position
 		crank_pickable.set_interactable(false)
+
+func _find_vinyls():
+	# Find all nodes in the "Vinyls" group that are children of this node
+	vinyls.clear()
+	for child in get_children():
+		if child is SimpleVinyl and child.is_in_group("Vinyls"):
+			vinyls.append(child)
+			child.set_interactable(false)
+	print("Found ", vinyls.size(), " vinyls")

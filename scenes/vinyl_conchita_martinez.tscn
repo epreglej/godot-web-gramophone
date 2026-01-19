@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=3 uid="uid://p2k7wfjq40j8"]
 
-[ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="1_i0mce"]
+[ext_resource type="Script" path="res://scripts/simple_vinyl.gd" id="1_i0mce"]
 [ext_resource type="Resource" uid="uid://dig7033amqu58" path="res://data/conchita_martinez_pase_el_puerto_de_pallares.tres" id="2_rrpue"]
 [ext_resource type="Resource" uid="uid://djp4j0fydd1lb" path="res://data/conchita_martinez_foliada_gallega.tres" id="3_5aivj"]
 [ext_resource type="PackedScene" uid="uid://7yw5sc77vs6v" path="res://models/vinyls/vinyl_conchita_martinez/glb/vinyl_conchita_martinez.glb" id="5_cvutm"]
@@ -19,17 +19,13 @@ shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="VinylConchitaMartinez" type="RigidBody3D" node_paths=PackedStringArray("outline") groups=["Vinyls"]]
-collision_layer = 4
-collision_mask = 196615
+[node name="VinylConchitaMartinez" type="RigidBody3D" node_paths=PackedStringArray("outline", "snap_pivot") groups=["Vinyls"]]
 freeze = true
-freeze_mode = 1
 script = ExtResource("1_i0mce")
 outline = NodePath("SnapPivot/Outline/Exterior")
-_song_a = ExtResource("2_rrpue")
-_song_b = ExtResource("3_5aivj")
-ranged_grab_method = 0
-second_hand_grab = 1
+snap_pivot = NodePath("SnapPivot")
+song_a = ExtResource("2_rrpue")
+song_b = ExtResource("3_5aivj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_5q42x")

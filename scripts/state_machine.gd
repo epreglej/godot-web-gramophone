@@ -49,5 +49,8 @@ func change_state(new_state_name: String) -> bool:
 func get_current_state_name() -> String:
 	return current_state_name
 
+func get_current_state() -> Node:
+	return current_state
+
 func is_in_state(state_name: String) -> bool:
 	return current_state_name == state_name

@@ -33,6 +33,7 @@ func exit_state():
 	if gramophone and gramophone.filter_pickable:
 		if gramophone.filter_pickable.picked_up.is_connected(_on_filter_picked_up):
 			gramophone.filter_pickable.picked_up.disconnect(_on_filter_picked_up)
+		gramophone.filter_pickable.set_interactable(false)
 
 func _on_filter_picked_up():
 	goto("FilterPickedUp")

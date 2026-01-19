@@ -3,15 +3,18 @@ class_name SettingsUIContent
 
 signal started
 
-@onready var hand_interactions_control: Control = $Control/HandInteractionsControl
-@onready var continue_button: Button = $Control/HandInteractionsControl/ContinueButton
+# Modal screens (intro)
+@onready var modal_background: ColorRect = $ModalBackground
+@onready var modal_container: CenterContainer = $ModalContainer
+@onready var welcome_screen: VBoxContainer = $ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen
+@onready var continue_button: Button = $ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen/ContinueButton
+@onready var steps_screen: VBoxContainer = $ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen
+@onready var start_button: Button = $ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen/StartButton
 
-@onready var steps_control: Control = $Control/StepsControl
-@onready var start_button: Button = $Control/StepsControl/StartButton
-
-@onready var instructions_control: Control = $Control/InstructionsControl
-@onready var instructions_label: RichTextLabel = $Control/InstructionsControl/VBoxContainer/InstructionsLabel
-@onready var restart_button: Button = $Control/InstructionsControl/RestartButton
+# Objective indicator (gameplay)
+@onready var objective_container: Control = $ObjectiveContainer
+@onready var objective_label: RichTextLabel = $ObjectiveContainer/ObjectivePanel/MarginContainer/HBoxContainer/ObjectiveLabel
+@onready var restart_button: Button = $ObjectiveContainer/ObjectivePanel/MarginContainer/HBoxContainer/RestartButton
 
 
 func _ready() -> void:
@@ -21,18 +24,22 @@ func _ready() -> void:
 
 
 func set_instructions(text: String) -> void:
-	instructions_label.text = text
+	if objective_label:
+		objective_label.text = text
 
 
 func _on_continue_pressed() -> void:
-	hand_interactions_control.set_visible(false)
-	steps_control.set_visible(true)
+	welcome_screen.visible = false
+	steps_screen.visible = true
 
 
 func _on_start_pressed() -> void:
 	print("Start pressed - emitting started signal")
-	steps_control.set_visible(false)
-	instructions_control.set_visible(true)
+	# Hide the modal
+	modal_background.visible = false
+	modal_container.visible = false
+	# Show the objective indicator
+	objective_container.visible = true
 	started.emit()
 
 

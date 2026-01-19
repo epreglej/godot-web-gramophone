@@ -1,196 +1,213 @@
-[gd_scene load_steps=5 format=3 uid="uid://c2i07drgdo4ab"]
+[gd_scene load_steps=4 format=3 uid="uid://c2i07drgdo4ab"]
 
 [ext_resource type="Script" uid="uid://306rnvql554a" path="res://scripts/settings_ui_content.gd" id="1_a6e8d"]
-[ext_resource type="Texture2D" uid="uid://c7ug84t476ukr" path="res://images/grip.png" id="2_a6e8d"]
-[ext_resource type="Texture2D" uid="uid://bw4g35ti2oub" path="res://images/pinch.png" id="3_5ky2i"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_oe7bq"]
-bg_color = Color(0.6, 0.6, 0.6, 0.5882353)
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(0.6, 0.6, 0.6, 0.5882353)
-border_blend = true
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.05, 0.05, 0.08, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.28, 0.35, 0.9)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.18, 0.42, 0.65, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="SettingsUIContent" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_a6e8d")
 
-[node name="Control" type="Control" parent="."]
+[node name="ModalBackground" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="ModalContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="ModalContainer"]
+custom_minimum_size = Vector2(400, 300)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="MarginContainer" type="MarginContainer" parent="ModalContainer/ModalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 30
+
+[node name="ModalContent" type="Control" parent="ModalContainer/ModalPanel/MarginContainer"]
+layout_mode = 2
+
+[node name="WelcomeScreen" type="VBoxContainer" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 32
+text = "El Gramófono"
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="DescLabel" type="RichTextLabel" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.78, 0.8, 0.85, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[center]Aprende a montar y usar un gramófono clásico.
+
+Haz clic y arrastra para interactuar
+con los objetos destacados.
+
+Al comenzar, aparecerán flechas en la
+parte inferior para girar la cámara.[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Spacer2" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ContinueButton" type="Button" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/WelcomeScreen"]
+custom_minimum_size = Vector2(160, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+text = "Continuar"
+
+[node name="StepsScreen" type="VBoxContainer" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 28
+text = "Guía de colores"
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="StepsLabel" type="RichTextLabel" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.78, 0.8, 0.85, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[center]Los objetos resaltados en [color=#66dd66]verde[/color]
+avanzan el montaje del gramófono.
+
+Los objetos en [color=#dd6666]rojo[/color] te permiten
+deshacer pasos anteriores.[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Spacer2" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="ModalContainer/ModalPanel/MarginContainer/ModalContent/StepsScreen"]
+custom_minimum_size = Vector2(160, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+text = "Comenzar"
+
+[node name="ObjectiveContainer" type="Control" parent="."]
+visible = false
+layout_mode = 1
 anchors_preset = 0
-offset_right = 240.0
-offset_bottom = 300.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 420.0
+offset_bottom = 80.0
 
-[node name="ColorRect" type="ColorRect" parent="Control"]
+[node name="ObjectivePanel" type="PanelContainer" parent="ObjectiveContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
 
-[node name="HandInteractionsControl" type="Control" parent="Control"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/HandInteractionsControl"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="HandInteractionsLabel" type="RichTextLabel" parent="Control/HandInteractionsControl/VBoxContainer"]
-clip_contents = false
+[node name="MarginContainer" type="MarginContainer" parent="ObjectiveContainer/ObjectivePanel"]
 layout_mode = 2
-theme_override_font_sizes/normal_font_size = 14
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ObjectiveContainer/ObjectivePanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ObjectiveLabel" type="RichTextLabel" parent="ObjectiveContainer/ObjectivePanel/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/default_color = Color(0.9, 0.92, 0.95, 1)
+theme_override_font_sizes/normal_font_size = 15
 bbcode_enabled = true
-text = "Interactúa con los objetos agarrándolos o haciendo pinza así:"
+text = "Abre la tapa"
 fit_content = true
-horizontal_alignment = 1
+scroll_active = false
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/HandInteractionsControl/VBoxContainer"]
+[node name="RestartButton" type="Button" parent="ObjectiveContainer/ObjectivePanel/MarginContainer/HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 0
-
-[node name="GripImage" type="TextureRect" parent="Control/HandInteractionsControl/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-texture = ExtResource("2_a6e8d")
-expand_mode = 2
-stretch_mode = 5
-
-[node name="PinchImage" type="TextureRect" parent="Control/HandInteractionsControl/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(100, 100)
-layout_mode = 2
-texture = ExtResource("3_5ky2i")
-expand_mode = 2
-stretch_mode = 5
-
-[node name="ExtraLabel" type="RichTextLabel" parent="Control/HandInteractionsControl/VBoxContainer"]
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 12
-bbcode_enabled = true
-text = "
-Pulsa el botón [CONTINUAR]
-con tu dedo para continuar"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="ContinueButton" type="Button" parent="Control/HandInteractionsControl"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -36.0
-offset_right = 40.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 10
-theme_override_styles/normal = SubResource("StyleBoxFlat_oe7bq")
-text = "[CONTINUAR]"
-
-[node name="StepsControl" type="Control" parent="Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/StepsControl"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="StepsLabel" type="RichTextLabel" parent="Control/StepsControl/VBoxContainer"]
-clip_contents = false
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 14
-bbcode_enabled = true
-text = "Sigue los [color=green]pasos verdes[/color] para montar el gramófono y los [color=yellow]pasos amarillos[/color] para desmontarlo."
-fit_content = true
-horizontal_alignment = 1
-
-[node name="StartButton" type="Button" parent="Control/StepsControl"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -36.0
-offset_right = 40.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 10
-theme_override_styles/normal = SubResource("StyleBoxFlat_oe7bq")
-text = "[COMENZAR]"
-
-[node name="InstructionsControl" type="Control" parent="Control"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/InstructionsControl"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-alignment = 1
-
-[node name="InstructionsLabel" type="RichTextLabel" parent="Control/InstructionsControl/VBoxContainer"]
-clip_contents = false
-layout_mode = 2
-theme_override_font_sizes/normal_font_size = 14
-bbcode_enabled = true
-text = "Instructions"
-fit_content = true
-horizontal_alignment = 1
-
-[node name="RestartButton" type="Button" parent="Control/InstructionsControl"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -40.0
-offset_top = -36.0
-offset_right = 40.0
-offset_bottom = -10.0
-grow_horizontal = 2
-grow_vertical = 0
-size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 10
-theme_override_styles/normal = SubResource("StyleBoxFlat_oe7bq")
-text = "[RESTART]"
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+text = "↺"

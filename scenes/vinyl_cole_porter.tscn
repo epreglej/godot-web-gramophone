@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://dwienhj3didby"]
+[gd_scene load_steps=9 format=3 uid="uid://dwienhj3didby"]
 
-[ext_resource type="PackedScene" path="res://scenes/mouse_pickable.tscn" id="1_k71av"]
-[ext_resource type="Script" uid="uid://dkt7xnt7tmgdw" path="res://scripts/vinyl.gd" id="2_p506p"]
+[ext_resource type="Script" path="res://scripts/simple_vinyl.gd" id="2_p506p"]
 [ext_resource type="Resource" uid="uid://dlphk0c3ps4qx" path="res://data/cole_porter_empezad_la_beguine.tres" id="3_5q42x"]
 [ext_resource type="Resource" uid="uid://be17ke2vdkdu8" path="res://data/cole_porter_noche_y_dia.tres" id="3_5us2q"]
 [ext_resource type="PackedScene" uid="uid://dmbv5u2dwmkye" path="res://models/vinyls/vinyl_cole_porter/glb/vinyl_cole_porter.glb" id="7_n8xky"]
@@ -20,24 +19,23 @@ shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="VinylColePorter" node_paths=PackedStringArray("outline") groups=["Vinyls"] instance=ExtResource("1_k71av")]
+[node name="VinylColePorter" type="RigidBody3D" node_paths=PackedStringArray("outline", "snap_pivot") groups=["Vinyls"]]
 freeze = true
 script = ExtResource("2_p506p")
 outline = NodePath("SnapPivot/Outline/Exterior")
-_song_a = ExtResource("3_5q42x")
-_song_b = ExtResource("3_5us2q")
-ranged_grab_method = 0
-second_hand_grab = 1
+snap_pivot = NodePath("SnapPivot")
+song_a = ExtResource("3_5q42x")
+song_b = ExtResource("3_5us2q")
 
-[node name="CollisionShape3D" parent="." index="0"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_5q42x")
 
-[node name="SnapPivot" type="Node3D" parent="." index="1"]
+[node name="SnapPivot" type="Node3D" parent="."]
 
 
-[node name="Model" parent="SnapPivot" index="1" instance=ExtResource("7_n8xky")]
+[node name="Model" parent="SnapPivot" instance=ExtResource("7_n8xky")]
 
-[node name="Outline" parent="SnapPivot" index="2" instance=ExtResource("7_n8xky")]
+[node name="Outline" parent="SnapPivot" instance=ExtResource("7_n8xky")]
 
 [node name="Grooves" parent="SnapPivot/Outline" index="0"]
 visible = false
