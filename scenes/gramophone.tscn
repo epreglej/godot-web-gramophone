@@ -215,6 +215,7 @@ libraries = {
 
 [node name="MountedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15112917, 0.07363949, 0.14668855)
+collision_mask = 2
 script = ExtResource("16_snapzone")
 snap_group = "Cranks"
 highlight_node = NodePath("Highlight")
@@ -230,6 +231,7 @@ mesh = SubResource("QuadMesh_highlight")
 
 [node name="StashedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
+collision_mask = 2
 script = ExtResource("16_snapzone")
 snap_group = "Cranks"
 highlight_node = NodePath("Highlight")
@@ -244,13 +246,12 @@ visible = false
 mesh = SubResource("QuadMesh_highlight")
 
 [node name="Filter" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Filters"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, -0.050105035)
+transform = Transform3D(1, 0, 0, 0, 0.8616291, -0.5075384, 0, 0.5075384, 0.8616291, 0.35, 0.1, -0.050105035)
 collision_layer = 2
 freeze = true
 script = ExtResource("15_pickable")
 drag_height = 0.125
 outline = NodePath("Outline")
-snap_distance = 0.18
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Filter"]
 shape = SubResource("CylinderShape3D_filter")
@@ -295,6 +296,7 @@ visible = false
 
 [node name="MountedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.11653774, 0.16)
+collision_mask = 2
 script = ExtResource("16_snapzone")
 snap_group = "Filters"
 highlight_node = NodePath("Highlight")
@@ -309,7 +311,8 @@ visible = false
 mesh = SubResource("QuadMesh_highlight")
 
 [node name="StashedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.35, 0, -0.050105035)
+transform = Transform3D(1, 0, 0, 0, 0.8616291, -0.5075384, 0, 0.5075384, 0.8616291, 0.35, 0.1, -0.050105035)
+collision_mask = 2
 script = ExtResource("16_snapzone")
 snap_group = "Filters"
 highlight_node = NodePath("Highlight")

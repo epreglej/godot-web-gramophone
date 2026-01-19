@@ -86,9 +86,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0299916, 0.6815504, -0.178
 [node name="LambisShell" parent="Environment/Room/Cabinet" instance=ExtResource("21_ub8w1")]
 transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.4045794, -0.18341547, 0.6791854, 0.016846359)
 
-[node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("ui") instance=ExtResource("18_blcw0")]
+[node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("ui", "camera") instance=ExtResource("18_blcw0")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 0.7, -1.25)
 ui = NodePath("../../../SettingsUI")
+camera = NodePath("../../../Camera3D")
 
 [node name="Chandelier" parent="Environment/Room" instance=ExtResource("22_ub8w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)

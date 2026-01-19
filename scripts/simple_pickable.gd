@@ -11,7 +11,6 @@ signal entered_snap_zone(zone: Area3D)
 @export var enabled: bool = false
 @export var drag_height: float = 0.08  # Height above the original position to drag at
 @export var outline: Node3D
-@export var snap_distance: float = 0.15  # Distance to detect snap zones
 @export var collision_margin: float = 0.02  # Extra margin to prevent clipping into walls
 
 var is_held: bool = false
@@ -67,6 +66,8 @@ func on_grab():
 	is_held = true
 	_original_freeze = freeze
 	freeze = true
+	# Reset rotation to identity (straighten the object)
+	basis = Basis.IDENTITY
 	# Use fixed drag plane based on original position, not current
 	_drag_plane_y = _original_position.y + drag_height
 	_set_outline_visibility(false)
@@ -76,10 +77,10 @@ func on_release():
 	is_held = false
 	freeze = _original_freeze
 	
-	# Check for nearby snap zones and try to snap
-	var snap_zone = _find_nearest_snap_zone()
+	# Check for overlapping snap zones and try to snap
+	var snap_zone = _find_overlapping_snap_zone()
 	if snap_zone and snap_zone.has_method("try_snap"):
-		print("Found snap zone: ", snap_zone.name, " - trying to snap")
+		print("Found overlapping snap zone: ", snap_zone.name, " - trying to snap")
 		if snap_zone.try_snap(self):
 			# Successfully snapped - zone will handle position
 			entered_snap_zone.emit(snap_zone)
@@ -92,36 +93,58 @@ func on_release():
 	
 	dropped.emit()
 
-func _find_nearest_snap_zone() -> Area3D:
+func _find_overlapping_snap_zone() -> Area3D:
 	# Find all snap zones by searching the tree
 	var snap_zones: Array[Node] = []
 	_find_snap_zones_recursive(get_tree().root, snap_zones)
 	
-	print("Found ", snap_zones.size(), " snap zones total")
+	print("Checking ", snap_zones.size(), " snap zones for overlap")
 	
-	var nearest: Area3D = null
-	var nearest_dist: float = snap_distance
+	var nearest_zone: Area3D = null
+	var nearest_dist: float = INF
 	
 	for zone in snap_zones:
 		if zone is Area3D:
 			# Check if zone is enabled
 			var zone_enabled = zone.get("enabled") if "enabled" in zone else true
-			var dist = global_position.distance_to(zone.global_position)
-			print("  Snap zone: ", zone.name, " distance: ", "%.3f" % dist, " enabled: ", zone_enabled)
 			
 			if not zone_enabled:
+				print("  Snap zone: ", zone.name, " - skipped (disabled)")
 				continue
 			
-			if dist < nearest_dist:
+			# Get the collision shape radius from the zone
+			var snap_radius = _get_snap_zone_radius(zone)
+			var dist = global_position.distance_to(zone.global_position)
+			var is_overlapping = dist <= snap_radius
+			
+			print("  Snap zone: ", zone.name, " dist: %.3f" % dist, " radius: %.3f" % snap_radius, " overlapping: ", is_overlapping)
+			
+			# Only consider zones we're actually overlapping with, pick the nearest
+			if is_overlapping and dist < nearest_dist:
 				nearest_dist = dist
-				nearest = zone
+				nearest_zone = zone
 	
-	if nearest:
-		print("  -> Nearest: ", nearest.name, " at distance: ", "%.3f" % nearest_dist)
+	if nearest_zone:
+		print("  -> Nearest overlapping zone: ", nearest_zone.name, " at dist: %.3f" % nearest_dist)
 	else:
-		print("  -> No snap zone within range (", snap_distance, ")")
+		print("  -> No overlapping snap zone found")
 	
-	return nearest
+	return nearest_zone
+
+func _get_snap_zone_radius(zone: Area3D) -> float:
+	# Find the collision shape and get its radius
+	for child in zone.get_children():
+		if child is CollisionShape3D:
+			var shape = child.shape
+			if shape is SphereShape3D:
+				return shape.radius
+			elif shape is BoxShape3D:
+				# Use the smallest dimension as an approximation
+				return min(shape.size.x, shape.size.y, shape.size.z) / 2.0
+			elif shape is CylinderShape3D:
+				return shape.radius
+	# Default fallback
+	return 0.1
 
 func _find_snap_zones_recursive(node: Node, result: Array[Node]):
 	if node is Area3D and node.has_method("try_snap"):
