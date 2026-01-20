@@ -24,8 +24,8 @@ func enter_state():
 	
 	if gramophone:
 		var song = gramophone.selected_song
-		var song_info = "%s - %s" % [song.artist, song.title] if song else "Unknown"
-		gramophone.set_instructions("[color=green]¡Vinilo colocado![/color]\n%s\n[color=red]Toca para cambiar[/color]" % song_info)
+		var song_info = "%s - %s" % [song.artist, song.title] if song else "Desconocido"
+		gramophone.set_instructions("¡Vinilo colocado! %s" % song_info, "Toca para cambiar")
 
 var _current_vinyl: SimpleVinyl = null  # Track locally to ensure cleanup
 

@@ -1,0 +1,329 @@
+[gd_scene load_steps=7 format=3 uid="uid://dk5phtn3korrn"]
+
+[ext_resource type="Script" uid="uid://c18kmtefo4g7c" path="res://scripts/ui.gd" id="1_pla86"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_modal"]
+bg_color = Color(0.05, 0.05, 0.08, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.28, 0.35, 0.9)
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.18, 0.42, 0.65, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_arrow"]
+bg_color = Color(0.05, 0.05, 0.08, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.25, 0.28, 0.35, 0.7)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vinyl_panel"]
+bg_color = Color(0.05, 0.05, 0.08, 0.96)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.25, 0.28, 0.35, 0.9)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vinyl_button"]
+bg_color = Color(0.18, 0.42, 0.65, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[node name="SettingsUI" type="CanvasLayer"]
+script = ExtResource("1_pla86")
+
+[node name="ModalBackground" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.6)
+
+[node name="ModalContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ModalPanel" type="PanelContainer" parent="ModalContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="MarginContainer" type="MarginContainer" parent="ModalContainer/ModalPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 30
+
+[node name="WelcomeScreen" type="VBoxContainer" parent="ModalContainer/ModalPanel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="ModalContainer/ModalPanel/MarginContainer/WelcomeScreen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 32
+text = "El Gramófono"
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/WelcomeScreen"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="DescLabel" type="RichTextLabel" parent="ModalContainer/ModalPanel/MarginContainer/WelcomeScreen"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.78, 0.8, 0.85, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[center]Aprende a montar y usar un gramófono clásico.
+
+Haz clic y arrastra para interactuar
+con los objetos destacados.
+
+Al comenzar, aparecerán flechas en la
+parte inferior para girar la cámara.[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Spacer2" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/WelcomeScreen"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="ContinueButton" type="Button" parent="ModalContainer/ModalPanel/MarginContainer/WelcomeScreen"]
+custom_minimum_size = Vector2(160, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+text = "Continuar"
+
+[node name="StepsScreen" type="VBoxContainer" parent="ModalContainer/ModalPanel/MarginContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="ModalContainer/ModalPanel/MarginContainer/StepsScreen"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.95, 0.97, 1)
+theme_override_font_sizes/font_size = 28
+text = "Guía de colores"
+horizontal_alignment = 1
+
+[node name="Spacer1" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/StepsScreen"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="StepsLabel" type="RichTextLabel" parent="ModalContainer/ModalPanel/MarginContainer/StepsScreen"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.78, 0.8, 0.85, 1)
+theme_override_font_sizes/normal_font_size = 16
+bbcode_enabled = true
+text = "[center]Los objetos resaltados en [color=#66cc88]verde[/color]
+avanzan el montaje del gramófono.
+
+Los objetos en [color=#d9887a]rojo[/color] te permiten
+deshacer pasos anteriores.[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="Spacer2" type="Control" parent="ModalContainer/ModalPanel/MarginContainer/StepsScreen"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="ModalContainer/ModalPanel/MarginContainer/StepsScreen"]
+custom_minimum_size = Vector2(160, 45)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button")
+text = "Comenzar"
+
+[node name="ObjectiveContainer" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 400.0
+offset_bottom = 80.0
+
+[node name="ObjectivePanel" type="PanelContainer" parent="ObjectiveContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_modal")
+
+[node name="MarginContainer" type="MarginContainer" parent="ObjectiveContainer/ObjectivePanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 12
+
+[node name="ObjectiveLabel" type="RichTextLabel" parent="ObjectiveContainer/ObjectivePanel/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_colors/default_color = Color(0.9, 0.92, 0.95, 1)
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "Abre la tapa"
+fit_content = true
+scroll_active = false
+
+[node name="RotationContainer" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 200.0
+offset_bottom = 55.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="RotationContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="LeftButton" type="Button" parent="RotationContainer/HBoxContainer"]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.85, 0.87, 0.92, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_arrow")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_arrow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_arrow")
+text = "<"
+
+[node name="RestartButton" type="Button" parent="RotationContainer/HBoxContainer"]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.7, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_arrow")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_arrow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_arrow")
+text = "↺"
+
+[node name="RightButton" type="Button" parent="RotationContainer/HBoxContainer"]
+custom_minimum_size = Vector2(55, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(0.85, 0.87, 0.92, 1)
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_arrow")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_arrow")
+theme_override_styles/hover = SubResource("StyleBoxFlat_arrow")
+text = ">"
+
+[node name="VinylContainer" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 260.0
+offset_bottom = 140.0
+
+[node name="PanelContainer" type="PanelContainer" parent="VinylContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vinyl_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="VinylContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VinylContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="VinylInfoLabel" type="RichTextLabel" parent="VinylContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_colors/default_color = Color(0.9, 0.92, 0.95, 1)
+theme_override_font_sizes/normal_font_size = 15
+bbcode_enabled = true
+text = "[center]Vinyl Info[/center]"
+fit_content = true
+scroll_active = false
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VinylContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 10
+
+[node name="FlipButton" type="Button" parent="VinylContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_vinyl_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vinyl_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vinyl_button")
+text = "Girar"
+
+[node name="SelectButton" type="Button" parent="VinylContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_vinyl_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vinyl_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vinyl_button")
+text = "Elegir"
+
+[node name="CancelButton" type="Button" parent="VinylContainer/PanelContainer/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 13
+theme_override_styles/normal = SubResource("StyleBoxFlat_vinyl_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_vinyl_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_vinyl_button")
+text = "Dejar"

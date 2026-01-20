@@ -22,7 +22,7 @@ func enter_state():
 		gramophone.crank_pickable.picked_up.connect(_on_crank_picked_up)
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]Coge la manivela[/color]\no [color=red]cierra la tapa[/color]")
+		gramophone.set_instructions("Coge la manivela", "Cierra la tapa")
 
 func exit_state():
 	if gramophone and gramophone.lid:

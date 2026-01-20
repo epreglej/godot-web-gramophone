@@ -29,7 +29,7 @@ func enter_state():
 		gramophone.stashed_filter_snap_zone.object_snapped.connect(_on_filter_stashed)
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]Coloca el filtro en el plato[/color]\no [color=red]devuélvelo[/color]")
+		gramophone.set_instructions("Coloca el filtro en el plato", "Devuélvelo")
 
 func exit_state():
 	# Disable snap zones
@@ -44,7 +44,7 @@ func exit_state():
 			gramophone.stashed_filter_snap_zone.object_snapped.disconnect(_on_filter_stashed)
 
 func _on_filter_mounted(_object: Node3D):
-	goto("FilterMounted")
+	goto("VinylReady")
 
 func _on_filter_stashed(_object: Node3D):
 	# User put filter back, return to filter ready state

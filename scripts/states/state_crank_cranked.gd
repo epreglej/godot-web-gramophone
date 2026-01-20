@@ -8,7 +8,7 @@ func enter_state():
 	# Disable all interactions first
 	if gramophone:
 		gramophone.disable_all_interactables()
-		gramophone.set_instructions("[color=green]¡Gramófono listo![/color]")
+		gramophone.set_instructions("¡Gramófono listo!")
 	
 	# Automatically proceed to filter step
 	goto("FilterReady")

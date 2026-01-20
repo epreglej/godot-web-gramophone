@@ -24,7 +24,7 @@ func enter_state():
 				vinyl.inspection_started.connect(_on_vinyl_inspection_started)
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]Selecciona un vinilo[/color]\n[color=red]O retira el filtro[/color]")
+		gramophone.set_instructions("Selecciona un vinilo", "Retira el filtro")
 
 func exit_state():
 	# Disable filter

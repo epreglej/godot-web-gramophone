@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://bdktybj8dp4ui" path="res://skyboxes/sky.hdr" id="2_tw3kd"]
 [ext_resource type="Script" uid="uid://5kx2wbs1mlvo" path="res://scripts/mouse_controller.gd" id="3_mouse"]
 [ext_resource type="PackedScene" uid="uid://dgg6gxhvb1ocb" path="res://models/room/glb/room.glb" id="8_bf3um"]
-[ext_resource type="PackedScene" uid="uid://dk5phtn3korrn" path="res://scenes/settings_ui.tscn" id="14_r3r3k"]
+[ext_resource type="PackedScene" uid="uid://dk5phtn3korrn" path="res://scenes/ui.tscn" id="14_r3r3k"]
 [ext_resource type="PackedScene" uid="uid://dyb2t2r75h5bv" path="res://models/doors/glb/doors.glb" id="17_0dnjj"]
 [ext_resource type="PackedScene" uid="uid://c1n30cjkl1mko" path="res://models/buildings/glb/buildings.glb" id="17_r3r3k"]
 [ext_resource type="PackedScene" uid="uid://c2cftykgbvpa7" path="res://models/painting/glb/painting.glb" id="18_1xb4a"]
@@ -45,7 +45,7 @@ light_energy = 0.8
 directional_shadow_mode = 0
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.81915206, 0.57357645, 0, -0.57357645, 0.81915206, 0, 1.6, 0)
+transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.6427876, 0, -0.6427876, 0.76604444, 0, 1.6, 0)
 fov = 70.0
 
 [node name="MouseController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
@@ -88,7 +88,7 @@ transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.40457
 
 [node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("ui", "camera") instance=ExtResource("18_blcw0")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 0.7, -1.25)
-ui = NodePath("../../../SettingsUI")
+ui = NodePath("../../../UI")
 camera = NodePath("../../../Camera3D")
 
 [node name="Chandelier" parent="Environment/Room" instance=ExtResource("22_ub8w1")]
@@ -106,6 +106,6 @@ visible = false
 [node name="Sofa" parent="Environment/Room" instance=ExtResource("25_ab83r")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.0000272, 0, -1.1920929e-07)
 
-[node name="SettingsUI" parent="." instance=ExtResource("14_r3r3k")]
+[node name="UI" parent="." instance=ExtResource("14_r3r3k")]
 
 [editable path="Environment/Room/VintageClock"]

@@ -100,9 +100,9 @@ func _on_vinyl_cancel():
 	if current_state and current_state.has_method("cancel_inspection"):
 		current_state.cancel_inspection()
 
-func set_instructions(text: String):
+func set_instructions(assemble_text: String = "", disassemble_text: String = ""):
 	if ui:
-		ui.set_instructions(text)
+		ui.set_instructions(assemble_text, disassemble_text)
 
 func disable_all_interactables():
 	## Disables ALL interactive components and snap zones

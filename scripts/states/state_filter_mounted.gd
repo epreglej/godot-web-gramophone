@@ -10,7 +10,7 @@ func enter_state():
 		gramophone.disable_all_interactables()
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]¡Filtro colocado![/color]")
+		gramophone.set_instructions("¡Filtro colocado!")
 	
 	# Auto-transition to VinylReady after a brief moment
 	var tween = create_tween()

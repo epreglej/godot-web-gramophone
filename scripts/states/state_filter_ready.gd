@@ -22,7 +22,7 @@ func enter_state():
 		gramophone.filter_pickable.picked_up.connect(_on_filter_picked_up)
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]Coge el filtro[/color]\no [color=red]retira la manivela[/color]")
+		gramophone.set_instructions("Coge el filtro", "Retira la manivela")
 
 func exit_state():
 	if gramophone and gramophone.crank_pickable:

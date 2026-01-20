@@ -29,7 +29,7 @@ func enter_state():
 		gramophone.stashed_crank_snap_zone.object_snapped.connect(_on_crank_stashed)
 	
 	if gramophone:
-		gramophone.set_instructions("[color=green]Inserta la manivela[/color]\no [color=red]guárdala de nuevo[/color]")
+		gramophone.set_instructions("Inserta la manivela", "Guárdala de nuevo")
 
 func exit_state():
 	# Disable snap zones and hide their highlights

@@ -48,7 +48,7 @@ func exit_state():
 
 func _update_instructions():
 	if gramophone:
-		gramophone.set_instructions("Usa los botones para [color=#66dd66]Girar[/color], [color=#66dd66]Elegir[/color] o [color=#dd6666]Dejar[/color] el vinilo")
+		gramophone.set_instructions("Usa los botones para Girar o Elegir el vinilo", "Dejar el vinilo")
 
 func _on_vinyl_selected(vinyl: SimpleVinyl, song: Song):
 	print("Vinyl selected: ", vinyl.name, " - Song: ", song.title if song else "none")
