@@ -1,6 +1,7 @@
-[gd_scene load_steps=35 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=38 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
+[ext_resource type="PackedScene" uid="uid://cfnicgoc46ii" path="res://scenes/brake.tscn" id="2_brake"]
 [ext_resource type="PackedScene" uid="uid://dkyp2218x3gtw" path="res://scenes/lid.tscn" id="2_grppd"]
 [ext_resource type="Script" uid="uid://2tf7rjpyulqi" path="res://scripts/gramophone_controller.gd" id="3_controller"]
 [ext_resource type="Script" uid="uid://ctdx28ypg5yqy" path="res://scripts/state_machine.gd" id="4_statemachine"]
@@ -17,21 +18,23 @@
 [ext_resource type="Script" uid="uid://c0p7rimgsxtt7" path="res://scripts/states/state_vinyl_ready.gd" id="15_vinylready"]
 [ext_resource type="Script" uid="uid://sycynkwomqke" path="res://scripts/states/state_vinyl_inspecting.gd" id="16_vinylinspecting"]
 [ext_resource type="Script" uid="uid://7l65ctatkgbg" path="res://scripts/states/state_vinyl_mounted.gd" id="17_vinylmounted"]
-[ext_resource type="Script" uid="uid://8hkehvk7q0m2" path="res://scripts/simple_pickable.gd" id="18_pickable"]
-[ext_resource type="Script" uid="uid://c8ep21m1q6kq7" path="res://scripts/simple_snap_zone.gd" id="19_snapzone"]
-[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="20_outline"]
+[ext_resource type="Script" uid="uid://n7qgffd7mj3m" path="res://scripts/states/state_brake_ready.gd" id="18_brakeready"]
+[ext_resource type="Script" uid="uid://0oo4gnbsy00c" path="res://scripts/states/state_vinyl_spinning.gd" id="19_vinylspinning"]
 [ext_resource type="Material" path="res://materials/highlight_ring.tres" id="21_highlight"]
 [ext_resource type="PackedScene" uid="uid://75bjk40cn1kv" path="res://scenes/vinyl_alejandro_ulloa.tscn" id="22_vinyl1"]
 [ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="23_vinyl2"]
 [ext_resource type="PackedScene" uid="uid://p2k7wfjq40j8" path="res://scenes/vinyl_conchita_martinez.tscn" id="24_vinyl3"]
 [ext_resource type="PackedScene" uid="uid://dkjfrdosmnpoy" path="res://scenes/vinyl_pepe_blanco.tscn" id="25_vinyl4"]
+[ext_resource type="Script" uid="uid://8hkehvk7q0m2" path="res://scripts/simple_pickable.gd" id="26_pickable"]
+[ext_resource type="Script" uid="uid://c8ep21m1q6kq7" path="res://scripts/simple_snap_zone.gd" id="27_snapzone"]
+[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="28_outline"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crank"]
 size = Vector3(0.25, 0.04, 0.08)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crank_outline"]
 render_priority = 0
-shader = ExtResource("20_outline")
+shader = ExtResource("28_outline")
 shader_parameter/shell_thickness = 0.002
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
 shader_parameter/glow_speed = 3.0
@@ -88,17 +91,18 @@ radius = 0.11
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_filter_outline"]
 render_priority = 0
-shader = ExtResource("20_outline")
+shader = ExtResource("28_outline")
 shader_parameter/shell_thickness = 0.002
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
 shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "mounted_vinyl_snap_zone")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "brake", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "mounted_vinyl_snap_zone")]
 script = ExtResource("3_controller")
 state_machine = NodePath("StateMachine")
 lid = NodePath("Lid")
+brake = NodePath("Brake")
 audio_player = NodePath("AudioStreamPlayer3D")
 crank_pickable = NodePath("Crank")
 mounted_crank_snap_zone = NodePath("MountedCrankSnapZone")
@@ -151,10 +155,19 @@ script = ExtResource("16_vinylinspecting")
 [node name="VinylMounted" type="Node" parent="StateMachine"]
 script = ExtResource("17_vinylmounted")
 
+[node name="BrakeReady" type="Node" parent="StateMachine"]
+script = ExtResource("18_brakeready")
+
+[node name="VinylSpinning" type="Node" parent="StateMachine"]
+script = ExtResource("19_vinylspinning")
+
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
 [node name="Lid" parent="." instance=ExtResource("2_grppd")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, 0)
+
+[node name="Brake" parent="." instance=ExtResource("2_brake")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.275)
 
 [node name="Base" type="Node3D" parent="."]
 
@@ -179,7 +192,7 @@ visible = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
 collision_layer = 2
 freeze = true
-script = ExtResource("18_pickable")
+script = ExtResource("26_pickable")
 outline = NodePath("Outline")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Crank"]
@@ -233,7 +246,7 @@ libraries = {
 [node name="MountedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15112917, 0.07363949, 0.14668855)
 collision_mask = 2
-script = ExtResource("19_snapzone")
+script = ExtResource("27_snapzone")
 snap_group = "Cranks"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
@@ -249,7 +262,7 @@ mesh = SubResource("QuadMesh_highlight")
 [node name="StashedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
 collision_mask = 2
-script = ExtResource("19_snapzone")
+script = ExtResource("27_snapzone")
 snap_group = "Cranks"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
@@ -266,7 +279,7 @@ mesh = SubResource("QuadMesh_highlight")
 transform = Transform3D(1, 0, 0, 0, 0.8616291, -0.5075384, 0, 0.5075384, 0.8616291, 0.35, 0.1, -0.050105035)
 collision_layer = 2
 freeze = true
-script = ExtResource("18_pickable")
+script = ExtResource("26_pickable")
 drag_height = 0.125
 outline = NodePath("Outline")
 
@@ -314,7 +327,7 @@ visible = false
 [node name="MountedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.11653774, 0.16)
 collision_mask = 2
-script = ExtResource("19_snapzone")
+script = ExtResource("27_snapzone")
 snap_group = "Filters"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
@@ -330,7 +343,7 @@ mesh = SubResource("QuadMesh_highlight")
 [node name="StashedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 0.8616291, -0.5075384, 0, 0.5075384, 0.8616291, 0.35, 0.1, -0.050105035)
 collision_mask = 2
-script = ExtResource("19_snapzone")
+script = ExtResource("27_snapzone")
 snap_group = "Filters"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
@@ -350,7 +363,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.13, 0.16)
 transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.3251145, 0.1, -0.05)
 
 [node name="VinylConchitaMartinez" parent="." instance=ExtResource("24_vinyl3")]
-transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.42511448, 0.1, -0.05)
+transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.425, 0.1, -0.05)
 
 [node name="VinylPepeBlanco" parent="." instance=ExtResource("25_vinyl4")]
 transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.5251145, 0.1, -0.05)

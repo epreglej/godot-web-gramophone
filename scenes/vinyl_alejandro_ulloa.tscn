@@ -1,6 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://75bjk40cn1kv"]
+[gd_scene load_steps=8 format=3 uid="uid://75bjk40cn1kv"]
 
-[ext_resource type="Script" path="res://scripts/simple_vinyl.gd" id="1_8n2i4"]
+[ext_resource type="Script" uid="uid://cti8axbb63ta1" path="res://scripts/simple_vinyl.gd" id="1_8n2i4"]
 [ext_resource type="Resource" uid="uid://w38xc6tkjv3c" path="res://data/alejandro_ulloa_sonatina.tres" id="2_two5p"]
 [ext_resource type="Resource" uid="uid://clm6sgpmddvbl" path="res://data/alejandro_ulloa_oriental.tres" id="3_ph4nk"]
 [ext_resource type="PackedScene" uid="uid://c82jg8b3hl2gh" path="res://models/vinyls/vinyl_alejandro_ulloa/glb/vinyl_alejandro_ulloa.glb" id="5_wmpod"]
@@ -11,31 +11,29 @@ height = 0.03
 radius = 0.1
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yc4pg"]
-render_priority = 0
+render_priority = 1
 shader = ExtResource("6_khbku")
-shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_thickness = 0.004
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
 shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
 [node name="VinylAlejandroUlloa" type="RigidBody3D" node_paths=PackedStringArray("outline", "snap_pivot") groups=["Vinyls"]]
-transform = Transform3D(-0.25881907, 0.9659258, -8.742278e-08, 0.9659258, 0.25881907, 0, 2.2626683e-08, -8.444392e-08, -1, 0, 0, 0)
 collision_layer = 4
 collision_mask = 196615
 freeze = true
 freeze_mode = 1
 script = ExtResource("1_8n2i4")
-outline = NodePath("SnapPivot/Outline/Exterior")
-snap_pivot = NodePath("SnapPivot")
 song_a = ExtResource("2_two5p")
 song_b = ExtResource("3_ph4nk")
+outline = NodePath("SnapPivot/Outline/Grooves")
+snap_pivot = NodePath("SnapPivot")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_5q42x")
 
 [node name="SnapPivot" type="Node3D" parent="."]
-
 
 [node name="Model" parent="SnapPivot" instance=ExtResource("5_wmpod")]
 transform = Transform3D(1, -1.9106857e-15, 0, -1.9106857e-15, 1, 0, 1.7763568e-15, 0, 1, 0, 0, 0)
@@ -44,12 +42,13 @@ transform = Transform3D(1, -1.9106857e-15, 0, -1.9106857e-15, 1, 0, 1.7763568e-1
 transform = Transform3D(1, -1.9106857e-15, 0, -1.9106857e-15, 1, 0, 1.7763568e-15, 0, 1, 0, 0, 0)
 
 [node name="Grooves" parent="SnapPivot/Outline" index="0"]
-visible = false
+surface_material_override/0 = SubResource("ShaderMaterial_yc4pg")
 
 [node name="Label1" parent="SnapPivot/Outline" index="1"]
 visible = false
 
 [node name="Exterior" parent="SnapPivot/Outline" index="2"]
+visible = false
 surface_material_override/0 = SubResource("ShaderMaterial_yc4pg")
 
 [node name="Label2" parent="SnapPivot/Outline" index="3"]

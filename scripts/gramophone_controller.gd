@@ -10,6 +10,7 @@ class_name GramophoneController
 
 # Components (set in editor or found automatically)
 @export var lid: SimpleHinge
+@export var brake: SimpleBrake
 @export var audio_player: AudioStreamPlayer3D
 
 # Crank components
@@ -112,6 +113,10 @@ func disable_all_interactables():
 	if lid:
 		lid.set_interactable(false)
 	
+	# Brake
+	if brake:
+		brake.set_interactable(false)
+	
 	# Crank
 	if crank_pickable:
 		crank_pickable.set_interactable(false)
@@ -145,5 +150,6 @@ func _find_vinyls():
 	for child in get_children():
 		if child is SimpleVinyl and child.is_in_group("Vinyls"):
 			vinyls.append(child)
+			# Ensure vinyl is disabled and outline is hidden
 			child.set_interactable(false)
 	print("Found ", vinyls.size(), " vinyls")
