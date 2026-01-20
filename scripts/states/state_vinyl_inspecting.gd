@@ -6,8 +6,7 @@ var _came_from_mounted: bool = false  # Track if we're changing an already mount
 
 func enter_state():
 	print("Entered: VinylInspecting")
-	
-	# Check if we came from VinylMounted (changing vinyl)
+	# Check if we came here to change an already mounted vinyl
 	_came_from_mounted = gramophone.mounted_vinyl != null if gramophone else false
 	
 	# Disable all interactions first
@@ -55,7 +54,7 @@ func _on_vinyl_selected(vinyl: SimpleVinyl, song: Song):
 	if gramophone:
 		gramophone.selected_song = song
 		gramophone.mounted_vinyl = vinyl
-	goto("VinylMounted")
+	goto("BrakeReady")
 
 func _on_vinyl_cancelled(vinyl: SimpleVinyl):
 	print("Vinyl inspection cancelled, came_from_mounted: ", _came_from_mounted)

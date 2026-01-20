@@ -62,4 +62,5 @@ func _on_cranking_complete():
 	if _animation_player:
 		_animation_player.play("RESET")
 	
-	goto("CrankCranked")
+	# Crank is done; go directly to filter step
+	goto("FilterReady")

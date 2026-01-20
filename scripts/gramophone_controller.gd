@@ -11,6 +11,7 @@ class_name GramophoneController
 # Components (set in editor or found automatically)
 @export var lid: SimpleHinge
 @export var brake: SimpleBrake
+@export var tonearm: SimpleTonearm
 @export var audio_player: AudioStreamPlayer3D
 
 # Crank components
@@ -117,6 +118,10 @@ func disable_all_interactables():
 	if brake:
 		brake.set_interactable(false)
 	
+	# Tonearm
+	if tonearm:
+		tonearm.set_interactable(false)
+	
 	# Crank
 	if crank_pickable:
 		crank_pickable.set_interactable(false)
@@ -153,3 +158,14 @@ func _find_vinyls():
 			# Ensure vinyl is disabled and outline is hidden
 			child.set_interactable(false)
 	print("Found ", vinyls.size(), " vinyls")
+
+func start_playback():
+	if not audio_player or not selected_song:
+		return
+	if selected_song.audio_stream:
+		audio_player.stream = selected_song.audio_stream
+		audio_player.play()
+
+func stop_playback():
+	if audio_player:
+		audio_player.stop()

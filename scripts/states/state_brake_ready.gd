@@ -14,6 +14,10 @@ func enter_state():
 	
 	_current_vinyl = gramophone.mounted_vinyl if gramophone else null
 	if _current_vinyl:
+		# Move vinyl to mounted position (above filter on turntable)
+		if gramophone.mounted_vinyl_snap_zone:
+			var snap_pos = gramophone.mounted_vinyl_snap_zone.global_position
+			_current_vinyl.move_to_position(snap_pos, Basis.IDENTITY)
 		# Enable vinyl for removal - red = back
 		_current_vinyl.set_outline_color(GameColors.OUTLINE_DISASSEMBLE)
 		_current_vinyl.set_interactable(true)
@@ -26,7 +30,11 @@ func enter_state():
 		gramophone.brake.disengaged.connect(_on_brake_disengaged)
 	
 	if gramophone:
-		gramophone.set_instructions("Desactiva el freno para hacer girar el vinilo", "Toca el vinilo para cambiarlo")
+		var song = gramophone.selected_song
+		var song_info = "%s - %s" % [song.artist, song.title] if song else "Desconocido"
+		var assemble_text = "¡Vinilo colocado! %s\nDesactiva el freno para hacer girar el vinilo" % song_info
+		var disassemble_text = "Toca el vinilo para cambiarlo"
+		gramophone.set_instructions(assemble_text, disassemble_text)
 
 func exit_state():
 	if _current_vinyl:

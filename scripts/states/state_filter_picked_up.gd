@@ -44,6 +44,7 @@ func exit_state():
 			gramophone.stashed_filter_snap_zone.object_snapped.disconnect(_on_filter_stashed)
 
 func _on_filter_mounted(_object: Node3D):
+	# Filter placed on turntable - go straight to vinyl selection
 	goto("VinylReady")
 
 func _on_filter_stashed(_object: Node3D):

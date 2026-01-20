@@ -1,8 +1,7 @@
-[gd_scene load_steps=38 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene load_steps=49 format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="PackedScene" uid="uid://cfnicgoc46ii" path="res://scenes/brake.tscn" id="2_brake"]
-[ext_resource type="PackedScene" uid="uid://dkyp2218x3gtw" path="res://scenes/lid.tscn" id="2_grppd"]
 [ext_resource type="Script" uid="uid://2tf7rjpyulqi" path="res://scripts/gramophone_controller.gd" id="3_controller"]
 [ext_resource type="Script" uid="uid://ctdx28ypg5yqy" path="res://scripts/state_machine.gd" id="4_statemachine"]
 [ext_resource type="Script" uid="uid://bsrgq2rfol8ch" path="res://scripts/states/state_intro.gd" id="5_intro"]
@@ -14,12 +13,11 @@
 [ext_resource type="Script" uid="uid://b8ekshe3cai4l" path="res://scripts/states/state_crank_cranked.gd" id="11_crankcranked"]
 [ext_resource type="Script" uid="uid://dirhnpg0geaxi" path="res://scripts/states/state_filter_ready.gd" id="12_filterready"]
 [ext_resource type="Script" uid="uid://nuordxevdop" path="res://scripts/states/state_filter_picked_up.gd" id="13_filterpickedup"]
-[ext_resource type="Script" uid="uid://blf3rpkoivsdf" path="res://scripts/states/state_filter_mounted.gd" id="14_filtermounted"]
 [ext_resource type="Script" uid="uid://c0p7rimgsxtt7" path="res://scripts/states/state_vinyl_ready.gd" id="15_vinylready"]
 [ext_resource type="Script" uid="uid://sycynkwomqke" path="res://scripts/states/state_vinyl_inspecting.gd" id="16_vinylinspecting"]
-[ext_resource type="Script" uid="uid://7l65ctatkgbg" path="res://scripts/states/state_vinyl_mounted.gd" id="17_vinylmounted"]
 [ext_resource type="Script" uid="uid://n7qgffd7mj3m" path="res://scripts/states/state_brake_ready.gd" id="18_brakeready"]
 [ext_resource type="Script" uid="uid://0oo4gnbsy00c" path="res://scripts/states/state_vinyl_spinning.gd" id="19_vinylspinning"]
+[ext_resource type="Script" path="res://scripts/states/state_playing.gd" id="20_playing"]
 [ext_resource type="Material" path="res://materials/highlight_ring.tres" id="21_highlight"]
 [ext_resource type="PackedScene" uid="uid://75bjk40cn1kv" path="res://scenes/vinyl_alejandro_ulloa.tscn" id="22_vinyl1"]
 [ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="23_vinyl2"]
@@ -28,9 +26,124 @@
 [ext_resource type="Script" uid="uid://8hkehvk7q0m2" path="res://scripts/simple_pickable.gd" id="26_pickable"]
 [ext_resource type="Script" uid="uid://c8ep21m1q6kq7" path="res://scripts/simple_snap_zone.gd" id="27_snapzone"]
 [ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="28_outline"]
+[ext_resource type="Script" uid="uid://brg8vrye25oqu" path="res://scripts/simple_hinge.gd" id="29_hinge"]
+[ext_resource type="Script" uid="uid://c5qj8kmcl821i" path="res://scripts/simple_tonearm.gd" id="30_tonearm"]
+
+[sub_resource type="Animation" id="Animation_lid_closing"]
+resource_name = "Closing"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angle")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [55.0, 0.0]
+}
+
+[sub_resource type="Animation" id="Animation_lid_opening"]
+resource_name = "Opening"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angle")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [35.0, 90.0]
+}
+
+[sub_resource type="Animation" id="Animation_lid_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angle")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lid"]
+_data = {
+&"Closing": SubResource("Animation_lid_closing"),
+&"Opening": SubResource("Animation_lid_opening"),
+&"RESET": SubResource("Animation_lid_reset")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tamcl"]
+render_priority = 0
+shader = ExtResource("28_outline")
+shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_color = Color(1, 1, 0, 0.2)
+shader_parameter/glow_speed = 3.0
+shader_parameter/glow_min = 0.7
+shader_parameter/glow_max = 1.0
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_tamcl"]
+size = Vector3(0.3, 0.3, 0.1)
+
+[sub_resource type="Animation" id="Animation_tonearm_mounting"]
+resource_name = "Mounting"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angle")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [20.0, 35.0]
+}
+
+[sub_resource type="Animation" id="Animation_tonearm_stowing"]
+resource_name = "Stowing"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:angle")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [30.0, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_tonearm"]
+_data = {
+&"Mounting": SubResource("Animation_tonearm_mounting"),
+&"Stowing": SubResource("Animation_tonearm_stowing")
+}
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kipf1"]
+render_priority = 0
+shader = ExtResource("28_outline")
+shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_color = Color(1, 1, 0, 0.2)
+shader_parameter/glow_speed = 3.0
+shader_parameter/glow_min = 0.7
+shader_parameter/glow_max = 1.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_crank"]
-size = Vector3(0.25, 0.04, 0.08)
+size = Vector3(0.25, 0.05, 0.09)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_crank_outline"]
 render_priority = 0
@@ -98,11 +211,12 @@ shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "brake", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "mounted_vinyl_snap_zone")]
+[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "brake", "tonearm", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "mounted_vinyl_snap_zone")]
 script = ExtResource("3_controller")
 state_machine = NodePath("StateMachine")
 lid = NodePath("Lid")
 brake = NodePath("Brake")
+tonearm = NodePath("Lid/Tonearm")
 audio_player = NodePath("AudioStreamPlayer3D")
 crank_pickable = NodePath("Crank")
 mounted_crank_snap_zone = NodePath("MountedCrankSnapZone")
@@ -134,17 +248,11 @@ script = ExtResource("9_crankinserted")
 [node name="CrankCranking" type="Node" parent="StateMachine"]
 script = ExtResource("10_crankcranking")
 
-[node name="CrankCranked" type="Node" parent="StateMachine"]
-script = ExtResource("11_crankcranked")
-
 [node name="FilterReady" type="Node" parent="StateMachine"]
 script = ExtResource("12_filterready")
 
 [node name="FilterPickedUp" type="Node" parent="StateMachine"]
 script = ExtResource("13_filterpickedup")
-
-[node name="FilterMounted" type="Node" parent="StateMachine"]
-script = ExtResource("14_filtermounted")
 
 [node name="VinylReady" type="Node" parent="StateMachine"]
 script = ExtResource("15_vinylready")
@@ -152,19 +260,16 @@ script = ExtResource("15_vinylready")
 [node name="VinylInspecting" type="Node" parent="StateMachine"]
 script = ExtResource("16_vinylinspecting")
 
-[node name="VinylMounted" type="Node" parent="StateMachine"]
-script = ExtResource("17_vinylmounted")
-
 [node name="BrakeReady" type="Node" parent="StateMachine"]
 script = ExtResource("18_brakeready")
 
 [node name="VinylSpinning" type="Node" parent="StateMachine"]
 script = ExtResource("19_vinylspinning")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+[node name="Playing" type="Node" parent="StateMachine"]
+script = ExtResource("20_playing")
 
-[node name="Lid" parent="." instance=ExtResource("2_grppd")]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, 0)
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 
 [node name="Brake" parent="." instance=ExtResource("2_brake")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.275)
@@ -187,6 +292,115 @@ visible = false
 
 [node name="Tonearm" parent="Base/Model" index="5"]
 visible = false
+
+[node name="Lid" type="Node3D" parent="." node_paths=PackedStringArray("outline", "animation_player")]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, -0.005)
+script = ExtResource("29_hinge")
+outline = NodePath("Outline")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid"]
+libraries = {
+&"": SubResource("AnimationLibrary_lid")
+}
+
+[node name="Model" parent="Lid" instance=ExtResource("1_dylsv")]
+
+[node name="Base" parent="Lid/Model" index="0"]
+visible = false
+
+[node name="Brake" parent="Lid/Model" index="2"]
+visible = false
+
+[node name="Crank" parent="Lid/Model" index="3"]
+visible = false
+
+[node name="Filter" parent="Lid/Model" index="4"]
+visible = false
+
+[node name="Tonearm" parent="Lid/Model" index="5"]
+visible = false
+
+[node name="Outline" parent="Lid" instance=ExtResource("1_dylsv")]
+
+[node name="Base" parent="Lid/Outline" index="0"]
+visible = false
+
+[node name="Lid" parent="Lid/Outline" index="1"]
+surface_material_override/0 = SubResource("ShaderMaterial_tamcl")
+
+[node name="Brake" parent="Lid/Outline" index="2"]
+visible = false
+
+[node name="Crank" parent="Lid/Outline" index="3"]
+visible = false
+
+[node name="Filter" parent="Lid/Outline" index="4"]
+visible = false
+
+[node name="Tonearm" parent="Lid/Outline" index="5"]
+visible = false
+
+[node name="Handle" type="StaticBody3D" parent="Lid"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/Handle"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024770617, -0.049541406)
+shape = SubResource("BoxShape3D_tamcl")
+
+[node name="Tonearm" type="Node3D" parent="Lid" node_paths=PackedStringArray("outline", "animation_player")]
+transform = Transform3D(0.98874074, -0.14963889, 6.540924e-09, 0.14963889, 0.98874074, 4.921574e-10, -6.540924e-09, 4.921574e-10, 1, 0.08913786, 0.08097366, -0.021452807)
+script = ExtResource("30_tonearm")
+outline = NodePath("Outline/Tonearm")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid/Tonearm"]
+libraries = {
+&"": SubResource("AnimationLibrary_tonearm")
+}
+
+[node name="Model" parent="Lid/Tonearm" instance=ExtResource("1_dylsv")]
+
+[node name="Base" parent="Lid/Tonearm/Model" index="0"]
+visible = false
+
+[node name="Lid" parent="Lid/Tonearm/Model" index="1"]
+visible = false
+
+[node name="Brake" parent="Lid/Tonearm/Model" index="2"]
+visible = false
+
+[node name="Crank" parent="Lid/Tonearm/Model" index="3"]
+visible = false
+
+[node name="Filter" parent="Lid/Tonearm/Model" index="4"]
+visible = false
+
+[node name="Outline" parent="Lid/Tonearm" instance=ExtResource("1_dylsv")]
+
+[node name="Base" parent="Lid/Tonearm/Outline" index="0"]
+visible = false
+
+[node name="Lid" parent="Lid/Tonearm/Outline" index="1"]
+visible = false
+
+[node name="Brake" parent="Lid/Tonearm/Outline" index="2"]
+visible = false
+
+[node name="Crank" parent="Lid/Tonearm/Outline" index="3"]
+visible = false
+
+[node name="Filter" parent="Lid/Tonearm/Outline" index="4"]
+visible = false
+
+[node name="Tonearm" parent="Lid/Tonearm/Outline" index="5"]
+surface_material_override/3 = SubResource("ShaderMaterial_kipf1")
+
+[node name="Handle" type="StaticBody3D" parent="Lid/Tonearm"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/Tonearm/Handle"]
+transform = Transform3D(0.9929254, 0.0010706782, 0.11873279, 0.0010706335, 0.9998378, -0.017969364, -0.11873278, 0.017969359, 0.99276364, -0.07376539, 0.011163872, 0.025312603)
+shape = SubResource("BoxShape3D_crank")
 
 [node name="Crank" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Cranks"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
@@ -372,6 +586,10 @@ transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0
 transform = Transform3D(0.5735764, 0.819152, 0, -0.819152, 0.5735764, 0, 0, 0, 1, -0.6251145, 0.1, -0.05)
 
 [editable path="Base/Model"]
+[editable path="Lid/Model"]
+[editable path="Lid/Outline"]
+[editable path="Lid/Tonearm/Model"]
+[editable path="Lid/Tonearm/Outline"]
 [editable path="Crank/Model"]
 [editable path="Crank/Outline"]
 [editable path="Filter/Model"]
