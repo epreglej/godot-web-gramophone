@@ -15,7 +15,7 @@ class_name GramophoneController
 @export var audio_player: AudioStreamPlayer3D
 
 # Crank components
-@export var crank_pickable: SimplePickable
+@export var crank: Crank
 @export var mounted_crank_snap_zone: SimpleSnapZone
 @export var stashed_crank_snap_zone: SimpleSnapZone
 
@@ -123,8 +123,8 @@ func disable_all_interactables():
 		tonearm.set_interactable(false)
 	
 	# Crank
-	if crank_pickable:
-		crank_pickable.set_interactable(false)
+	if crank:
+		crank.set_interactable(false)
 	if mounted_crank_snap_zone:
 		mounted_crank_snap_zone.set_active(false)
 	if stashed_crank_snap_zone:
@@ -145,9 +145,9 @@ func disable_all_interactables():
 
 func _setup_crank():
 	# Place crank in stashed snap zone
-	if crank_pickable and stashed_crank_snap_zone:
-		crank_pickable.global_position = stashed_crank_snap_zone.global_position
-		crank_pickable.set_interactable(false)
+	if crank and stashed_crank_snap_zone:
+		crank.global_position = stashed_crank_snap_zone.global_position
+		crank.set_interactable(false)
 
 func _find_vinyls():
 	# Find all nodes in the "Vinyls" group that are children of this node

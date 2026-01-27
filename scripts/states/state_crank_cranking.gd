@@ -14,24 +14,24 @@ func enter_state():
 		gramophone.disable_all_interactables()
 	
 	# Get the animation player from the crank
-	if gramophone and gramophone.crank_pickable:
-		_animation_player = gramophone.crank_pickable.get_node_or_null("AnimationPlayer")
+	if gramophone and gramophone.crank:
+		_animation_player = gramophone.crank.animation_player
 		if _animation_player:
 			_animation_player.animation_finished.connect(_on_animation_finished)
 	
-	# Enable crank pickable for clicking (but we'll intercept the grab)
-	if gramophone and gramophone.crank_pickable:
-		gramophone.crank_pickable.set_outline_color(GameColors.OUTLINE_ASSEMBLE)
-		gramophone.crank_pickable.set_interactable(true)
-		gramophone.crank_pickable.picked_up.connect(_on_crank_clicked)
+	# Enable crank for clicking (but we'll intercept the grab)
+	if gramophone and gramophone.crank:
+		gramophone.crank.set_outline_color(GameColors.OUTLINE_ASSEMBLE)
+		gramophone.crank.set_interactable(true)
+		gramophone.crank.picked_up.connect(_on_crank_clicked)
 	
 	if gramophone:
 		gramophone.set_instructions("Haz clic en la manivela para dar cuerda")
 
 func exit_state():
-	if gramophone and gramophone.crank_pickable:
-		if gramophone.crank_pickable.picked_up.is_connected(_on_crank_clicked):
-			gramophone.crank_pickable.picked_up.disconnect(_on_crank_clicked)
+	if gramophone and gramophone.crank:
+		if gramophone.crank.picked_up.is_connected(_on_crank_clicked):
+			gramophone.crank.picked_up.disconnect(_on_crank_clicked)
 	
 	if _animation_player:
 		if _animation_player.animation_finished.is_connected(_on_animation_finished):
@@ -45,9 +45,9 @@ func _on_crank_clicked():
 	_is_cranking = true
 	
 	# Immediately release the crank (we don't want to pick it up, just click it)
-	if gramophone and gramophone.crank_pickable:
-		gramophone.crank_pickable.on_release()
-		gramophone.crank_pickable.set_interactable(false)
+	if gramophone and gramophone.crank:
+		gramophone.crank.on_release()
+		gramophone.crank.set_interactable(false)
 		
 		# Play the cranking animation
 		if _animation_player:

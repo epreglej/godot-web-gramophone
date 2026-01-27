@@ -10,9 +10,9 @@ func enter_state():
 		gramophone.disable_all_interactables()
 	
 	# Crank uses neutral color when held (will show when dropped outside zones)
-	if gramophone and gramophone.crank_pickable:
-		gramophone.crank_pickable.set_outline_color(GameColors.OUTLINE_NEUTRAL)
-		gramophone.crank_pickable.set_interactable(true)
+	if gramophone and gramophone.crank:
+		gramophone.crank.set_outline_color(GameColors.OUTLINE_NEUTRAL)
+		gramophone.crank.set_interactable(true)
 	
 	# Clear and enable mounted snap zone - green = assemble/forward
 	if gramophone and gramophone.mounted_crank_snap_zone:

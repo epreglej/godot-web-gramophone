@@ -16,10 +16,10 @@ func enter_state():
 		gramophone.lid.closed.connect(_on_lid_closed)
 	
 	# Enable crank pickup - green = assemble/forward
-	if gramophone and gramophone.crank_pickable:
-		gramophone.crank_pickable.set_outline_color(GameColors.OUTLINE_ASSEMBLE)
-		gramophone.crank_pickable.set_interactable(true)
-		gramophone.crank_pickable.picked_up.connect(_on_crank_picked_up)
+	if gramophone and gramophone.crank:
+		gramophone.crank.set_outline_color(GameColors.OUTLINE_ASSEMBLE)
+		gramophone.crank.set_interactable(true)
+		gramophone.crank.picked_up.connect(_on_crank_picked_up)
 	
 	if gramophone:
 		gramophone.set_instructions("Coge la manivela", "Cierra la tapa")
@@ -30,10 +30,10 @@ func exit_state():
 			gramophone.lid.closed.disconnect(_on_lid_closed)
 		gramophone.lid.set_interactable(false)
 	
-	if gramophone and gramophone.crank_pickable:
-		if gramophone.crank_pickable.picked_up.is_connected(_on_crank_picked_up):
-			gramophone.crank_pickable.picked_up.disconnect(_on_crank_picked_up)
-		gramophone.crank_pickable.set_interactable(false)
+	if gramophone and gramophone.crank:
+		if gramophone.crank.picked_up.is_connected(_on_crank_picked_up):
+			gramophone.crank.picked_up.disconnect(_on_crank_picked_up)
+		gramophone.crank.set_interactable(false)
 
 func _on_crank_picked_up():
 	goto("CrankPickedUp")

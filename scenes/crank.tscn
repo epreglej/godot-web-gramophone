@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://dmabdvvfme6gh"]
+
+[ext_resource type="Script" uid="uid://cvc0c51gpde7u" path="res://scripts/components/crank.gd" id="1_rigid_body"]
+[ext_resource type="Script" uid="uid://crntodp8x1ayi" path="res://scripts/components/grabbable_component.gd" id="2_grabbable"]
+[ext_resource type="Script" uid="uid://bo72mi6iypol3" path="res://scripts/components/grabbable_space_limiter_component.gd" id="3_space_limiter"]
+[ext_resource type="Script" uid="uid://cgemisrn8gh6t" path="res://scripts/components/snappable_component.gd" id="4_snappable"]
+[ext_resource type="Script" uid="uid://cqwns7xml1gls" path="res://scripts/components/outline_component.gd" id="5_outline"]
+[ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="6_model"]
+[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="7_outline_shader"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_crank"]
+size = Vector3(0.25, 0.05, 0.09)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_crank_outline"]
+render_priority = 0
+shader = ExtResource("7_outline_shader")
+shader_parameter/shell_thickness = 0.002
+shader_parameter/shell_color = Color(1, 1, 0, 0.2)
+shader_parameter/glow_speed = 3.0
+shader_parameter/glow_min = 0.7
+shader_parameter/glow_max = 1.0
+
+[sub_resource type="Animation" id="Animation_cranking"]
+resource_name = "Cranking"
+length = 1.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-12.5664, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_crank_reset"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_crank"]
+_data = {
+&"Cranking": SubResource("Animation_cranking"),
+&"RESET": SubResource("Animation_crank_reset")
+}
+
+[node name="Crank" type="RigidBody3D" unique_id=1975121206 node_paths=PackedStringArray("grabbable_component", "grabbable_space_limiter_component", "snappable_component", "outline_component", "animation_player") groups=["Cranks"]]
+collision_layer = 2
+freeze = true
+script = ExtResource("1_rigid_body")
+grabbable_component = NodePath("GrabbableComponent")
+grabbable_space_limiter_component = NodePath("GrabbableSpaceLimiterComponent")
+snappable_component = NodePath("SnappableComponent")
+outline_component = NodePath("OutlineComponent")
+animation_player = NodePath("AnimationPlayer")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=180281821]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 0.02838397, 0.030000001)
+shape = SubResource("BoxShape3D_crank")
+
+[node name="Model" parent="." unique_id=787002428 instance=ExtResource("6_model")]
+
+[node name="Base" parent="Model" index="0" unique_id=372224398]
+visible = false
+
+[node name="Lid" parent="Model" index="1" unique_id=1539836807]
+visible = false
+
+[node name="Brake" parent="Model" index="2" unique_id=2068735040]
+visible = false
+
+[node name="Filter" parent="Model" index="4" unique_id=1973359574]
+visible = false
+
+[node name="Tonearm" parent="Model" index="5" unique_id=1683771267]
+visible = false
+
+[node name="Outline" parent="." unique_id=933448298 instance=ExtResource("6_model")]
+visible = false
+
+[node name="Base" parent="Outline" index="0" unique_id=372224398]
+visible = false
+
+[node name="Lid" parent="Outline" index="1" unique_id=1539836807]
+visible = false
+
+[node name="Brake" parent="Outline" index="2" unique_id=2068735040]
+visible = false
+
+[node name="Crank" parent="Outline" index="3" unique_id=730532376]
+surface_material_override/0 = SubResource("ShaderMaterial_crank_outline")
+surface_material_override/1 = SubResource("ShaderMaterial_crank_outline")
+
+[node name="Filter" parent="Outline" index="4" unique_id=1973359574]
+visible = false
+
+[node name="Tonearm" parent="Outline" index="5" unique_id=1683771267]
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=917883465]
+libraries/ = SubResource("AnimationLibrary_crank")
+
+[node name="GrabbableComponent" type="Node" parent="." unique_id=1000000002]
+script = ExtResource("2_grabbable")
+
+[node name="GrabbableSpaceLimiterComponent" type="Node" parent="." unique_id=1000000003]
+script = ExtResource("3_space_limiter")
+
+[node name="SnappableComponent" type="Node" parent="." unique_id=1000000004]
+script = ExtResource("4_snappable")
+
+[node name="OutlineComponent" type="Node" parent="." unique_id=1000000005 node_paths=PackedStringArray("outline")]
+script = ExtResource("5_outline")
+outline = NodePath("../Outline")
+
+[editable path="Model"]
+[editable path="Outline"]

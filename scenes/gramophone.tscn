@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://cg6lbg7tcacmj"]
+[gd_scene format=3 uid="uid://cg6lbg7tcacmj"]
 
 [ext_resource type="PackedScene" uid="uid://bgc1qkeq0l76u" path="res://models/gramophone/glb/gramophone.glb" id="1_dylsv"]
 [ext_resource type="PackedScene" uid="uid://cfnicgoc46ii" path="res://scenes/brake.tscn" id="2_brake"]
@@ -10,14 +10,14 @@
 [ext_resource type="Script" uid="uid://dqibycfuhv2lp" path="res://scripts/states/state_crank_picked_up.gd" id="8_crankpickedup"]
 [ext_resource type="Script" uid="uid://bff4hmbboka2k" path="res://scripts/states/state_crank_inserted.gd" id="9_crankinserted"]
 [ext_resource type="Script" uid="uid://b0od0casm1y45" path="res://scripts/states/state_crank_cranking.gd" id="10_crankcranking"]
-[ext_resource type="Script" uid="uid://b8ekshe3cai4l" path="res://scripts/states/state_crank_cranked.gd" id="11_crankcranked"]
 [ext_resource type="Script" uid="uid://dirhnpg0geaxi" path="res://scripts/states/state_filter_ready.gd" id="12_filterready"]
 [ext_resource type="Script" uid="uid://nuordxevdop" path="res://scripts/states/state_filter_picked_up.gd" id="13_filterpickedup"]
 [ext_resource type="Script" uid="uid://c0p7rimgsxtt7" path="res://scripts/states/state_vinyl_ready.gd" id="15_vinylready"]
 [ext_resource type="Script" uid="uid://sycynkwomqke" path="res://scripts/states/state_vinyl_inspecting.gd" id="16_vinylinspecting"]
 [ext_resource type="Script" uid="uid://n7qgffd7mj3m" path="res://scripts/states/state_brake_ready.gd" id="18_brakeready"]
 [ext_resource type="Script" uid="uid://0oo4gnbsy00c" path="res://scripts/states/state_vinyl_spinning.gd" id="19_vinylspinning"]
-[ext_resource type="Script" path="res://scripts/states/state_playing.gd" id="20_playing"]
+[ext_resource type="Script" uid="uid://dc5br2qv8lu08" path="res://scripts/states/state_playing.gd" id="20_playing"]
+[ext_resource type="PackedScene" uid="uid://dmabdvvfme6gh" path="res://scenes/crank.tscn" id="21_6uyrw"]
 [ext_resource type="Material" path="res://materials/highlight_ring.tres" id="21_highlight"]
 [ext_resource type="PackedScene" uid="uid://75bjk40cn1kv" path="res://scenes/vinyl_alejandro_ulloa.tscn" id="22_vinyl1"]
 [ext_resource type="PackedScene" uid="uid://dwienhj3didby" path="res://scenes/vinyl_cole_porter.tscn" id="23_vinyl2"]
@@ -145,52 +145,6 @@ shader_parameter/glow_max = 1.0
 [sub_resource type="BoxShape3D" id="BoxShape3D_crank"]
 size = Vector3(0.25, 0.05, 0.09)
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_crank_outline"]
-render_priority = 0
-shader = ExtResource("28_outline")
-shader_parameter/shell_thickness = 0.002
-shader_parameter/shell_color = Color(1, 1, 0, 0.2)
-shader_parameter/glow_speed = 3.0
-shader_parameter/glow_min = 0.7
-shader_parameter/glow_max = 1.0
-
-[sub_resource type="Animation" id="Animation_cranking"]
-resource_name = "Cranking"
-length = 1.5
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector3(0, 0, 0), Vector3(-12.5664, 0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_crank_reset"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_crank"]
-_data = {
-&"Cranking": SubResource("Animation_cranking"),
-&"RESET": SubResource("Animation_crank_reset")
-}
-
 [sub_resource type="SphereShape3D" id="SphereShape3D_snapzone"]
 radius = 0.2
 
@@ -211,14 +165,14 @@ shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="Gramophone" type="Node3D" node_paths=PackedStringArray("state_machine", "lid", "brake", "tonearm", "audio_player", "crank_pickable", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "mounted_vinyl_snap_zone")]
+[node name="Gramophone" type="Node3D" unique_id=100940344 node_paths=PackedStringArray("state_machine", "lid", "brake", "tonearm", "audio_player", "crank", "mounted_crank_snap_zone", "stashed_crank_snap_zone", "filter_pickable", "mounted_filter_snap_zone", "stashed_filter_snap_zone", "mounted_vinyl_snap_zone")]
 script = ExtResource("3_controller")
 state_machine = NodePath("StateMachine")
 lid = NodePath("Lid")
 brake = NodePath("Brake")
 tonearm = NodePath("Lid/Tonearm")
 audio_player = NodePath("AudioStreamPlayer3D")
-crank_pickable = NodePath("Crank")
+crank = NodePath("Crank")
 mounted_crank_snap_zone = NodePath("MountedCrankSnapZone")
 stashed_crank_snap_zone = NodePath("StashedCrankSnapZone")
 filter_pickable = NodePath("Filter")
@@ -226,238 +180,182 @@ mounted_filter_snap_zone = NodePath("MountedFilterSnapZone")
 stashed_filter_snap_zone = NodePath("StashedFilterSnapZone")
 mounted_vinyl_snap_zone = NodePath("MountedVinylSnapZone")
 
-[node name="StateMachine" type="Node" parent="."]
+[node name="StateMachine" type="Node" parent="." unique_id=1759168694]
 script = ExtResource("4_statemachine")
 initial_state = "Intro"
 
-[node name="Intro" type="Node" parent="StateMachine"]
+[node name="Intro" type="Node" parent="StateMachine" unique_id=622512222]
 script = ExtResource("5_intro")
 
-[node name="LidClosed" type="Node" parent="StateMachine"]
+[node name="LidClosed" type="Node" parent="StateMachine" unique_id=1813497286]
 script = ExtResource("6_lidclosed")
 
-[node name="LidOpen" type="Node" parent="StateMachine"]
+[node name="LidOpen" type="Node" parent="StateMachine" unique_id=696127519]
 script = ExtResource("7_lidopen")
 
-[node name="CrankPickedUp" type="Node" parent="StateMachine"]
+[node name="CrankPickedUp" type="Node" parent="StateMachine" unique_id=1870232323]
 script = ExtResource("8_crankpickedup")
 
-[node name="CrankInserted" type="Node" parent="StateMachine"]
+[node name="CrankInserted" type="Node" parent="StateMachine" unique_id=303851567]
 script = ExtResource("9_crankinserted")
 
-[node name="CrankCranking" type="Node" parent="StateMachine"]
+[node name="CrankCranking" type="Node" parent="StateMachine" unique_id=1991774703]
 script = ExtResource("10_crankcranking")
 
-[node name="FilterReady" type="Node" parent="StateMachine"]
+[node name="FilterReady" type="Node" parent="StateMachine" unique_id=1621744519]
 script = ExtResource("12_filterready")
 
-[node name="FilterPickedUp" type="Node" parent="StateMachine"]
+[node name="FilterPickedUp" type="Node" parent="StateMachine" unique_id=245452294]
 script = ExtResource("13_filterpickedup")
 
-[node name="VinylReady" type="Node" parent="StateMachine"]
+[node name="VinylReady" type="Node" parent="StateMachine" unique_id=516022362]
 script = ExtResource("15_vinylready")
 
-[node name="VinylInspecting" type="Node" parent="StateMachine"]
+[node name="VinylInspecting" type="Node" parent="StateMachine" unique_id=1097446670]
 script = ExtResource("16_vinylinspecting")
 
-[node name="BrakeReady" type="Node" parent="StateMachine"]
+[node name="BrakeReady" type="Node" parent="StateMachine" unique_id=1599407953]
 script = ExtResource("18_brakeready")
 
-[node name="VinylSpinning" type="Node" parent="StateMachine"]
+[node name="VinylSpinning" type="Node" parent="StateMachine" unique_id=491626051]
 script = ExtResource("19_vinylspinning")
 
-[node name="Playing" type="Node" parent="StateMachine"]
+[node name="Playing" type="Node" parent="StateMachine" unique_id=365716603]
 script = ExtResource("20_playing")
 
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1557478440]
 
-[node name="Brake" parent="." instance=ExtResource("2_brake")]
+[node name="Brake" parent="." unique_id=1294484379 instance=ExtResource("2_brake")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.1, 0.1, 0.275)
 
-[node name="Base" type="Node3D" parent="."]
+[node name="Base" type="Node3D" parent="." unique_id=2005687328]
 
-[node name="Model" parent="Base" instance=ExtResource("1_dylsv")]
+[node name="Model" parent="Base" unique_id=1334694027 instance=ExtResource("1_dylsv")]
 
-[node name="Lid" parent="Base/Model" index="1"]
+[node name="Lid" parent="Base/Model" index="1" unique_id=1539836807]
 visible = false
 
-[node name="Brake" parent="Base/Model" index="2"]
+[node name="Brake" parent="Base/Model" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Base/Model" index="3"]
+[node name="Crank" parent="Base/Model" index="3" unique_id=730532376]
 visible = false
 
-[node name="Filter" parent="Base/Model" index="4"]
+[node name="Filter" parent="Base/Model" index="4" unique_id=1973359574]
 visible = false
 
-[node name="Tonearm" parent="Base/Model" index="5"]
+[node name="Tonearm" parent="Base/Model" index="5" unique_id=1683771267]
 visible = false
 
-[node name="Lid" type="Node3D" parent="." node_paths=PackedStringArray("outline", "animation_player")]
+[node name="Lid" type="Node3D" parent="." unique_id=943483581 node_paths=PackedStringArray("outline", "animation_player")]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0.1, -0.005)
 script = ExtResource("29_hinge")
 outline = NodePath("Outline")
 animation_player = NodePath("AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid"]
-libraries = {
-&"": SubResource("AnimationLibrary_lid")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid" unique_id=1108606543]
+libraries/ = SubResource("AnimationLibrary_lid")
 
-[node name="Model" parent="Lid" instance=ExtResource("1_dylsv")]
+[node name="Model" parent="Lid" unique_id=1018424841 instance=ExtResource("1_dylsv")]
 
-[node name="Base" parent="Lid/Model" index="0"]
+[node name="Base" parent="Lid/Model" index="0" unique_id=372224398]
 visible = false
 
-[node name="Brake" parent="Lid/Model" index="2"]
+[node name="Brake" parent="Lid/Model" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Lid/Model" index="3"]
+[node name="Crank" parent="Lid/Model" index="3" unique_id=730532376]
 visible = false
 
-[node name="Filter" parent="Lid/Model" index="4"]
+[node name="Filter" parent="Lid/Model" index="4" unique_id=1973359574]
 visible = false
 
-[node name="Tonearm" parent="Lid/Model" index="5"]
+[node name="Tonearm" parent="Lid/Model" index="5" unique_id=1683771267]
 visible = false
 
-[node name="Outline" parent="Lid" instance=ExtResource("1_dylsv")]
+[node name="Outline" parent="Lid" unique_id=190197320 instance=ExtResource("1_dylsv")]
 
-[node name="Base" parent="Lid/Outline" index="0"]
+[node name="Base" parent="Lid/Outline" index="0" unique_id=372224398]
 visible = false
 
-[node name="Lid" parent="Lid/Outline" index="1"]
+[node name="Lid" parent="Lid/Outline" index="1" unique_id=1539836807]
 surface_material_override/0 = SubResource("ShaderMaterial_tamcl")
 
-[node name="Brake" parent="Lid/Outline" index="2"]
+[node name="Brake" parent="Lid/Outline" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Lid/Outline" index="3"]
+[node name="Crank" parent="Lid/Outline" index="3" unique_id=730532376]
 visible = false
 
-[node name="Filter" parent="Lid/Outline" index="4"]
+[node name="Filter" parent="Lid/Outline" index="4" unique_id=1973359574]
 visible = false
 
-[node name="Tonearm" parent="Lid/Outline" index="5"]
+[node name="Tonearm" parent="Lid/Outline" index="5" unique_id=1683771267]
 visible = false
 
-[node name="Handle" type="StaticBody3D" parent="Lid"]
+[node name="Handle" type="StaticBody3D" parent="Lid" unique_id=1492444585]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/Handle"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/Handle" unique_id=1347809719]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.024770617, -0.049541406)
 shape = SubResource("BoxShape3D_tamcl")
 
-[node name="Tonearm" type="Node3D" parent="Lid" node_paths=PackedStringArray("outline", "animation_player")]
+[node name="Tonearm" type="Node3D" parent="Lid" unique_id=1058226627 node_paths=PackedStringArray("outline", "animation_player")]
 transform = Transform3D(0.98874074, -0.14963889, 6.540924e-09, 0.14963889, 0.98874074, 4.921574e-10, -6.540924e-09, 4.921574e-10, 1, 0.08913786, 0.08097366, -0.021452807)
 script = ExtResource("30_tonearm")
 outline = NodePath("Outline/Tonearm")
 animation_player = NodePath("AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid/Tonearm"]
-libraries = {
-&"": SubResource("AnimationLibrary_tonearm")
-}
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Lid/Tonearm" unique_id=1825207763]
+libraries/ = SubResource("AnimationLibrary_tonearm")
 
-[node name="Model" parent="Lid/Tonearm" instance=ExtResource("1_dylsv")]
+[node name="Model" parent="Lid/Tonearm" unique_id=1717647581 instance=ExtResource("1_dylsv")]
 
-[node name="Base" parent="Lid/Tonearm/Model" index="0"]
+[node name="Base" parent="Lid/Tonearm/Model" index="0" unique_id=372224398]
 visible = false
 
-[node name="Lid" parent="Lid/Tonearm/Model" index="1"]
+[node name="Lid" parent="Lid/Tonearm/Model" index="1" unique_id=1539836807]
 visible = false
 
-[node name="Brake" parent="Lid/Tonearm/Model" index="2"]
+[node name="Brake" parent="Lid/Tonearm/Model" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Lid/Tonearm/Model" index="3"]
+[node name="Crank" parent="Lid/Tonearm/Model" index="3" unique_id=730532376]
 visible = false
 
-[node name="Filter" parent="Lid/Tonearm/Model" index="4"]
+[node name="Filter" parent="Lid/Tonearm/Model" index="4" unique_id=1973359574]
 visible = false
 
-[node name="Outline" parent="Lid/Tonearm" instance=ExtResource("1_dylsv")]
+[node name="Outline" parent="Lid/Tonearm" unique_id=1612752683 instance=ExtResource("1_dylsv")]
 
-[node name="Base" parent="Lid/Tonearm/Outline" index="0"]
+[node name="Base" parent="Lid/Tonearm/Outline" index="0" unique_id=372224398]
 visible = false
 
-[node name="Lid" parent="Lid/Tonearm/Outline" index="1"]
+[node name="Lid" parent="Lid/Tonearm/Outline" index="1" unique_id=1539836807]
 visible = false
 
-[node name="Brake" parent="Lid/Tonearm/Outline" index="2"]
+[node name="Brake" parent="Lid/Tonearm/Outline" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Lid/Tonearm/Outline" index="3"]
+[node name="Crank" parent="Lid/Tonearm/Outline" index="3" unique_id=730532376]
 visible = false
 
-[node name="Filter" parent="Lid/Tonearm/Outline" index="4"]
+[node name="Filter" parent="Lid/Tonearm/Outline" index="4" unique_id=1973359574]
 visible = false
 
-[node name="Tonearm" parent="Lid/Tonearm/Outline" index="5"]
+[node name="Tonearm" parent="Lid/Tonearm/Outline" index="5" unique_id=1683771267]
 surface_material_override/3 = SubResource("ShaderMaterial_kipf1")
 
-[node name="Handle" type="StaticBody3D" parent="Lid/Tonearm"]
+[node name="Handle" type="StaticBody3D" parent="Lid/Tonearm" unique_id=1949577474]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/Tonearm/Handle"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Lid/Tonearm/Handle" unique_id=1101815178]
 transform = Transform3D(0.9929254, 0.0010706782, 0.11873279, 0.0010706335, 0.9998378, -0.017969364, -0.11873278, 0.017969359, 0.99276364, -0.07376539, 0.011163872, 0.025312603)
 shape = SubResource("BoxShape3D_crank")
 
-[node name="Crank" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Cranks"]]
+[node name="Crank" parent="." unique_id=1975121206 instance=ExtResource("21_6uyrw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
-collision_layer = 2
-freeze = true
-script = ExtResource("26_pickable")
-outline = NodePath("Outline")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Crank"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.12, 0.02838397, 0.030000001)
-shape = SubResource("BoxShape3D_crank")
-
-[node name="Model" parent="Crank" instance=ExtResource("1_dylsv")]
-
-[node name="Base" parent="Crank/Model" index="0"]
-visible = false
-
-[node name="Lid" parent="Crank/Model" index="1"]
-visible = false
-
-[node name="Brake" parent="Crank/Model" index="2"]
-visible = false
-
-[node name="Filter" parent="Crank/Model" index="4"]
-visible = false
-
-[node name="Tonearm" parent="Crank/Model" index="5"]
-visible = false
-
-[node name="Outline" parent="Crank" instance=ExtResource("1_dylsv")]
-visible = false
-
-[node name="Base" parent="Crank/Outline" index="0"]
-visible = false
-
-[node name="Lid" parent="Crank/Outline" index="1"]
-visible = false
-
-[node name="Brake" parent="Crank/Outline" index="2"]
-visible = false
-
-[node name="Crank" parent="Crank/Outline" index="3"]
-surface_material_override/0 = SubResource("ShaderMaterial_crank_outline")
-surface_material_override/1 = SubResource("ShaderMaterial_crank_outline")
-
-[node name="Filter" parent="Crank/Outline" index="4"]
-visible = false
-
-[node name="Tonearm" parent="Crank/Outline" index="5"]
-visible = false
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Crank"]
-libraries = {
-&"": SubResource("AnimationLibrary_crank")
-}
-
-[node name="MountedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
+[node name="MountedCrankSnapZone" type="Area3D" parent="." unique_id=2073776810 node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.15112917, 0.07363949, 0.14668855)
 collision_mask = 2
 script = ExtResource("27_snapzone")
@@ -465,15 +363,15 @@ snap_group = "Cranks"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MountedCrankSnapZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MountedCrankSnapZone" unique_id=838225150]
 shape = SubResource("SphereShape3D_snapzone")
 
-[node name="Highlight" type="MeshInstance3D" parent="MountedCrankSnapZone"]
+[node name="Highlight" type="MeshInstance3D" parent="MountedCrankSnapZone" unique_id=933549206]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
 visible = false
 mesh = SubResource("QuadMesh_highlight")
 
-[node name="StashedCrankSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
+[node name="StashedCrankSnapZone" type="Area3D" parent="." unique_id=1462961823 node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.10053733, 0.103012174, 0.039805263)
 collision_mask = 2
 script = ExtResource("27_snapzone")
@@ -481,15 +379,15 @@ snap_group = "Cranks"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StashedCrankSnapZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StashedCrankSnapZone" unique_id=157615162]
 shape = SubResource("SphereShape3D_snapzone")
 
-[node name="Highlight" type="MeshInstance3D" parent="StashedCrankSnapZone"]
+[node name="Highlight" type="MeshInstance3D" parent="StashedCrankSnapZone" unique_id=1760793546]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
 visible = false
 mesh = SubResource("QuadMesh_highlight")
 
-[node name="Filter" type="RigidBody3D" parent="." node_paths=PackedStringArray("outline") groups=["Filters"]]
+[node name="Filter" type="RigidBody3D" parent="." unique_id=399299661 node_paths=PackedStringArray("outline") groups=["Filters"]]
 transform = Transform3D(1, 0, 0, 0, 0.8616291, -0.5075384, 0, 0.5075384, 0.8616291, 0.35, 0.1, -0.050105035)
 collision_layer = 2
 freeze = true
@@ -497,48 +395,48 @@ script = ExtResource("26_pickable")
 drag_height = 0.125
 outline = NodePath("Outline")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Filter"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Filter" unique_id=945812169]
 shape = SubResource("CylinderShape3D_filter")
 
-[node name="Model" parent="Filter" instance=ExtResource("1_dylsv")]
+[node name="Model" parent="Filter" unique_id=890185838 instance=ExtResource("1_dylsv")]
 
-[node name="Base" parent="Filter/Model" index="0"]
+[node name="Base" parent="Filter/Model" index="0" unique_id=372224398]
 visible = false
 
-[node name="Lid" parent="Filter/Model" index="1"]
+[node name="Lid" parent="Filter/Model" index="1" unique_id=1539836807]
 visible = false
 
-[node name="Brake" parent="Filter/Model" index="2"]
+[node name="Brake" parent="Filter/Model" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Filter/Model" index="3"]
+[node name="Crank" parent="Filter/Model" index="3" unique_id=730532376]
 visible = false
 
-[node name="Tonearm" parent="Filter/Model" index="5"]
+[node name="Tonearm" parent="Filter/Model" index="5" unique_id=1683771267]
 visible = false
 
-[node name="Outline" parent="Filter" instance=ExtResource("1_dylsv")]
+[node name="Outline" parent="Filter" unique_id=234939415 instance=ExtResource("1_dylsv")]
 visible = false
 
-[node name="Base" parent="Filter/Outline" index="0"]
+[node name="Base" parent="Filter/Outline" index="0" unique_id=372224398]
 visible = false
 
-[node name="Lid" parent="Filter/Outline" index="1"]
+[node name="Lid" parent="Filter/Outline" index="1" unique_id=1539836807]
 visible = false
 
-[node name="Brake" parent="Filter/Outline" index="2"]
+[node name="Brake" parent="Filter/Outline" index="2" unique_id=2068735040]
 visible = false
 
-[node name="Crank" parent="Filter/Outline" index="3"]
+[node name="Crank" parent="Filter/Outline" index="3" unique_id=730532376]
 visible = false
 
-[node name="Filter" parent="Filter/Outline" index="4"]
+[node name="Filter" parent="Filter/Outline" index="4" unique_id=1973359574]
 surface_material_override/0 = SubResource("ShaderMaterial_filter_outline")
 
-[node name="Tonearm" parent="Filter/Outline" index="5"]
+[node name="Tonearm" parent="Filter/Outline" index="5" unique_id=1683771267]
 visible = false
 
-[node name="MountedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
+[node name="MountedFilterSnapZone" type="Area3D" parent="." unique_id=1801089471 node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.11653774, 0.16)
 collision_mask = 2
 script = ExtResource("27_snapzone")
@@ -546,15 +444,15 @@ snap_group = "Filters"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="MountedFilterSnapZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MountedFilterSnapZone" unique_id=497805760]
 shape = SubResource("SphereShape3D_snapzone")
 
-[node name="Highlight" type="MeshInstance3D" parent="MountedFilterSnapZone"]
+[node name="Highlight" type="MeshInstance3D" parent="MountedFilterSnapZone" unique_id=40255984]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
 visible = false
 mesh = SubResource("QuadMesh_highlight")
 
-[node name="StashedFilterSnapZone" type="Area3D" parent="." node_paths=PackedStringArray("highlight_node", "snap_position")]
+[node name="StashedFilterSnapZone" type="Area3D" parent="." unique_id=2134132224 node_paths=PackedStringArray("highlight_node", "snap_position")]
 transform = Transform3D(1, 0, 0, 0, 0.8616291, -0.5075384, 0, 0.5075384, 0.8616291, 0.35, 0.1, -0.050105035)
 collision_mask = 2
 script = ExtResource("27_snapzone")
@@ -562,27 +460,27 @@ snap_group = "Filters"
 highlight_node = NodePath("Highlight")
 snap_position = NodePath(".")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StashedFilterSnapZone"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StashedFilterSnapZone" unique_id=1620090950]
 shape = SubResource("SphereShape3D_snapzone")
 
-[node name="Highlight" type="MeshInstance3D" parent="StashedFilterSnapZone"]
+[node name="Highlight" type="MeshInstance3D" parent="StashedFilterSnapZone" unique_id=1367811289]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
 visible = false
 mesh = SubResource("QuadMesh_highlight")
 
-[node name="MountedVinylSnapZone" type="Node3D" parent="."]
+[node name="MountedVinylSnapZone" type="Node3D" parent="." unique_id=1894832323]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.002, 0.13, 0.16)
 
-[node name="VinylColePorter" parent="." instance=ExtResource("23_vinyl2")]
+[node name="VinylColePorter" parent="." unique_id=244450591 instance=ExtResource("23_vinyl2")]
 transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.3251145, 0.1, -0.05)
 
-[node name="VinylConchitaMartinez" parent="." instance=ExtResource("24_vinyl3")]
+[node name="VinylConchitaMartinez" parent="." unique_id=447842236 instance=ExtResource("24_vinyl3")]
 transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.425, 0.1, -0.05)
 
-[node name="VinylPepeBlanco" parent="." instance=ExtResource("25_vinyl4")]
+[node name="VinylPepeBlanco" parent="." unique_id=335754732 instance=ExtResource("25_vinyl4")]
 transform = Transform3D(0.57357645, 0.81915206, 0, -0.81915206, 0.57357645, 0, 0, 0, 1, -0.5251145, 0.1, -0.05)
 
-[node name="VinylAlejandroUlloa" parent="." instance=ExtResource("22_vinyl1")]
+[node name="VinylAlejandroUlloa" parent="." unique_id=980718548 instance=ExtResource("22_vinyl1")]
 transform = Transform3D(0.5735764, 0.819152, 0, -0.819152, 0.5735764, 0, 0, 0, 1, -0.6251145, 0.1, -0.05)
 
 [editable path="Base/Model"]
@@ -590,7 +488,5 @@ transform = Transform3D(0.5735764, 0.819152, 0, -0.819152, 0.5735764, 0, 0, 0, 1
 [editable path="Lid/Outline"]
 [editable path="Lid/Tonearm/Model"]
 [editable path="Lid/Tonearm/Outline"]
-[editable path="Crank/Model"]
-[editable path="Crank/Outline"]
 [editable path="Filter/Model"]
 [editable path="Filter/Outline"]
