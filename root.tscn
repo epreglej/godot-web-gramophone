@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://05erjyspbbh7"]
+[gd_scene format=3 uid="uid://05erjyspbbh7"]
 
 [ext_resource type="Texture2D" uid="uid://bdktybj8dp4ui" path="res://skyboxes/sky.hdr" id="2_tw3kd"]
 [ext_resource type="Script" uid="uid://5kx2wbs1mlvo" path="res://scripts/mouse_controller.gd" id="3_mouse"]
@@ -34,78 +34,78 @@ tonemap_white = 0.8
 [sub_resource type="BoxShape3D" id="BoxShape3D_qwhpj"]
 size = Vector3(0.35, 2.8, 5)
 
-[node name="Root" type="Node3D"]
+[node name="Root" type="Node3D" unique_id=445919321]
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1629374234]
 environment = SubResource("Environment_uwexw")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=711316628]
 transform = Transform3D(9.047514e-08, 0.6120931, 0.7907858, -9.246353e-08, -0.7907858, 0.6120931, 1, -1.2849806e-07, -1.495018e-08, 1.6605808, 1.5, 0)
 light_energy = 0.8
 directional_shadow_mode = 0
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1239864521]
 transform = Transform3D(1, 0, 0, 0, 0.76604444, 0.6427876, 0, -0.6427876, 0.76604444, 0, 1.6, 0)
 fov = 70.0
 
-[node name="MouseController" type="Node3D" parent="." node_paths=PackedStringArray("camera")]
+[node name="MouseController" type="Node3D" parent="." unique_id=2131597149 node_paths=PackedStringArray("camera")]
 script = ExtResource("3_mouse")
 camera = NodePath("../Camera3D")
 
-[node name="Environment" type="Node3D" parent="."]
+[node name="Environment" type="Node3D" parent="." unique_id=16354698]
 
-[node name="Buildings" parent="Environment" instance=ExtResource("17_r3r3k")]
+[node name="Buildings" parent="Environment" unique_id=2110740097 instance=ExtResource("17_r3r3k")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.5, -17.5, -1)
 
-[node name="Room" parent="Environment" instance=ExtResource("8_bf3um")]
+[node name="Room" parent="Environment" unique_id=1188340923 instance=ExtResource("8_bf3um")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -1.25, 0, 1.35)
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Environment/Room"]
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment/Room" unique_id=312494805]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Room/StaticBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/Room/StaticBody3D" unique_id=1571084263]
 shape = SubResource("WorldBoundaryShape3D_bf3um")
 
-[node name="CollisionShape3D2" type="CollisionShape3D" parent="Environment/Room/StaticBody3D"]
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="Environment/Room/StaticBody3D" unique_id=1364192003]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 1.4, 1)
 shape = SubResource("BoxShape3D_qwhpj")
 
-[node name="Doors" parent="Environment/Room" instance=ExtResource("17_0dnjj")]
+[node name="Doors" parent="Environment/Room" unique_id=92435629 instance=ExtResource("17_0dnjj")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 2.27)
 
-[node name="Painting" parent="Environment/Room" instance=ExtResource("18_1xb4a")]
+[node name="Painting" parent="Environment/Room" unique_id=176095987 instance=ExtResource("18_1xb4a")]
 transform = Transform3D(-3.059797e-08, 0, -0.7, 0, 0.7, 0, 0.7, 0, -3.059797e-08, 2.3000002, 1, 0)
 
-[node name="Cabinet" parent="Environment/Room" instance=ExtResource("18_50g4q")]
+[node name="Cabinet" parent="Environment/Room" unique_id=808419734 instance=ExtResource("18_50g4q")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.0100565, 0, -0.6244323)
 
-[node name="EncyclopediaSet" parent="Environment/Room/Cabinet" instance=ExtResource("20_3dlgs")]
+[node name="EncyclopediaSet" parent="Environment/Room/Cabinet" unique_id=11923435 instance=ExtResource("20_3dlgs")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.0299916, 0.6815504, -0.17873454)
 
-[node name="LambisShell" parent="Environment/Room/Cabinet" instance=ExtResource("21_ub8w1")]
+[node name="LambisShell" parent="Environment/Room/Cabinet" unique_id=824475235 instance=ExtResource("21_ub8w1")]
 transform = Transform3D(1.4045794, 0, -1.4237825, 0, 2, 0, 1.4237825, 0, 1.4045794, -0.18341547, 0.6791854, 0.016846359)
 
-[node name="Gramophone" parent="Environment/Room" node_paths=PackedStringArray("ui", "camera") instance=ExtResource("18_blcw0")]
+[node name="Gramophone" parent="Environment/Room" unique_id=1670475855 node_paths=PackedStringArray("ui", "camera") instance=ExtResource("18_blcw0")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.1, 0.7, -1.25)
 ui = NodePath("../../../UI")
 camera = NodePath("../../../Camera3D")
 
-[node name="Chandelier" parent="Environment/Room" instance=ExtResource("22_ub8w1")]
+[node name="Chandelier" parent="Environment/Room" unique_id=1244897150 instance=ExtResource("22_ub8w1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0)
 
-[node name="VintageClock" parent="Environment/Room" instance=ExtResource("24_ynlg5")]
+[node name="VintageClock" parent="Environment/Room" unique_id=1130103932 instance=ExtResource("24_ynlg5")]
 transform = Transform3D(-3.4969112e-08, 0, -0.8, 0, 0.8, 0, 0.8, 0, -3.4969112e-08, 2.2696018, 0, -1.3732421)
 
-[node name="wdg_auto_free" parent="Environment/Room/VintageClock" index="2"]
+[node name="wdg_auto_free" parent="Environment/Room/VintageClock" index="2" unique_id=1162476062]
 visible = false
 
-[node name="wdg_arrow_simple" parent="Environment/Room/VintageClock" index="3"]
+[node name="wdg_arrow_simple" parent="Environment/Room/VintageClock" index="3" unique_id=393748335]
 visible = false
 
-[node name="Sofa" parent="Environment/Room" instance=ExtResource("25_ab83r")]
+[node name="Sofa" parent="Environment/Room" unique_id=1766069358 instance=ExtResource("25_ab83r")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2.0000272, 0, -1.1920929e-07)
 
-[node name="UI" parent="." instance=ExtResource("14_r3r3k")]
+[node name="UI" parent="." unique_id=1945197622 instance=ExtResource("14_r3r3k")]
 
 [editable path="Environment/Room/VintageClock"]

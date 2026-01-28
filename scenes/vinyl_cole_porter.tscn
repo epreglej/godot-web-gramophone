@@ -1,53 +1,84 @@
-[gd_scene load_steps=8 format=3 uid="uid://dwienhj3didby"]
+[gd_scene format=3 uid="uid://dwienhj3didby"]
 
-[ext_resource type="Script" uid="uid://cti8axbb63ta1" path="res://scripts/simple_vinyl.gd" id="2_p506p"]
-[ext_resource type="Resource" uid="uid://dlphk0c3ps4qx" path="res://data/cole_porter_empezad_la_beguine.tres" id="3_5q42x"]
-[ext_resource type="Resource" uid="uid://be17ke2vdkdu8" path="res://data/cole_porter_noche_y_dia.tres" id="3_5us2q"]
-[ext_resource type="PackedScene" uid="uid://dmbv5u2dwmkye" path="res://models/vinyls/vinyl_cole_porter/glb/vinyl_cole_porter.glb" id="7_n8xky"]
-[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="7_quk78"]
+[ext_resource type="Script" uid="uid://dog16jixjmewc" path="res://scripts/components/vinyl.gd" id="1_vinyl"]
+[ext_resource type="Script" uid="uid://yxppeo22wfux" path="res://scripts/components/clickable_component.gd" id="2_clickable"]
+[ext_resource type="Script" uid="uid://bwvrtb2iqys6g" path="res://scripts/components/inspectable_component.gd" id="3_inspectable"]
+[ext_resource type="Script" uid="uid://cccs6tl4oqlku" path="res://scripts/components/flippable_component.gd" id="4_flippable"]
+[ext_resource type="Script" uid="uid://bi10fh1nar00o" path="res://scripts/components/position_animator_component.gd" id="5_animator"]
+[ext_resource type="Script" uid="uid://cgemisrn8gh6t" path="res://scripts/components/snappable_component.gd" id="6_snappable"]
+[ext_resource type="Script" uid="uid://cqwns7xml1gls" path="res://scripts/components/outline_component.gd" id="7_outline"]
+[ext_resource type="Resource" uid="uid://dlphk0c3ps4qx" path="res://data/cole_porter_empezad_la_beguine.tres" id="8_song_a"]
+[ext_resource type="Resource" uid="uid://be17ke2vdkdu8" path="res://data/cole_porter_noche_y_dia.tres" id="9_song_b"]
+[ext_resource type="PackedScene" uid="uid://dmbv5u2dwmkye" path="res://models/vinyls/vinyl_cole_porter/glb/vinyl_cole_porter.glb" id="10_model"]
+[ext_resource type="Shader" uid="uid://bf8r6qih2b0fp" path="res://shaders/outline.gdshader" id="11_outline_shader"]
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_5q42x"]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_vinyl"]
 height = 0.03
 radius = 0.1
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_lgpvc"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_outline"]
 render_priority = 1
-shader = ExtResource("7_quk78")
+shader = ExtResource("11_outline_shader")
 shader_parameter/shell_thickness = 0.002
 shader_parameter/shell_color = Color(1, 1, 0, 0.2)
 shader_parameter/glow_speed = 3.0
 shader_parameter/glow_min = 0.7
 shader_parameter/glow_max = 1.0
 
-[node name="VinylColePorter" type="RigidBody3D" node_paths=PackedStringArray("outline", "snap_pivot") groups=["Vinyls"]]
+[node name="VinylColePorter" type="RigidBody3D" unique_id=58116028 node_paths=PackedStringArray("clickable_component", "inspectable_component", "flippable_component", "position_animator_component", "snappable_component", "outline_component", "rotation_pivot") groups=["Vinyls"]]
 freeze = true
-script = ExtResource("2_p506p")
-song_a = ExtResource("3_5q42x")
-song_b = ExtResource("3_5us2q")
-outline = NodePath("SnapPivot/Outline/Grooves")
-snap_pivot = NodePath("SnapPivot")
+script = ExtResource("1_vinyl")
+song_a = ExtResource("8_song_a")
+song_b = ExtResource("9_song_b")
+clickable_component = NodePath("ClickableComponent")
+inspectable_component = NodePath("InspectableComponent")
+flippable_component = NodePath("FlippableComponent")
+position_animator_component = NodePath("PositionAnimatorComponent")
+snappable_component = NodePath("SnappableComponent")
+outline_component = NodePath("OutlineComponent")
+rotation_pivot = NodePath("SnapPivot")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("CylinderShape3D_5q42x")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=644097030]
+shape = SubResource("CylinderShape3D_vinyl")
 
-[node name="SnapPivot" type="Node3D" parent="."]
+[node name="SnapPivot" type="Node3D" parent="." unique_id=166726369]
 
-[node name="Model" parent="SnapPivot" instance=ExtResource("7_n8xky")]
+[node name="Model" parent="SnapPivot" unique_id=1068309811 instance=ExtResource("10_model")]
 
-[node name="Outline" parent="SnapPivot" instance=ExtResource("7_n8xky")]
+[node name="Outline" parent="SnapPivot" unique_id=983230116 instance=ExtResource("10_model")]
 
-[node name="Grooves" parent="SnapPivot/Outline" index="0"]
-surface_material_override/0 = SubResource("ShaderMaterial_lgpvc")
+[node name="Grooves" parent="SnapPivot/Outline" index="0" unique_id=1268003865]
+surface_material_override/0 = SubResource("ShaderMaterial_outline")
 
-[node name="Label1" parent="SnapPivot/Outline" index="1"]
+[node name="Label1" parent="SnapPivot/Outline" index="1" unique_id=1441378043]
 visible = false
 
-[node name="Exterior" parent="SnapPivot/Outline" index="2"]
+[node name="Exterior" parent="SnapPivot/Outline" index="2" unique_id=694294510]
 visible = false
-surface_material_override/0 = SubResource("ShaderMaterial_lgpvc")
+surface_material_override/0 = SubResource("ShaderMaterial_outline")
 
-[node name="Label2" parent="SnapPivot/Outline" index="3"]
+[node name="Label2" parent="SnapPivot/Outline" index="3" unique_id=1092297029]
 visible = false
+
+[node name="ClickableComponent" type="Node" parent="." unique_id=2000000001]
+script = ExtResource("2_clickable")
+
+[node name="InspectableComponent" type="Node" parent="." unique_id=2000000002]
+script = ExtResource("3_inspectable")
+
+[node name="FlippableComponent" type="Node" parent="." unique_id=2000000003]
+script = ExtResource("4_flippable")
+flip_pivot = NodePath("../SnapPivot")
+
+[node name="PositionAnimatorComponent" type="Node" parent="." unique_id=2000000005]
+script = ExtResource("5_animator")
+
+[node name="SnappableComponent" type="Node" parent="." unique_id=2000000006]
+script = ExtResource("6_snappable")
+
+[node name="OutlineComponent" type="Node" parent="." unique_id=2000000007 node_paths=PackedStringArray("outline")]
+script = ExtResource("7_outline")
+outline = NodePath("../SnapPivot/Outline")
 
 [editable path="SnapPivot/Model"]
 [editable path="SnapPivot/Outline"]

@@ -26,11 +26,11 @@ class_name GramophoneController
 
 # Vinyl components
 @export var mounted_vinyl_snap_zone: Node3D  # Position for vinyl on turntable
-var vinyls: Array[SimpleVinyl] = []  # Found automatically by group
+var vinyls: Array[Vinyl] = []  # Found automatically by group
 
 # Vinyl state
-var inspecting_vinyl: SimpleVinyl = null
-var mounted_vinyl: SimpleVinyl = null
+var inspecting_vinyl: Vinyl = null
+var mounted_vinyl: Vinyl = null
 var selected_song: Song = null
 
 # Camera rotation
@@ -153,7 +153,7 @@ func _find_vinyls():
 	# Find all nodes in the "Vinyls" group that are children of this node
 	vinyls.clear()
 	for child in get_children():
-		if child is SimpleVinyl and child.is_in_group("Vinyls"):
+		if child is Vinyl and child.is_in_group("Vinyls"):
 			vinyls.append(child)
 			# Ensure vinyl is disabled and outline is hidden
 			child.set_interactable(false)

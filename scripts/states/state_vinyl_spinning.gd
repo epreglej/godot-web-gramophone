@@ -2,7 +2,7 @@ extends GameState
 
 ## Vinyl spinning - vinyl is spinning, can engage brake to stop
 
-var _current_vinyl: SimpleVinyl = null
+var _current_vinyl: Vinyl = null
 var _spin_speed: float = 0.1  # rotations per second (6 RPM - slow vinyl speed)
 var _is_spinning: bool = false
 var _tonearm_connected: bool = false
@@ -57,8 +57,8 @@ func exit_state():
 
 func _process(delta: float):
 	if _is_spinning and _current_vinyl:
-		# Rotate vinyl around Y axis (or its snap_pivot if it exists)
-		var target_node = _current_vinyl.snap_pivot if _current_vinyl.snap_pivot else _current_vinyl
+		# Rotate vinyl around Y axis (or its rotation_pivot if it exists)
+		var target_node = _current_vinyl.rotation_pivot if _current_vinyl.rotation_pivot else _current_vinyl
 		target_node.rotate_y(_spin_speed * TAU * delta)
 
 func _on_brake_engaged():

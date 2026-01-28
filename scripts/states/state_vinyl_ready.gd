@@ -45,7 +45,7 @@ func _on_filter_picked_up():
 	# User picked up the filter to remove it
 	goto("FilterPickedUp")
 
-func _on_vinyl_inspection_started(vinyl: SimpleVinyl):
+func _on_vinyl_inspection_started(vinyl: Vinyl):
 	# Store the inspecting vinyl and go to inspection state
 	if gramophone:
 		gramophone.inspecting_vinyl = vinyl

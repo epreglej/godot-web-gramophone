@@ -49,14 +49,14 @@ func _update_instructions():
 	if gramophone:
 		gramophone.set_instructions("Usa los botones para Girar o Elegir el vinilo", "Dejar el vinilo")
 
-func _on_vinyl_selected(vinyl: SimpleVinyl, song: Song):
+func _on_vinyl_selected(vinyl: Vinyl, song: Song):
 	print("Vinyl selected: ", vinyl.name, " - Song: ", song.title if song else "none")
 	if gramophone:
 		gramophone.selected_song = song
 		gramophone.mounted_vinyl = vinyl
 	goto("BrakeReady")
 
-func _on_vinyl_cancelled(vinyl: SimpleVinyl):
+func _on_vinyl_cancelled(vinyl: Vinyl):
 	print("Vinyl inspection cancelled, came_from_mounted: ", _came_from_mounted)
 	if gramophone:
 		gramophone.inspecting_vinyl = null

@@ -149,7 +149,7 @@ func _resize_objective_container() -> void:
 		var min_width = max(300.0, label_width + 32.0) # 32px for left/right margins
 		objective_container.size = Vector2(min_width, min_height)
 
-func show_vinyl_inspection(vinyl: SimpleVinyl) -> void:
+func show_vinyl_inspection(vinyl: Vinyl) -> void:
 	if vinyl_container:
 		vinyl_container.visible = true
 		_update_vinyl_info(vinyl)
@@ -164,7 +164,7 @@ func hide_vinyl_inspection() -> void:
 	if rotation_container:
 		rotation_container.visible = true
 
-func _update_vinyl_info(vinyl: SimpleVinyl) -> void:
+func _update_vinyl_info(vinyl: Vinyl) -> void:
 	if vinyl_info_label and vinyl:
 		var current = vinyl.get_current_song()
 		var current_side = vinyl.get_current_side_name()
@@ -176,6 +176,6 @@ func _update_vinyl_info(vinyl: SimpleVinyl) -> void:
 		]
 		vinyl_info_label.text = text
 
-func update_vinyl_display(vinyl: SimpleVinyl) -> void:
+func update_vinyl_display(vinyl: Vinyl) -> void:
 	## Call this after flipping to update the display
 	_update_vinyl_info(vinyl)

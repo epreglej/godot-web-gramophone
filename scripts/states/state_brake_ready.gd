@@ -2,7 +2,7 @@ extends GameState
 
 ## Brake ready - user can click brake to disengage and start vinyl spinning
 
-var _current_vinyl: SimpleVinyl = null
+var _current_vinyl: Vinyl = null
 var _vinyl_spinning: bool = false
 
 func enter_state():
@@ -53,7 +53,7 @@ func _on_brake_disengaged():
 	_start_vinyl_spin()
 	goto("VinylSpinning")
 
-func _on_vinyl_inspection_started(vinyl: SimpleVinyl):
+func _on_vinyl_inspection_started(vinyl: Vinyl):
 	# User wants to change/remove the vinyl
 	if gramophone:
 		gramophone.inspecting_vinyl = vinyl
